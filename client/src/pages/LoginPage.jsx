@@ -30,7 +30,7 @@ function LoginPage({ role }) {
         } else if (status === "failed") {
             setMessage(response.message);
         } else if (status === "error") {
-            setMessage(response.message);
+            setMessage(error.message);
         }
     }, [status, currentRole, navigate, error, response, currentUser])
 
