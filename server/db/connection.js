@@ -8,8 +8,7 @@ async function connect() {
         await client.db("admin").command({ ping: 1 });
         console.log("You successfully connected to MongoDB!");
     } catch(err) {
-        console.log(err);
-        client.close();
+        console.log("Cannot connect to MongoDB!" + err);
     }
 }
 connect();
