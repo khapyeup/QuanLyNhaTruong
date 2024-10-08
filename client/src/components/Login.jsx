@@ -1,7 +1,21 @@
+import {useState} from 'react'
+import {axios} from 'axios'
+
 export default function Login() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventtDefault();
+        try {
+            const response = await axios.post("http://localhost:3000/api/auth/login", {email, password});
+            console.log("respone: " + response);
+        } catch (err) {
+            console.log(err);
+        }
+    }
     return (
         <>
-            
             <div className="flex flex-col-reverse justify-center items-center h-screen md:flex-row">
                 <div className="w-3/4 md:w-2/4">
                     <form className="flex-col flex gap-10 justify-center items-center">
