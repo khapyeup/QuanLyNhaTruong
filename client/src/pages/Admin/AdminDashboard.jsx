@@ -7,25 +7,36 @@ import ShowStudent from './student/ShowStudent'
 import ShowSubject from './subject/ShowSubject'
 import ShowClasses from './classes/ShowClasses'
 import ShowNotice from './notice/ShowNotice'
+import AddStudent from "./student/AddStudent"
+import StudentExamMarks from "./student/StudentExamMarks"
+import StudentAttendance from "./student/StudentAttendance"
+import ViewStudent from "./student/ViewStudent"
+import EditStudent from "./student/EditStudent"
+import DeleteStudent from "./student/DeleteStudent"
+import { Button } from '@material-tailwind/react'
+import { useDispatch } from 'react-redux'
+import { logoutUser } from '../../redux/userRelated/userHandle'
+
 
 function AdminDashboard() {
+  const dispatch = useDispatch()
   return (
     <>
       <div className='w-full h-screen flex flex-col md:flex-row'>
-        <div className="w-1/6 h-screen bg-slate-300 sticky top-0 hidden md:block">
+        <div className="w-1/6 h-screen bg-blue-gray-700 sticky top-0 hidden md:block ">
           {/* Sidebar */}
           <AdminSidebar />
         </div>
 
         {/* Navbar */}
         <div className="flex-1 overflow-y-auto">
-          <div className="top-0 bg-slate-300 sticky flex flex-row justify-between w-full p-2 items-center">
+          <div className="top-0 sticky flex flex-row justify-between w-full px-4 py-1 items-center shadow-md bg-white">
             <div>
             <button className="hidden">☰</button>
             <p>Hi</p>
             </div>
             
-            <button className="bg-blue-300 p-2 rounded-lg hover:bg-blue-500">Đăng xuất</button>
+            <Button onClick={() => dispatch(logoutUser())}>Đăng xuất</Button>
           </div>
 
           <Routes>
@@ -38,6 +49,12 @@ function AdminDashboard() {
 
             {/* Student route */}
             <Route path="/admin/students/" element={<ShowStudent />} />
+            <Route path="/admin/students/add" element={<AddStudent />} />
+            <Route path="/admin/students/view/:id" element={<ViewStudent />}/>
+            <Route path="/admin/students/edit/:id" element={<EditStudent />}/>
+            <Route path="/admin/students/delete/:id" element={<DeleteStudent />}/>
+            <Route path="/admin/students/marks/:id" element={<StudentExamMarks/>} />
+            <Route path="/Admin/students/attendance/:id" element={<StudentAttendance situation="Student" />} />
 
             {/* Subjects route */}
             <Route path="/admin/subjects/" element={<ShowSubject />} />
