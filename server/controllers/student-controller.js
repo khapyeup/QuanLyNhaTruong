@@ -16,7 +16,6 @@ const getStudentList = async (req, res) => {
 }
 
 const addStudent = async (req, res) => {
-    console.log("Add student: Req " + req.body)
     try {
         let result = await client.db("QuanLyNhaTruong").collection("student").insertOne(req.body)
         res.json(result)
@@ -28,7 +27,6 @@ const addStudent = async (req, res) => {
 const deleteStudent = async (req, res) => {
     try {
         let result = await client.db("QuanLyNhaTruong").collection("student").deleteOne({_id: new ObjectId(req.params.id) })
-        console.log("deleteStudent" + req.params.id)
         res.json(result)
     } catch(error) {
         res.status(500).json(error)
@@ -37,7 +35,6 @@ const deleteStudent = async (req, res) => {
 
 const getDetailStudent = async (req, res) => {
     try {
-        console.log("getStudentDetail")
         let id = req.params.id;
         let result = await client.db("QuanLyNhaTruong").collection("student").findOne({_id: new ObjectId(id)})
         if (result)
@@ -48,4 +45,22 @@ const getDetailStudent = async (req, res) => {
         res.status(500).json(error)
     }
 }
-export {addStudent, getStudentList, deleteStudent, getDetailStudent}
+
+const updateStudent = async (req, res) => {
+    try {
+        const data = req.body;
+        const id = req.params.id;
+        console.log(data.name + id)
+        const filter = {_id: new ObjectId(id)};
+        const updateDoc = {
+            $set: data
+        };
+        const result = await client.db("QuanLyNhaTruong").collection("student").updateOne(filter, updateDoc);
+        res.send(result);
+    } catch (error) {
+        res.json({message: "Không thể chỉnh sửa thông tin"});
+    }
+}
+
+
+export {addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent}
