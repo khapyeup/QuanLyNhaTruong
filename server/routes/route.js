@@ -1,6 +1,6 @@
 import express from "express";
 import adminLogin from "../controllers/admin-controller.js"
-import parentLogin from "../controllers/parent-controller.js"
+import {parentLogin} from "../controllers/parent-controller.js"
 import getTeacherList from "../controllers/teacher-controller.js";
 import getNoticeList from "../controllers/notice-controller.js";
 import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent} from "../controllers/student-controller.js";

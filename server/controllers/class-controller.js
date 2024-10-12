@@ -1,4 +1,4 @@
-
+import client from "../db/connection.js"
 
 
 const getClassList = async (req, res) => {

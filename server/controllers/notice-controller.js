@@ -1,3 +1,4 @@
+import client from "../db/connection.js"
 
 
 const getNoticeList = async (req, res) => {

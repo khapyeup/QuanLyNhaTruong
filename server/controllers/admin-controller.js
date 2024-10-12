@@ -1,4 +1,4 @@
-
+import client from "../db/connection.js"
 const adminLogin = async (req, res) => {
     
     if (req.body.username && req.body.password) {

@@ -1,4 +1,4 @@
-
+import client from "../db/connection.js"
 const parentLogin = async (req, res) => {
     try {
         if (req.body.username && req.body.password) {
