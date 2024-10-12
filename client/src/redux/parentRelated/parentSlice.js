@@ -1,25 +1,25 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-    studentList: [],
-    studentDetails: [],
+    parentList: [],
+    parentDetails: [],
     error: null,
     response: null,
     message: ''
 }
 
-const studentSlice = createSlice({
-    name: "student",
+const parentSlice = createSlice({
+    name: "parent",
     initialState,
     reducers: {
         doneSuccess: (state, action) => {
-            state.studentDetails = action.payload.data;
+            state.parentDetails = action.payload.data;
             
             state.error = null;
             state.response = null;
         },
         getSuccess: (state, action) => {
-            state.studentList = action.payload.data;
+            state.parentList = action.payload.data;
             state.error = null;
             state.response = null;
         },
@@ -51,6 +51,6 @@ export const {
     getError,
     addSuccess,
     deleteSuccess
-} = studentSlice.actions;
+} = parentSlice.actions;
 
-export const studentReducer = studentSlice.reducer;
+export const parentReducer = parentSlice.reducer;

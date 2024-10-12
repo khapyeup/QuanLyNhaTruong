@@ -14,9 +14,12 @@ import {
   Typography,
   Select,
   Option,
-  Typography
+  CardHeader
 } from "@material-tailwind/react";
-import { updateStudent } from '../../../redux/studentRelated/studentHandle';
+import { updateStudent, deleteStudent } from '../../../redux/studentRelated/studentHandle';
+
+
+
 
 function ShowStudent() {
   const [sclass, setSclass] = useState('');
@@ -24,12 +27,12 @@ function ShowStudent() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { studentList, error, response } = useSelector((state) => state.student);
+  const { studentList, error, response, message } = useSelector((state) => state.student);
   // const { classList } = useSelector(state => state.sclass);
 
   const handleEditClick = (e) => {
     const form = e.target;
-    
+
     const id = form.id.value;
     const name = form.name.value;
     const age = form.age.value;
@@ -37,10 +40,19 @@ function ShowStudent() {
     dispatch(updateStudent(id, { name, age, class: sclass, parentname }))
     if (response || error)
       alert(response.message)
+    else
+      alert("Sửa thành công");
   }
+
+    
 
   const handleAddStudent = () => {
     return navigate("/admin/students/add")
+  }
+
+  const handleDelete = (_id) => {
+    dispatch(deleteStudent(_id));
+    
   }
 
   useEffect(() => {
@@ -48,33 +60,84 @@ function ShowStudent() {
     dispatch(getStudentList());
   }, [])
   return <>
-    <div className='p-9'>
-      <button class="bg-slate-600 hover:bg-slate-400 p-2 rounded-lg" onClick={handleAddStudent}>Thêm học sinh</button>
+    {message ? <p className='w-full p-2 bg-green-500'>{message}</p> : ''}
+    {/* <div>
+        <Typography variant='h5'>
+          Thông báo
+        </Typography>
+        <table className="w-full min-w-full table-auto text-left">
+          <thead>
+            <tr>
+              {tableHead.map((head) => (
+                <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                  <Typography variant='small' color='blue-gray' className='font-normal leading-none opacity-75'>
+                    {head}
+                  </Typography>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {tableRow.map(({ title, date }, index) => (
+              <tr key={index} className="even:bg-blue-gray-50/50">
+                <td className="p-4">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {index + 1}
+                  </Typography>
+                </td>
+                <td className="p-4">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {title}
+                  </Typography>
+                </td>
+                <td className="p-4">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {date.substring(0, 10)}
+                  </Typography>
+                </td>
+                <td className="p-4">
+                  <Typography as="a" href="#" variant="small" color="blue-gray" className="font-medium">
+                    Xem
+                  </Typography>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div> */}
 
-      <table className='my-3 w-full text-sm rtl:text-right text-gray-500 dark:text-gray-400 border-collapse text-center'>
-        <thead className="text-xs text-gray-700 uppercase bg-gray-400 dark:bg-gray-700 dark:text-gray-400">
+
+
+
+    <div className='p-9 flex flex-col gap-y-5'>
+      <Button class="bg-blue-600 text-white p-2 rounded-lg" onClick={handleAddStudent}>Thêm học sinh</Button>
+
+      <table className='w-full min-w-full table-auto text-left'>
+        <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
           <tr>
-            <th className="px-6 py-3">ID</th>
-            <th className="px-6 py-3">
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">ID</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
               Họ và tên
             </th>
-            <th className="px-6 py-3">
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
               Tuổi
             </th>
-            <th className="px-6 py-3">Lớp</th>
-            <th className="px-6 py-3 ">Hành động</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">Lớp</th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 "></th>
           </tr>
         </thead>
         <tbody>
           {studentList.map((student, index) =>
-            <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-400">
-              <td className='px-6 py-4'>{index + 1}</td>
-              <td className='px-6 py-4'>{student.name}</td>
-              <td className='px-6 py-4'>{student.age}</td>
-              <td className='px-6 py-4'>{student.class}</td>
-              <td className="flex flex-rol items-center px-1 py-4 justify-between">
-                <Link to={`/admin/students/view/${student._id}`}>Chi tiết</Link>
-                <Modal buttonData={"Chỉnh sửa"} buttonColor={"bg-yellow-500 "}>
+            <tr key={index} className="even:bg-blue-gray-50/50">
+              <td className='p-4'>{index + 1}</td>
+              <td className='p-4'>{student.name}</td>
+              <td className='p-4'>{student.age}</td>
+              <td className='p-4'>{student.class}</td>
+              <td className="p-4 justify-evenly flex">
+                <Link to={`/admin/students/view/${student._id}`}>
+                <Button className="bg-green-700">Chi tiết</Button>
+                </Link>
+                <Modal buttonData={"Chỉnh sửa"} buttonColor={"bg-orange-500 "}>
                   <form onSubmit={handleEditClick}>
                     <Card className="mx-auto w-full max-w-[24rem]">
                       <CardBody className="flex flex-col gap-4">
@@ -83,9 +146,9 @@ function ShowStudent() {
                         </Typography>
 
                         <input type='text' name="id" readOnly hidden value={student._id}></input>
-                        <Input required type='text' name="name" label="Họ và tên" size="lg" value={student.name} />
+                        <Input required type='text' name="name" label="Họ và tên" size="lg" />
 
-                        <Input required name="age" type="number" label="Tuổi" size="lg" value={student.age} />
+                        <Input required name="age" type="number" label="Tuổi" size="lg" />
 
                         <Select required name="sclass" label="Lớp" size="lg" onChange={(val) => setSclass(val)}>
                           <Option value="A">A</Option>
@@ -105,7 +168,19 @@ function ShowStudent() {
                     </Card>
                   </form>
                 </Modal>
-                <Link to={`/admin/students/delete/${student._id}`}>Xóa</Link>
+                <Modal buttonData={"Xóa"} buttonColor={"bg-red-500"}>
+                  <Card>
+
+                    <CardBody>
+                      <Typography>Xác nhận xóa?</Typography>
+                      <div className='flex gap-5'>
+                        <Button className='bg-red-400' onClick={() => handleDelete(student._id)}>OK</Button>
+                        <Button onClick={() => window.location.reload()}>Hủy</Button>
+                      </div>
+
+                    </CardBody>
+                  </Card>
+                </Modal>
               </td>
             </tr>
           )}

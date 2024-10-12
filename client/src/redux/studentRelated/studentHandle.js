@@ -1,9 +1,8 @@
 import axios from "axios";
-import { doneSuccess, getError, getFailed, getSuccess, addSuccess } from "./studentSlice";
+import { doneSuccess, getError, getFailed, getSuccess, addSuccess, deleteSuccess } from "./studentSlice";
 
 export const getStudentList = () => async (dispatch) => {
     try {
-        console.log("getStudentList")
         const result = await axios.get("http://localhost:3000/students")
         if (result.data.message)
             dispatch(getError(result.data))
@@ -27,7 +26,9 @@ export const deleteStudent = (id) => async (dispatch) => {
     try {
         console.log(id)
         const result = await axios.delete(`http://localhost:3000/students/delete/${id}`)
-        dispatch(addSuccess())
+        if (result)
+            dispatch(getFailed(result));
+        dispatch(deleteSuccess())
     } catch (error) {
         dispatch(getError(error))
     }

@@ -4,6 +4,8 @@ import { studentReducer } from './studentRelated/studentSlice';
 import { noticeReducer } from './noticeRelated/noticeSlice';
 import { sclassReducer } from './sclassRelated/sclassSlice';
 import { teacherReducer } from './teacherRelated/teacherSlice';
+import { parentReducer } from "./parentRelated/parentSlice";
+
 // import { complainReducer } from './complainRelated/complainSlice';
 
 const store = configureStore({
@@ -13,7 +15,8 @@ const store = configureStore({
     teacher: teacherReducer,
     notice: noticeReducer,
     // complain: complainReducer,
-    sclass: sclassReducer
+    sclass: sclassReducer,
+    parent: parentReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

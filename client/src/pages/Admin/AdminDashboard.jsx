@@ -23,7 +23,7 @@ function AdminDashboard() {
   return (
     <>
       <div className='w-full h-screen flex flex-col md:flex-row'>
-        <div className="w-1/6 h-screen bg-blue-gray-700 sticky top-0 hidden md:block ">
+        <div className="">
           {/* Sidebar */}
           <AdminSidebar />
         </div>
