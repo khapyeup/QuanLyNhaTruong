@@ -10,8 +10,8 @@ export const getParentList = () => async (dispatch) => {
         }
         else 
         
-            getFailed(result);
+            dispatch(getFailed(result));
     } catch (error) {
-        getError(result);
+        dispatch(getError(result));
     }  
 }
