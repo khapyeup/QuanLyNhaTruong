@@ -1,9 +1,8 @@
-import client from "../db/connection.js"
+
 const adminLogin = async (req, res) => {
     
     if (req.body.username && req.body.password) {
-        let admin = await client.db("QuanLyNhaTruong").collection("taikhoan").findOne({username: req.body.username, role: "admin"})
-        console.log(`Fetch from admin-controller.js with req: ${JSON.stringify(req.body)}`)
+        let admin = await client.db("QuanLyNhaTruong").collection("user").findOne({username: req.body.username, role: "admin"})
         if (admin) {
             if (admin.password === req.body.password) {
                 admin.password = undefined;

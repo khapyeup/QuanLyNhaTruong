@@ -1,25 +1,37 @@
-import client from "../db/connection.js"
+
 const parentLogin = async (req, res) => {
     try {
         if (req.body.username && req.body.password) {
-            let parent = await client.db("QuanLyNhaTruong").collection("taikhoan").findOne({ username: req.body.username, role: "parent" })
+            let parent = await client.db("QuanLyNhaTruong").collection("user").findOne({ username: req.body.username, role: "parent" })
             if (parent) {
                 if (parent.password === req.body.password) {
                     parent.password = undefined;
-                    res.send(parent)
+                    res.json(parent)
                 } else {
-                    res.send({ message: "Sai mật khẩu" })
+                    res.json({ message: "Sai mật khẩu" })
                 }
             } else {
-                res.send({ message: "Tài khoản không tồn tại!" })
+                res.json({ message: "Tài khoản không tồn tại!" })
             }
         } else {
-            res.send({ message: "Cần nhập tài khoản và mật khẩu" })
+            res.json({ message: "Cần nhập tài khoản và mật khẩu" })
         }
-        console.log(`Fetch from admin-controller.js with req: ${JSON.stringify(req.body)}`)
     } catch (error) {
         res.status(500).json(err);
     }
 }
 
-export default parentLogin;
+// http://localhost:3000/parents
+const getParentList = async (req, res) => {
+    try {
+        let result = await client.db("QuanLyNhaTruong").collection("user").find({role: "parent"}).toArray()
+        if (result.length > 0)
+            res.json(result)
+        else
+            res.json({message: "Không có phụ huynh nào"})
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+export {parentLogin, getParentList};
