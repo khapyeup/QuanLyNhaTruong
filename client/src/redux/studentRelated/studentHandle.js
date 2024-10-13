@@ -1,7 +1,8 @@
 import axios from "axios";
-import { doneSuccess, getError, getFailed, getSuccess, addSuccess, deleteSuccess } from "./studentSlice";
+import { getRequest,doneSuccess, getError, getFailed, getSuccess, addSuccess, deleteSuccess } from "./studentSlice";
 
 export const getStudentList = () => async (dispatch) => {
+    dispatch(getRequest)
     try {
         const result = await axios.get("http://localhost:3000/students")
         if (result.data.message)
@@ -15,6 +16,7 @@ export const getStudentList = () => async (dispatch) => {
 
 export const addStudent = (data) => async (dispatch) => {
     try {
+        dispatch(getRequest)
         const result = await axios.post("http://localhost:3000/students/add", data)
         dispatch(addSuccess())
     } catch (error) {
@@ -24,6 +26,7 @@ export const addStudent = (data) => async (dispatch) => {
 
 export const deleteStudent = (id) => async (dispatch) => {
     try {
+        dispatch(getRequest)
         console.log(id)
         const result = await axios.delete(`http://localhost:3000/students/delete/${id}`)
         if (result)
@@ -35,10 +38,13 @@ export const deleteStudent = (id) => async (dispatch) => {
 }
 
 export const getDetailStudent = (id) => async (dispatch) => {
-    console.log("getDetailStudent")
+    
     try {
+        dispatch(getRequest)
         const result = await axios.get(`http://localhost:3000/students/view/${id}`)
+        console.log(result)
         if (result)
+            
             dispatch(doneSuccess(result))
         else
             dispatch(getFailed(result))
@@ -50,6 +56,7 @@ export const getDetailStudent = (id) => async (dispatch) => {
 export const updateStudent = (id, data) => async (dispatch) => {
 
     try {
+        dispatch(getRequest)
         const result = await axios.put(`http://localhost:3000/students/edit/${id}`, data);
         if (result.message)
             dispatch(getFailed(result))

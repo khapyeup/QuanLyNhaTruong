@@ -47,9 +47,9 @@ const deleteStudent = async (req, res) => {
 
 const getDetailStudent = async (req, res) => {
     const studentId = req.params.id;
-
+    console.log("getDetailStudent/"+ studentId)
     try {
-        const student = await Student.findById(studentId).populate('class_id');
+        const student = await Student.findById(studentId).populate('class_id').populate('user_id');
         if (student) {
             res.json(student);
         } else {
