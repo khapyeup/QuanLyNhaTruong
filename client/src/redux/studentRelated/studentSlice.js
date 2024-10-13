@@ -30,6 +30,7 @@ const studentSlice = createSlice({
         getError: (state, action) => {
             state.error = action.payload;
             state.response = null;
+            state.message = action.payload.message;
         },
         addSuccess: (state) => {
             state.error = null;

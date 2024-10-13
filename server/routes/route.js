@@ -29,4 +29,6 @@ router.get("/students/view/:id", getDetailStudent)
 router.put("/students/edit/:id", updateStudent)
 //Classes
 router.get("/classes", getClassList)
+
+
 export default router;

@@ -1,8 +1,8 @@
-import client from "../db/connection.js"
+import User from '../models/user.js'
+
 const adminLogin = async (req, res) => {
-    
     if (req.body.username && req.body.password) {
-        let admin = await client.db("QuanLyNhaTruong").collection("user").findOne({username: req.body.username, role: "admin"})
+        let admin = await User.findOne({username: req.body.username, role: "admin"});
         if (admin) {
             if (admin.password === req.body.password) {
                 admin.password = undefined;
@@ -16,7 +16,6 @@ const adminLogin = async (req, res) => {
     } else {
         res.send({message: "Cần nhập tài khoản và mật khẩu"})
     }
-    
 }
 
 export default adminLogin;

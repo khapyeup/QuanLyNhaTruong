@@ -1,8 +1,9 @@
-import client from "../db/connection.js"
+import User from '../models/user.js'
+
 const parentLogin = async (req, res) => {
     try {
         if (req.body.username && req.body.password) {
-            let parent = await client.db("QuanLyNhaTruong").collection("user").findOne({ username: req.body.username, role: "parent" })
+            let parent = await User.findOne({username: req.body.username, role: "parent"})
             if (parent) {
                 if (parent.password === req.body.password) {
                     parent.password = undefined;
@@ -21,10 +22,10 @@ const parentLogin = async (req, res) => {
     }
 }
 
-// http://localhost:3000/parents
+
 const getParentList = async (req, res) => {
     try {
-        let result = await client.db("QuanLyNhaTruong").collection("user").find({role: "parent"}).toArray()
+        let result = await User.find({role: "parent"})
         if (result.length > 0)
             res.json(result)
         else

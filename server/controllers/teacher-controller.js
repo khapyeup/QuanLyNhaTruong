@@ -1,8 +1,8 @@
-import client from "../db/connection.js"
+import Teacher from '../models/teacher.js'
 
 const getTeacherList = async (req, res) => {
     try {
-        let result = await client.db("QuanLyNhaTruong").collection("teacher").find({}).toArray()
+        let result = await Teacher.find().populate('class_id')
         if (result.length > 0)
             res.send(result);
         else

@@ -1,9 +1,8 @@
-import client from "../db/connection.js"
-
+import Notice from '../models/notice.js'
 
 const getNoticeList = async (req, res) => {
     try {
-        let result = await client.db("QuanLyNhaTruong").collection("notice").find({}).toArray()
+        let result = await Notice.find()
         if (result.length > 0)
             res.json(result)
         else

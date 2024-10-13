@@ -1,66 +1,81 @@
-import { ObjectId } from "mongodb"
-import client from "../db/connection.js"
-
+import Student from '../models/student.js'
+import User from '../models/user.js'
 
 const getStudentList = async (req, res) => {
     try {
-        let result = await client.db("QuanLyNhaTruong").collection("student").find({}).toArray()
-        console.log("getStudentList")
+        let result = await Student.find().populate('class_id').populate('user_id')
         if (result.length > 0)
             res.send(result)
         else
-            res.send({message: "Không có học sinh nào"})
+            res.send({ message: "Không có học sinh nào" })
     } catch (error) {
         res.status(500).json(error)
     }
 }
 
 const addStudent = async (req, res) => {
+    const { name, dob, class_id, gender, address, user_id } = req.body;
+
+    const newStudent = new Student({
+        name,
+        dob,
+        class_id,
+        gender,
+        address,
+        user_id,
+        attendance: [],
+        behaviour: []
+    });
     try {
-        let result = await client.db("QuanLyNhaTruong").collection("student").insertOne(req.body)
-        res.json(result)
+        await newStudent.save();
+        res.status(200).json(newStudent);
     } catch (error) {
         res.status(500).json(error)
     }
 }
 
 const deleteStudent = async (req, res) => {
+    const studentId = req.params.id;
+
     try {
-        let result = await client.db("QuanLyNhaTruong").collection("student").deleteOne({_id: new ObjectId(req.params.id) })
-        res.json(result)
-    } catch(error) {
-        res.status(500).json(error)
+        await Student.findByIdAndDelete(studentId);
+        res.send('Student deleted successfully');
+    } catch (error) {
+        res.status(500).send(error);
     }
 }
 
 const getDetailStudent = async (req, res) => {
+    const studentId = req.params.id;
+
     try {
-        let id = req.params.id;
-        let result = await client.db("QuanLyNhaTruong").collection("student").findOne({_id: new ObjectId(id)})
-        if (result)
-            res.send(result)
-        else 
-            res.send({message: "Không có học sinh có id này: " + id})
+        const student = await Student.findById(studentId).populate('class_id');
+        if (student) {
+            res.json(student);
+        } else {
+            res.status(404).send('Student not found');
+        }
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).send('Error retrieving student details: ' + error.message);
     }
 }
 
 const updateStudent = async (req, res) => {
+
+    const studentId = req.params.id;
+    const updateData = req.body;
+
     try {
-        const data = req.body;
-        const id = req.params.id;
-        console.log(data.name + id)
-        const filter = {_id: new ObjectId(id)};
-        const updateDoc = {
-            $set: data
-        };
-        const result = await client.db("QuanLyNhaTruong").collection("student").updateOne(filter, updateDoc);
-        res.send(result);
+        const updatedStudent = await Student.findByIdAndUpdate(studentId, updateData, { new: true });
+        if (updatedStudent) {
+            res.send('Student updated successfully');
+        } else {
+            res.status(404).send('Student not found');
+        }
     } catch (error) {
-        res.json({message: "Không thể chỉnh sửa thông tin"});
+        res.status(500).send('Error updating student: ' + error.message);
     }
+
 }
 
-
-export {addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent}
+export { addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent }
