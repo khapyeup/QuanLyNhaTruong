@@ -2,7 +2,7 @@ import React from 'react'
 
 function ParentDashboard() {
   return (
-    <div>ParentDashboard</div>
+    <div className="">ParentDashboard</div>
   )
 }
 

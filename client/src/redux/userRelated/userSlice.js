@@ -7,7 +7,8 @@ const initialState = {
     currentUser: JSON.parse(localStorage.getItem("user")) || null,
     currentRole: (JSON.parse(localStorage.getItem("user")) || {}).role || null,
     error: null,
-    response: null
+    response: null,
+    isOpen: true
 };
 
 const userSlice = createSlice({
@@ -65,6 +66,9 @@ const userSlice = createSlice({
         },
         getError: (state, action) => {
             state.error = action.payload;
+        },
+        isOpen: (state) => {
+            state.isOpen = !state.isOpen;
         }
     }
 });
@@ -80,7 +84,8 @@ export const {
     doneSuccess,
     getDeleteSuccess,
     getFailed,
-    getError
+    getError,
+    isOpen
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

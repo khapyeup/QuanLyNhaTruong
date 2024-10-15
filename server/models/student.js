@@ -6,14 +6,14 @@ const studentSchema = new mongoose.Schema({
     class_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Class'},
     user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     attendance: [{
-        date: {type: Date, default: Date.now},
+        date: {type: Date},
         status: {type: String, enum: ['Vắng', 'Hiện diện']}
     }],
     gender: {type: String, enum: ['Nam', 'Nữ']},
     address: {type: String},
     behaviour: [{
         title: {type: String},
-        date: {type: Date, default: Date.now}
+        date: {type: Date}
     }]
 })
 

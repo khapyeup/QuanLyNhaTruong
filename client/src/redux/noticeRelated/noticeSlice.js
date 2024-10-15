@@ -12,7 +12,7 @@ const noticeSlice = createSlice({
     initialState,
     reducers: {
         doneSuccess: (state, action) => {
-            state.noticeDetails = action.payload;
+            state.noticeDetails = action.payload.data;
             state.error = null;
             state.response = null;
         },
@@ -28,6 +28,18 @@ const noticeSlice = createSlice({
         getError: (state, action) => {
             state.error = action.payload;
             state.response = null;
+        },
+        addSuccess: (state) => {
+            state.loading = false;
+            state.error = null;
+            state.response = null;
+            state.message = "Thêm thành công";
+        },
+        deleteSuccess: (state) => {
+            state.loading = false;
+            state.message = "Xóa thành công";
+            state.error = null;
+            state.response = null;
         }
     }
 })
@@ -36,7 +48,9 @@ export const {
     doneSuccess,
     getSuccess,
     getFailed,
-    getError
+    getError,
+    addSuccess,
+    deleteSuccess
 } = noticeSlice.actions
 
 export const noticeReducer = noticeSlice.reducer

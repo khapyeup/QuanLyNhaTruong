@@ -78,4 +78,5 @@ const updateStudent = async (req, res) => {
 
 }
 
+
 export { addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent }

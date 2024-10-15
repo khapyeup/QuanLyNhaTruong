@@ -18,20 +18,30 @@ import {
 } from "@material-tailwind/react";
 import { updateStudent, deleteStudent } from '../../../redux/studentRelated/studentHandle';
 import { getParentList } from '../../../redux/parentRelated/parenHandle';
-
+import AddStudent from './AddStudent'
 
 
 
 function ShowStudent() {
-  const [class_id, setClass_Id] = useState('');
-  const [user_id, setUser_Id] = useState('');
-  const [gender, setGender] = useState('')
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
 
   const { studentList, error, response, message } = useSelector((state) => state.student);
   const { classList } = useSelector(state => state.sclass);
-  const {parentList} = useSelector(state => state.parent)
+  const { parentList } = useSelector(state => state.parent)
+  
+  const [class_id, setClass_Id] = useState('');
+  const [user_id, setUser_Id] = useState('');
+  const [gender, setGender] = useState('');
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  
+
+  const handleAddModal = () => {
+    setOpenAddModal(!openAddModal)
+  }
 
   const handleEditClick = (e) => {
     const form = e.target;
@@ -48,7 +58,9 @@ function ShowStudent() {
   }
 
   const handleAddStudent = () => {
-    return navigate("/admin/students/add")
+    handleAddModal();
+    console.log(openAddModal);
+
   }
 
   const handleDelete = (_id) => {
@@ -56,18 +68,28 @@ function ShowStudent() {
     window.location.reload();
   }
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value.toLowerCase())
+    console.log( search)
+  }
+
   useEffect(() => {
     dispatch(getClassList());
     dispatch(getStudentList());
     dispatch(getParentList());
+    
   }, [])
   return <>
     {message ? <p className='w-full p-2 bg-green-500'>{message}</p> : ''}
 
-
+    <AddStudent open={openAddModal} showModal={handleAddModal} />
 
     <div className='p-9 flex flex-col gap-y-5'>
-      <Button class="bg-light-blue-600 text-white p-2 rounded-lg" onClick={handleAddStudent}>Thêm học sinh</Button>
+      <div className='flex flex-col gap-2 lg:flex-row lg:justify-between'>
+        <Button class="bg-light-blue-600 text-white p-2 rounded-lg" onClick={handleAddStudent}>Thêm học sinh</Button>
+        <input className='w-1/5 border-2 border-black p-1 rounded-lg' placeholder='Tìm kiếm' onChange={handleSearch}/>
+
+      </div>
 
       <table className='w-full min-w-full table-auto text-left'>
         <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
@@ -85,7 +107,9 @@ function ShowStudent() {
           </tr>
         </thead>
         <tbody>
-          {studentList.map((student, index) =>
+          {studentList.filter((item) => {
+            return search.toLowerCase() === '' ? item : (item.name.toLowerCase().includes(search) || item.class_id.name.toLowerCase().includes(search))
+          }).map((student, index) =>
             <tr key={index} className="even:bg-blue-gray-50/50">
               <td className='p-4'>{index + 1}</td>
               <td className='p-4'>{student.name}</td>
@@ -93,6 +117,7 @@ function ShowStudent() {
               <td className='p-4'>{student.gender}</td>
               <td className='p-4'>{student.class_id.name}</td>
               <td className="p-4 justify-evenly flex">
+                
                 <Link to={`/admin/students/view/${student._id}`}>
                   <Button className="bg-green-700">Chi tiết</Button>
                 </Link>
@@ -105,9 +130,9 @@ function ShowStudent() {
                         </Typography>
 
                         <input type='text' name="id" readOnly hidden value={student._id}></input>
-                        <Input required type='text' name="name" label="Họ và tên" size="lg" defaultValue={student.name}/>
+                        <Input required type='text' name="name" label="Họ và tên" size="lg" defaultValue={student.name} />
 
-                        <Input required name="dob" type="date" label="Ngày sinh" size="lg" defaultValue={student.dob}/>
+                        <Input required name="dob" type="date" label="Ngày sinh" size="lg" defaultValue={student.dob} />
 
                         <Select required name="gender" label="Giới tính" size="lg" onChange={(val) => setGender(val)} value={student.gender}>
                           <Option value="Nam">Nam</Option>
@@ -116,7 +141,7 @@ function ShowStudent() {
 
                         <Select required name="class_id" label="Lớp" size="lg" onChange={(val) => setClass_Id(val)} value={student.class_id._id}>
                           {classList ? classList.map(el =>
-                            <Option value={el._id} key={el.class_id}>{el.name}</Option>
+                            <Option value={el._id} key={el._id}>{el.name}</Option>
                           ) : ''}
                         </Select>
 
@@ -126,8 +151,8 @@ function ShowStudent() {
                           ) : ''}
                         </Select>
 
-                        <Input required name="address" type="text" label="Địa chỉ" size="lg" defaultValue={student.address}/>
-                        
+                        <Input required name="address" type="text" label="Địa chỉ" size="lg" defaultValue={student.address} />
+
 
                       </CardBody>
                       <CardFooter className="pt-0">

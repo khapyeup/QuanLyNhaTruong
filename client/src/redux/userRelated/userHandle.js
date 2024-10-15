@@ -9,7 +9,8 @@ import {
     doneSuccess,
     getDeleteSuccess,
     getFailed,
-    getError
+    getError,
+    isOpen
 } from "./userSlice"
 
 export const loginUser = (fields, role) => async (dispatch) => {
@@ -81,3 +82,7 @@ export const addStuff = (fields, address) => async (dispatch) => {
         dispatch(authError(error));
     }
 };
+
+export const showSideBar = () => (dispatch) => {
+    dispatch(isOpen());
+}

@@ -2,7 +2,6 @@ import React from 'react'
 import AdminSidebar from './AdminSidebar'
 import { Routes, Route, Navigate } from "react-router-dom"
 import AdminHomepage from './AdminHomepage'
-import { ShowTeacher } from './teacher/ShowTeacher'
 import ShowStudent from './student/ShowStudent'
 import ShowSubject from './subject/ShowSubject'
 import ShowClasses from './classes/ShowClasses'
@@ -11,15 +10,23 @@ import AddStudent from "./student/AddStudent"
 import StudentExamMarks from "./student/StudentExamMarks"
 import StudentAttendance from "./student/StudentAttendance"
 import ViewStudent from "./student/ViewStudent"
-import EditStudent from "./student/EditStudent"
-import DeleteStudent from "./student/DeleteStudent"
 import { Button } from '@material-tailwind/react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../../redux/userRelated/userHandle'
-
+import ShowTeacher from './teacher/ShowTeacher'
+import AddTeacher from './teacher/AddTeacher'
+import ViewTeacher from './teacher/ViewTeacher'
+import AddNotice from './notice/AddNotice'
+import ViewNotice from './notice/ViewNotice'
+import { showSideBar } from '../../redux/userRelated/userHandle'
+import TimeTable from './timetable/TimeTable'
 
 function AdminDashboard() {
   const dispatch = useDispatch()
+
+  const {isOpen} = useSelector(state => state.user);
+
+
   return (
     <>
       <div className='w-full h-screen flex flex-col md:flex-row'>
@@ -32,8 +39,7 @@ function AdminDashboard() {
         <div className="flex-1 overflow-y-auto">
           <div className="top-0 sticky flex flex-row justify-between w-full px-4 py-1 items-center shadow-md bg-white">
             <div>
-            <button className="hidden">☰</button>
-            <p>Hi</p>
+            <button onClick={() => dispatch(showSideBar())} className={isOpen ? 'hidden' : 'visible'}>☰</button>
             </div>
             
             <Button onClick={() => dispatch(logoutUser())}>Đăng xuất</Button>
@@ -46,15 +52,14 @@ function AdminDashboard() {
 
             {/* Teacher route */}
             <Route path="/Admin/teachers/" element={<ShowTeacher />} />
-
+            <Route path="admin/teachers/add" element={<AddTeacher />}/>
+            <Route path="/admin/teachers/view/:id" element={<ViewTeacher />}/>
             {/* Student route */}
             <Route path="/admin/students/" element={<ShowStudent />} />
-            <Route path="/admin/students/add" element={<AddStudent />} />
+            {/* <Route path="/admin/students/add" element={<AddStudent />} /> */}
             <Route path="/admin/students/view/:id" element={<ViewStudent />}/>
-            <Route path="/admin/students/edit/:id" element={<EditStudent />}/>
-            <Route path="/admin/students/delete/:id" element={<DeleteStudent />}/>
-            <Route path="/admin/students/marks/:id" element={<StudentExamMarks/>} />
-            <Route path="/Admin/students/attendance/:id" element={<StudentAttendance situation="Student" />} />
+            {/* <Route path="/admin/students/marks/:id" element={<StudentExamMarks/>} />
+            <Route path="/Admin/students/attendance/:id" element={<StudentAttendance situation="Student" />} /> */}
 
             {/* Subjects route */}
             <Route path="/admin/subjects/" element={<ShowSubject />} />
@@ -63,6 +68,11 @@ function AdminDashboard() {
             <Route path="/admin/classes/" element={<ShowClasses />} />
             {/* Notice router */}
             <Route path="/admin/notices/" element={<ShowNotice />} />
+            <Route path="admin/notices/add" element={<AddNotice />}/>
+            <Route path="/admin/notices/view/:id" element={<ViewNotice />}/>
+
+            {/* Timetable route */}
+            <Route path="admin/timetable/" element={<TimeTable/>}/>
           </Routes>
         </div>
       </div>
