@@ -4,7 +4,7 @@ import route from "./routes/route.js"
 import mongoose from "mongoose";
 
 
-const URI = "mongodb+srv://khapyeu153:123456aA@quanlynhatruong.y7r9w.mongodb.net/QuanLyNhaTruong?retryWrites=true&w=majority&appName=QuanLyNhaTruong";
+const URI = "mongodb+srv://vhoi03:12345@quanlynhatruong.y7r9w.mongodb.net/QuanLyNhaTruong?retryWrites=true&w=majority&appName=QuanLyNhaTruong";
 const PORT = 3000;
 const app = express();
 
