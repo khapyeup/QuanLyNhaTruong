@@ -6,6 +6,7 @@ import { TfiDashboard } from "react-icons/tfi";
 import { AiTwotoneSchedule } from "react-icons/ai";
 import { PiStudent } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
+import { VscBellDot } from "react-icons/vsc";
 import { MdOutlineSubject } from "react-icons/md";
 import { BiSolidNotification } from "react-icons/bi";
 import { showSideBar } from '../../redux/userRelated/userHandle';
@@ -15,7 +16,7 @@ import { showSideBar } from '../../redux/userRelated/userHandle';
 function ParentSidebar() {
     const dispatch = useDispatch()
 
-  const {isOpen} = useSelector(state => state.user);
+    const { isOpen } = useSelector(state => state.user);
     return (
         <Card className={isOpen ? "h-[calc(100vh-2rem)] w-full bg-black max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5" : 'hidden'}>
             <div className="mb-2 p-4 flex justify-between items-center gap-2">
@@ -34,12 +35,15 @@ function ParentSidebar() {
                     <PiStudent className='size-6' />
                     Học sinh
                 </NavLink>
+                <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/notice/"}>
+                    <VscBellDot />
+                    Thông báo
+                </NavLink>
                 <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/message/"}>
                     <FaChalkboardTeacher />
                     Nhắn tin
                 </NavLink>
-                
-                
+
 
                 <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/finance/"}>
                     <BiSolidNotification />
