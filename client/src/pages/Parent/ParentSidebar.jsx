@@ -1,15 +1,15 @@
-import { Card, Typography, Button, List } from '@material-tailwind/react'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { Card, Typography, Button, List } from '@material-tailwind/react'
+import { showSideBar } from '../../redux/userRelated/userHandle';
+
 import { TfiDashboard } from "react-icons/tfi";
-import { AiTwotoneSchedule } from "react-icons/ai";
 import { PiStudent } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { VscBellDot } from "react-icons/vsc";
-import { MdOutlineSubject } from "react-icons/md";
 import { BiSolidNotification } from "react-icons/bi";
-import { showSideBar } from '../../redux/userRelated/userHandle';
+
 
 
 
@@ -43,8 +43,6 @@ function ParentSidebar() {
                     <FaChalkboardTeacher />
                     Nhắn tin
                 </NavLink>
-
-
                 <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/finance/"}>
                     <BiSolidNotification />
                     Học phí

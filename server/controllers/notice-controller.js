@@ -2,6 +2,7 @@ import Notice from '../models/notice.js'
 
 const getNoticeList = async (req, res) => {
     try {
+        console.log("getNoticList");
         let result = await Notice.find()
         if (result.length > 0)
             res.json(result)
