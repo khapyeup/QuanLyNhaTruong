@@ -10,15 +10,19 @@ const ParentNofication = () => {
 
     useEffect(() => {
         dispatch(getNoticeList());
-    },[])
+    }, [])
 
-    return (
+    return (<>
+        <p>Thông báo</p>
+        <hr className='bg-gray-600 h-1'/>
         <ul>
-            {noticeList ? noticeList.map((notice) => 
-                <Link to='/parent/notice'><li className='list-none p-1 border-y-2 border-y-gray-500 hover:bg-blue-gray-300 cursor-pointer' key={notice._id}>{notice.title}</li></Link>
+            {noticeList ? noticeList.map((notice) =>
+                <Link to='/parent/notice'><li className='list-none p-1 hover:bg-blue-gray-300 cursor-pointer' key={notice._id}>{notice.title}</li></Link>
             ) : <li>Không có thông báo nào!</li>}
 
         </ul>
+    </>
+
     )
 }
 

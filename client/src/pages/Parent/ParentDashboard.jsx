@@ -47,7 +47,7 @@ function ParentDashboard() {
               <HiOutlineBell className='size-6  cursor-pointer' onClick={handleNoficationMenu} />
               <Button onClick={() => dispatch(logoutUser())}>Đăng xuất</Button>
               {isNoficationMenuOpen ?
-                <div className='max-w-72 w-72 overflow-y-auto absolute top-12 right-36 border-black border-2 rounded-lg bg-white'>
+                <div className='p-2 max-w-72 w-72 overflow-y-auto absolute top-12 right-36 border-black border-2 rounded-lg bg-white'>
                   <ParentNofication/>
                 </div>
                 : ''}
