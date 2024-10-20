@@ -21,6 +21,7 @@ import ViewNotice from './notice/ViewNotice'
 import { showSideBar } from '../../redux/userRelated/userHandle'
 import TimeTable from './timetable/TimeTable'
 import ShowActivity from './activity/ShowActivity'
+import AddActivity from './activity/AddActivity'
 
 function AdminDashboard() {
   const dispatch = useDispatch()
@@ -64,6 +65,8 @@ function AdminDashboard() {
 
             {/* Activity route */}
             <Route path="/admin/activities/" element={<ShowActivity />} />
+            <Route path="admin/activities/add" element={<AddActivity />}/>
+
 
             {/* Classes route */}
             <Route path="/admin/classes/" element={<ShowClasses />} />

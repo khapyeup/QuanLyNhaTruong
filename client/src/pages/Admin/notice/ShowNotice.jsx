@@ -16,12 +16,12 @@ import {
 
 
 function ShowNotice() {
-  
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const { noticeList, error, response, message } = useSelector((state) => state.notice);
-  
+
 
   const handleEditClick = (e) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ function ShowNotice() {
     const id = form.id.value;
     const title = form.title.value;
     const content = form.content.value;
-    
+
     dispatch(updateNotice(id, { title, content }))
     if (response || error)
       alert(response.message)
@@ -67,7 +67,7 @@ function ShowNotice() {
             <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
               Ngày tạo
             </th>
-            
+
             <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 "></th>
           </tr>
         </thead>
@@ -77,7 +77,7 @@ function ShowNotice() {
               <td className='p-4'>{index + 1}</td>
               <td className='p-4'>{notice.title}</td>
               <td className='p-4'>{notice.date}</td>
-              
+
               <td className="p-4 justify-evenly flex">
                 <Link to={`/admin/notices/view/${notice._id}`}>
                   <Button className="bg-green-700">Chi tiết</Button>
@@ -91,9 +91,9 @@ function ShowNotice() {
                         </Typography>
 
                         <input type='text' name="id" readOnly hidden value={notice._id}></input>
-                        <Input required type='text' name="title" label="Tiêu đề" size="lg" defaultValue={notice.title}/>
+                        <Input required type='text' name="title" label="Tiêu đề" size="lg" defaultValue={notice.title} />
 
-                        <Textarea name="content" label='Nội dung' defaultValue={notice.content}/>
+                        <Textarea name="content" label='Nội dung' defaultValue={notice.content} />
 
 
 

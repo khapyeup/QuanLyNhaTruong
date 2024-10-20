@@ -12,9 +12,9 @@ const getActivityList = async (req, res) => {
 
 const addActivity = async (req, res) => {
     try {
-        const newActivity = new Activity({...req.body});
+        const newActivity = new Activity(req.body);
         await newActivity.save();
-        res.status(200).send('Added activity successfully');
+        res.status(200).send('Add activity successfully');
     } catch (error) {
         console.log('Error adding new activy', error);
         res.status(500).send('Error adding new activity');
@@ -24,6 +24,7 @@ const addActivity = async (req, res) => {
 const updateActivity = async (req, res) => {
     try {
         const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        console.log("Update activity successfully ", activity);
         res.status(200).send('Update activity successfully');
     } catch (error) {
         console.log('Error to update activity', error);
