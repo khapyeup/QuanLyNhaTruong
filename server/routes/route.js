@@ -5,6 +5,7 @@ import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeach
 import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} from "../controllers/notice-controller.js";
 import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent} from "../controllers/student-controller.js";
 import {getClassList, addSchedule, getDetailClass} from "../controllers/class-controller.js";
+import { addActivity, deleteActivity, getActivityList, updateActivity } from "../controllers/activity-controller.js";
 
 
 const router = express.Router();
@@ -38,5 +39,9 @@ router.delete("/students/delete/:id", deleteStudent)
 router.get("/classes", getClassList)
 router.put('/classes/schedule/:classId', addSchedule)
 router.get('/classes/view/:classId', getDetailClass)
-
+//Activity
+router.get("/activity", getActivityList);
+router.post("/activity/add", addActivity);
+router.put('/activity/edit/:id', updateActivity);
+router.delete('/activity/delete/:id', deleteActivity);
 export default router;

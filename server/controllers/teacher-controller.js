@@ -28,11 +28,10 @@ const getDetailTeacher = async (req, res) => {
 }
 
 const addTeacher = async (req, res) => {
-    const { name, subject, email, phone, class_id, gender } = req.body;
+    const { name, email, phone, class_id, gender } = req.body;
 
     const newTeacher = new Teacher({
         name,
-        subject,
         email,
         phone,
         class_id,

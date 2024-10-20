@@ -45,9 +45,9 @@ function AdminSidebar() {
                         <FaChalkboardTeacher />
                         Giáo viên
                     </NavLink>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/subjects/"}>
+                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/activities/"}>
                         <MdOutlineSubject />
-                        Môn học
+                        Hoạt động
                     </NavLink>
                     <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/notices/"}>
                         <BiSolidNotification />
