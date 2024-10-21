@@ -12,6 +12,7 @@ import { PiStudent } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { MdOutlineSubject } from "react-icons/md";
 import { BiSolidNotification } from "react-icons/bi";
+import { SiGoogleclassroom } from "react-icons/si";
 import { showSideBar } from '../../redux/userRelated/userHandle'
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -56,6 +57,10 @@ function AdminSidebar() {
                     <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/timetable/"}>
                         <AiTwotoneSchedule />
                         Thời khóa biểu
+                    </NavLink>
+                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/classes/"}>
+                    <SiGoogleclassroom />
+                        Lớp
                     </NavLink>
                 </List>
             </Card>

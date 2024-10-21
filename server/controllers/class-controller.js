@@ -12,6 +12,65 @@ const getClassList = async (req, res) => {
     }
 }
 
+const addClass = async (req, res) => {
+    const { name } = req.body;
+
+    const newClass = new Class({
+        name: name,
+        schedule: [{
+            day: "Thứ 2",
+            periods: []
+        },
+        {
+            day: "Thứ 3",
+            periods: []
+        },
+        {
+            day: "Thứ 4",
+            periods: []
+        },
+        {
+            day: "Thứ 5",
+            periods: []
+        },
+        {
+            day: "Thứ 6",
+            periods: []
+        },
+        {
+            day: "Thứ 7",
+            periods: []
+        }
+    ]
+    });
+    try {
+        await newClass.save();
+        res.status(200).json(newClass);
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+const updateClass = async (req, res) => {
+
+    const classId = req.params.id;
+    const updateData = req.body;
+    
+
+    try {
+        const updatedClass = await Class.findByIdAndUpdate(classId, updateData, { new: true });
+        console.log(updatedClass)
+        if (updatedClass) {
+            res.send('Class updated successfully');
+        } else {
+            res.status(404).json({message: 'Class not found'});
+        }
+    } catch (error) {
+        res.status(500).send('Error updating class: ' + error.message);
+    }
+
+}
+
 const addSchedule = async (req, res) => {
     try {
       
@@ -45,4 +104,4 @@ const getDetailClass = async (req, res) => {
 
 }
 
-export { getClassList, addSchedule, getDetailClass };
+export { getClassList, addClass, updateClass, addSchedule, getDetailClass };

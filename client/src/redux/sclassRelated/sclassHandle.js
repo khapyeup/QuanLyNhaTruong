@@ -14,6 +14,35 @@ export const getClassList = () => async (dispatch) => {
     }
 }
 
+export const addClass = (data) => async (dispatch) => {
+    dispatch(getRequest())
+    try {
+        const result = await axios.post(`http://localhost:3000/classes/add`, data)
+        if (result) {
+            console.log("Thêm lớp thành công");
+        } else {
+            dispatch(getFailed())
+        }
+    } catch (error) {
+        dispatch(getError())
+    }
+}
+
+export const updateClass = (id, data) => async (dispatch) => {
+    dispatch(getRequest())
+    try {
+        const result = await axios.put(`http://localhost:3000/classes/edit/${id}`, data)
+        if (result) {
+            alert('Cập nhật thành công')
+            dispatch(getSuccess())
+        } else {
+            dispatch(getFailed())
+        }
+    } catch (error) {
+        dispatch(getError())
+    }
+}
+
 export const updateSchedule = (classId, data) => async (dispatch) => {
     dispatch(getRequest())
     try {

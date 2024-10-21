@@ -36,7 +36,13 @@ const sclassSlice = createSlice({
             state.error = action.payload;
             state.response = null;
             state.loading = false;
+        },
+        updateSuccess: (state) => {
+            state.error = null;
+            state.response = null;
+            state.loading = false;
         }
+
     }
 })
 
