@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+
+import MyCalendar from '../../component/Callendar'
 import { getClassList, getDetailClass, updateSchedule } from '../../../redux/sclassRelated/sclassHandle';
-import {getActivityList} from '../../../redux/activityRelated/activityHandle';
+import { getActivityList } from '../../../redux/activityRelated/activityHandle';
+
+
 
 const TimeTable = () => {
     const dispatch = useDispatch()
     const { classList, classDetails, loading } = useSelector(state => state.sclass)
-    const {activityList} = useSelector(state => state.activity);
+    const { activityList } = useSelector(state => state.activity);
 
     const daysOfWeek = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
 
@@ -20,7 +25,14 @@ const TimeTable = () => {
 
     const handlePeriodChange = (dayIndex, periodIndex, event) => {
         const values = [...timetable];
-        values[dayIndex].periods[periodIndex][event.target.name] = event.target.value;
+        values[dayIndex] = {
+            ...values[dayIndex],
+            periods: values[dayIndex].periods.map((period, idx) =>
+                idx === periodIndex
+                    ? { ...period, [event.target.name]: event.target.value }
+                    : period
+            )
+        };
         setTimetable(values);
     };
 
@@ -44,7 +56,7 @@ const TimeTable = () => {
 
     const onChangeClass = (e) => {
         const sclass = classList.find(el => el._id.includes(e.target.value))
-        const editSclass = sclass.schedule.map(sclass => ({ ...sclass }))
+        const editSclass = [...sclass.schedule];
         setTimetable(editSclass)
 
         setClassId(sclass._id)
@@ -76,7 +88,7 @@ const TimeTable = () => {
                             {day.periods.map((period, periodIndex) => (
                                 <div className='border-2 p-2 flex flex-col sm:flex-row items-center gap-2 md:gap-6' key={periodIndex}>
                                     <label>Thời gian bắt đầu</label>
-                                    <input 
+                                    <input
                                         className='bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                                         type="time"
                                         name="startTime"
@@ -103,7 +115,7 @@ const TimeTable = () => {
                                     /> */}
 
                                     <select onChange={(event) => handlePeriodChange(dayIndex, periodIndex, event)} required name="activity" defaultValue={period.activity}>
-                                        {activityList.map(activity => 
+                                        {activityList.map(activity =>
                                             <option value={activity.activity_name} key={activity._id}>{activity.activity_name}</option>
                                         )}
                                     </select>
@@ -117,6 +129,9 @@ const TimeTable = () => {
                 </form>)}
             </div>
 
+            <div className='h-full'>
+                <MyCalendar />
+            </div>
 
         </>
 
