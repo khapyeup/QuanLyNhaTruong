@@ -56,7 +56,7 @@ const TimeTable = () => {
 
     const onChangeClass = (e) => {
         const sclass = classList.find(el => el._id.includes(e.target.value))
-        const editSclass = [...sclass.schedule];
+        const editSclass = sclass.schedule.map(sclass => ({ ...sclass }))
         setTimetable(editSclass)
 
         setClassId(sclass._id)
