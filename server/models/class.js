@@ -3,11 +3,15 @@ import mongoose from "mongoose";
 const classSchema = new mongoose.Schema({
     name: { type: String, required: true },
     schedule: [{
-        day: { type: String },
-        periods: [{
-            startTime: { type: String },
-            endTime: { type: String },
-            activity: { type: String }
+        weekStart: { type: String },
+        weekEnd: { type: String},
+        content: [{
+            day: { type: String },
+            periods: [{
+                startTime: { type: String },
+                endTime: { type: String },
+                activity: { type: String }
+            }]
         }]
     }]
 })

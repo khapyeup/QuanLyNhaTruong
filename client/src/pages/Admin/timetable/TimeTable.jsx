@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { format, startOfWeek, endOfWeek, addDays } from 'date-fns';
 
 
-import MyCalendar from '../../component/Callendar'
 import { getClassList, getDetailClass, updateSchedule } from '../../../redux/sclassRelated/sclassHandle';
 import { getActivityList } from '../../../redux/activityRelated/activityHandle';
 
@@ -12,6 +12,17 @@ const TimeTable = () => {
     const dispatch = useDispatch()
     const { classList, classDetails, loading } = useSelector(state => state.sclass)
     const { activityList } = useSelector(state => state.activity);
+
+    const [startDate, setStartDate] = useState(new Date());
+    
+    
+    const handleDateChange = (event) => {
+        const date = new Date(event.target.value);
+        setStartDate(date);
+    };
+    const startOfSelectedWeek = startOfWeek(startDate, { weekStartsOn: 1 });
+    const endOfSelectedWeek = endOfWeek(startDate, { weekStartsOn: 1 });
+
 
     const daysOfWeek = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
 
@@ -38,29 +49,49 @@ const TimeTable = () => {
 
     const handleAddPeriod = (dayIndex) => {
         const values = [...timetable];
-        values[dayIndex].periods = [...values[dayIndex].periods, { startTime: '', endTime: '', activity: '' }]
+        values[dayIndex] = { ...values[dayIndex], periods: [...values[dayIndex].periods, { startTime: '', endTime: '', activity: '' }] }
         setTimetable(values);
     };
 
     const handleRemovePeriod = (dayIndex, periodIndex) => {
-        const values = [...timetable];
-        values[dayIndex].periods.splice(periodIndex, 1);
+        const values = timetable.map((day, dIdx) => {
+            if (dIdx !== dayIndex) return day;
+
+            return {
+                ...day,
+                periods: day.periods.filter((_, pIdx) => pIdx !== periodIndex)
+            };
+        });
+
         setTimetable(values);
     };
 
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('Timetable:', timetable);
-        dispatch(updateSchedule(classId, timetable))
+        const data = {
+            weekStart: format(startOfSelectedWeek, 'yyyy/MM/dd'),
+            weekEnd: format(endOfSelectedWeek, 'yyyy/MM/dd'),
+            content: timetable
+        }
+        console.log(data);
+        dispatch(updateSchedule(classId, data))
     };
 
     const onChangeClass = (e) => {
-        const sclass = classList.find(el => el._id.includes(e.target.value))
-        const editSclass = sclass.schedule.map(sclass => ({ ...sclass }))
-        setTimetable(editSclass)
+        const sclass = classList.find(el => el._id.includes(e.target.value));
+        
+        const editSclass = sclass.schedule.find(schedule => schedule.weekStart.includes(format(startOfSelectedWeek, 'yyyy/MM/dd')))
+        if (editSclass)
+            setTimetable(editSclass.content)
+        else
+            setTimetable(daysOfWeek.map(day => ({
+                day,
+                periods: [{}]
+            })))
 
         setClassId(sclass._id)
-        console.log(timetable)
+
     }
 
     useEffect(() => {
@@ -70,6 +101,13 @@ const TimeTable = () => {
 
     return (
         <>
+            {console.log(timetable)}
+            <input type='date' onChange={handleDateChange} value={format(startDate, 'yyyy-MM-dd')} />
+            <div>
+                Tuan da chon: {format(startOfSelectedWeek, 'yyyy/MM/dd')} - {format(endOfSelectedWeek, 'yyyy/MM/dd')}
+            </div>
+
+
             <div className='p-4'>
                 <div className='flex flex-col md:flex-row gap-3'>
                     <p>Chọn lớp:</p>
@@ -129,9 +167,7 @@ const TimeTable = () => {
                 </form>)}
             </div>
 
-            <div className='h-full'>
-                <MyCalendar />
-            </div>
+
 
         </>
 
@@ -139,3 +175,5 @@ const TimeTable = () => {
 };
 
 export default TimeTable;
+
+

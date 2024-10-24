@@ -14,22 +14,20 @@ const getStudentList = async (req, res) => {
 }
 
 const addStudent = async (req, res) => {
-    const { name, dob, class_id, gender, address, user_id } = req.body;
+    const data = req.body;
 
     const newStudent = new Student({
-        name,
-        dob,
-        class_id,
-        gender,
-        address,
-        user_id,
+        ...data,
         attendance: [],
         behaviour: []
     });
+    
     try {
         await newStudent.save();
-        res.status(200).json(newStudent);
+        console.log('Add new student successfully:\n ' + newStudent);
+        res.status(200).json('Add new student successfully');
     } catch (error) {
+        console.log('Add new student failed\n' + error)
         res.status(500).json(error)
     }
 }

@@ -10,6 +10,8 @@ import {
   CardBody,
   Typography
 } from "@material-tailwind/react";
+
+
 import { getDetailStudent } from '../../../redux/studentRelated/studentHandle';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -42,15 +44,15 @@ const ViewStudent = () => {
   return (
     <>
       {console.log(loading)}
-      {loading ? <p>Đang load</p> : <div>
+      {loading ? <p className='h-full w-full text-3xl text-red-900'>
+        Đang tải
+      </p> : <div>
         <Tabs value="info">
           <TabsHeader>
             <Tab key="info" value="info">
               <p>Thông tin</p>
             </Tab>
-            <Tab key="mark" value="mark">
-              <p>Điểm thi</p>
-            </Tab>
+
             <Tab key="behaviour" value="behaviour">
               <p>Vi phạm</p>
             </Tab>
@@ -59,35 +61,59 @@ const ViewStudent = () => {
             </Tab>
           </TabsHeader>
           <TabsBody>
-            <TabPanel key="info" value="info" className='flex flex-col gap-y-10'>
+            <TabPanel key="info" value="info" className='flex flex-col gap-y-10 '>
 
-
+              {/* Thong tin tre */}
               <Card className="mt-5">
                 <CardHeader className="h-10 grid place-items-center" color='gray'>Thông tin học sinh</CardHeader>
                 <CardBody>
-                  <div className='flex gap-3'>
-                    <Typography className='font-bold'>Họ và tên: </Typography>
-                    <Typography>{studentDetails?.name}</Typography>
-                  </div>
-                  <div className='flex gap-3'>
-                    <Typography className='font-bold'>Năm sinh:</Typography>
-                    <Typography> {studentDetails?.dob}</Typography>
-                  </div>
-                  <div className='flex gap-3'>
-                    <Typography className='font-bold'>Địa chỉ: </Typography>
-                    <Typography>{studentDetails?.address}</Typography>
-                  </div>
 
-                  <div className='flex gap-3'>
-                    <Typography className='font-bold'>Lớp:</Typography>
-                    <Typography> {studentDetails.class_id?.name}</Typography>
+                  <div className='flex flex-col gap-5 md:gap-10 md:flex-row items-center'>
+
+                    {/* Ben trai */}
+                    <div>
+                      <img className='size-48 rounded-full border-2 border-black' src={'/' + studentDetails.avatar} />
+                    </div>
+                    
+                    
+                    {/* Ben phai */}
+                   
+                    <div>
+                      <div className='flex gap-3'>
+                        <Typography className='font-bold'>Họ và tên: </Typography>
+                        <Typography>{studentDetails?.name}</Typography>
+                      </div>
+                      <div className='flex gap-3'>
+                        <Typography className='font-bold'>Mã định danh: </Typography>
+                        <Typography>{studentDetails?.student_id}</Typography>
+                      </div>
+                      <div className='flex gap-3'>
+                        <Typography className='font-bold'>Năm sinh:</Typography>
+                        <Typography> {studentDetails?.dob}</Typography>
+                      </div>
+                      <div className='flex gap-3'>
+                        <Typography className='font-bold'>Giới tính: </Typography>
+                        <Typography> {studentDetails?.gender}</Typography>
+                      </div>
+                      <div className='flex gap-3'>
+                        <Typography className='font-bold'>Địa chỉ: </Typography>
+                        <Typography>{studentDetails?.address}</Typography>
+                      </div>
+
+                      <div className='flex gap-3'>
+                        <Typography className='font-bold'>Lớp:</Typography>
+                        <Typography> {studentDetails.class_id?.name}</Typography>
+                      </div>
+                    </div>
+                    
+                 
                   </div>
-
-
 
                 </CardBody>
               </Card>
 
+
+              {/* Thong tin phu huynh */}
               <Card>
                 <CardHeader className='h-10 grid place-items-center' color='gray'>Thông tin phụ huynh</CardHeader>
                 <CardBody>
@@ -110,53 +136,7 @@ const ViewStudent = () => {
               </Card>
             </TabPanel>
 
-            <TabPanel key="mark" value="mark">
-              <table class="w-full text-left table-auto min-w-max">
-                <thead>
-                  <tr>
-                    {TABLE_HEAD.map(head =>
-                      <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                          {head}
-                        </p>
-                      </th>
-                    )}
 
-
-                  </tr>
-                </thead>
-                <tbody>
-                  {TABLE_ROWS && TABLE_ROWS.map(row =>
-                    <tr>
-                      <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                          {row.markfirsttime}
-                        </p>
-                      </td>
-                      <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                          {row.marksecondtime}
-                        </p>
-                      </td>
-                      <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                          {row.semestermark}
-                        </p>
-                      </td>
-                      <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                          { }
-                        </p>
-                      </td>
-                    </tr>
-                  )}
-
-                </tbody>
-              </table>
-
-
-
-            </TabPanel>
 
             <TabPanel key="behaviour" value="behaviour">
               <table class="w-full text-left table-auto min-w-max">
@@ -231,7 +211,7 @@ const ViewStudent = () => {
                         <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
                           {row.date?.slice(0, 10)}
                         </p>
-                      </td> 
+                      </td>
 
                     </tr>
                   )}

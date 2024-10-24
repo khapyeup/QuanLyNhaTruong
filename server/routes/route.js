@@ -1,5 +1,5 @@
 import express from "express";
-import adminLogin from "../controllers/admin-controller.js"
+import {addUser, adminLogin, getDetailUser, getUserList, updateUser} from "../controllers/admin-controller.js"
 import {getParentList, parentLogin} from "../controllers/parent-controller.js"
 import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher} from "../controllers/teacher-controller.js";
 import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} from "../controllers/notice-controller.js";
@@ -13,6 +13,11 @@ const router = express.Router();
 //Admin
 router.post("/Adminlogin", adminLogin)
 
+//User
+router.get('/users', getUserList)
+router.post('/users/add', addUser)
+router.get('/users/:id', getDetailUser)
+router.put('/users/:id', updateUser)
 // Parent
 router.post("/Parentlogin", parentLogin)
 router.get("/parents", getParentList)

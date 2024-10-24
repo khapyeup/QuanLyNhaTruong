@@ -2,6 +2,8 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     status: 'idle',
+    loading: false,
+    userList: [],
     userDetails: [],
     tempDetails: [],
     currentUser: JSON.parse(localStorage.getItem("user")) || null,
@@ -15,6 +17,9 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        getRequest: (state) => {
+            state.loading = true;
+        },
         authRequest: (state) => {
             state.status = "loading";
         },
@@ -53,27 +58,39 @@ const userSlice = createSlice({
         },
         doneSuccess: (state, action) => {
             state.userDetails = action.payload;
+            state.loading = false;
             state.error = null;
             state.response = null;
         },
         getDeleteSuccess: (state) => {
             state.error = null;
+            state.loading = false;
             state.response = null;
         },
         getFailed: (state, action) => {
             state.response = action.payload;
             state.error = null;
+            state.loading = false;
         },
         getError: (state, action) => {
             state.error = action.payload;
+            state.loading = false;
         },
         isOpen: (state) => {
             state.isOpen = !state.isOpen;
+        },
+        getUserListDone: (state, action) => {
+            state.error = null;
+            state.response = null;
+            state.userList = action.payload;
+            state.loading = false;
         }
+
     }
 });
 
 export const {
+    getRequest,
     authRequest,
     underControl,
     stuffAdded,
@@ -85,6 +102,7 @@ export const {
     getDeleteSuccess,
     getFailed,
     getError,
+    getUserListDone,
     isOpen
 } = userSlice.actions;
 

@@ -10,6 +10,8 @@ import {
     getDeleteSuccess,
     getFailed,
     getError,
+    getUserListDone,
+    getRequest,
     isOpen
 } from "./userSlice"
 
@@ -34,11 +36,22 @@ export const logoutUser = () => (dispatch) => {
     dispatch(authLogout());
 }
 
-export const getUserDetails = (id, address) => async (dispatch) => {
+export const getUserList = () => async (dispatch) => {
+    try {
+        const userList = await axios.get('http://localhost:3000/users')
+        dispatch(getUserListDone(userList.data));
+    } catch (error) {
+        console.log(error);
+    }
+    
+
+}
+
+export const getUserDetails = (id) => async (dispatch) => {
     dispatch(getRequest());
 
     try {
-        const result = await axios.get(`http://localhost:3000/${address}/${id}`);
+        const result = await axios.get(`http://localhost:3000/users/${id}`);
         if (result.data) {
             dispatch(doneSuccess(result.data));
         }
@@ -52,11 +65,11 @@ export const deleteUser = (id, address) => async (dispatch) => {
     dispatch(getFailed("Sorry the delete function has been disable for now"))
 }
 
-export const updateUser = (fields, id, address) => async (dispatch) => {
+export const updateUser = (fields, id) => async (dispatch) => {
     dispatch(getRequest());
 
     try {
-        const result = await axios.put(`http://localhost:3000/${address}/${id}`, fields, { headers: { 'Content-Type': 'application/json' } });
+        const result = await axios.put(`http://localhost:3000/users/${id}`, fields, { headers: { 'Content-Type': 'application/json' } });
         if (result.data) {
             dispatch(doneSuccess(result.data));
         }
@@ -82,6 +95,24 @@ export const addStuff = (fields, address) => async (dispatch) => {
         dispatch(authError(error));
     }
 };
+
+export const addUser = (data) => async (dispatch) => {
+    try {
+        const result = await axios.post('http://localhost:3000/users/add', data);
+        if (!result)
+        {
+            alert('Có lỗi, kiểm tra console');
+            console.log(result);
+            dispatch(getFailed(result));
+        }
+    } catch (error) {
+        alert('Có lỗi, kiểm tra console');
+        console.log(error);
+        dispatch(getError(error));
+        
+    }
+}
+
 
 export const showSideBar = () => (dispatch) => {
     dispatch(isOpen());

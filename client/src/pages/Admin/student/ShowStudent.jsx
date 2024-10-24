@@ -27,7 +27,7 @@ function ShowStudent() {
   const { studentList, error, response, message } = useSelector((state) => state.student);
   const { classList } = useSelector(state => state.sclass);
   const { parentList } = useSelector(state => state.parent)
-  
+
   const [class_id, setClass_Id] = useState('');
   const [user_id, setUser_Id] = useState('');
   const [gender, setGender] = useState('');
@@ -37,20 +37,23 @@ function ShowStudent() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  
+
 
   const handleAddModal = () => {
     setOpenAddModal(!openAddModal)
   }
 
   const handleEditClick = (e) => {
+    e.preventDefault();
     const form = e.target;
     const id = form.id.value;
+    const student_id = form.student_id.value;
     const name = form.name.value;
     const dob = form.dob.value;
     const address = form.address.value;
 
-    dispatch(updateStudent(id, { name, dob, address, gender, user_id, class_id }))
+    console.log({ name,student_id ,dob, address, gender, user_id, class_id })
+    dispatch(updateStudent(id, { name,student_id ,dob, address, gender, user_id, class_id }))
     if (response || error)
       alert(response.message)
     else
@@ -70,14 +73,14 @@ function ShowStudent() {
 
   const handleSearch = (e) => {
     setSearch(e.target.value.toLowerCase())
-    console.log( search)
+    console.log(search)
   }
 
   useEffect(() => {
     dispatch(getClassList());
     dispatch(getStudentList());
     dispatch(getParentList());
-    
+
   }, [])
   return <>
     {message ? <p className='w-full p-2 bg-green-500'>{message}</p> : ''}
@@ -87,7 +90,7 @@ function ShowStudent() {
     <div className='p-9 flex flex-col gap-y-5'>
       <div className='flex flex-col gap-2 lg:flex-row lg:justify-between'>
         <Button class="bg-light-blue-600 text-white p-2 rounded-lg" onClick={handleAddStudent}>Thêm học sinh</Button>
-        <input className='w-1/5 border-2 border-black p-1 rounded-lg' placeholder='Tìm kiếm' onChange={handleSearch}/>
+        <input className='w-1/5 border-2 border-black p-1 rounded-lg' placeholder='Tìm kiếm' onChange={handleSearch} />
 
       </div>
 
@@ -117,7 +120,7 @@ function ShowStudent() {
               <td className='p-4'>{student.gender}</td>
               <td className='p-4'>{student.class_id.name}</td>
               <td className="p-4 justify-evenly flex">
-                
+
                 <Link to={`/admin/students/view/${student._id}`}>
                   <Button className="bg-green-700">Chi tiết</Button>
                 </Link>
@@ -130,22 +133,25 @@ function ShowStudent() {
                         </Typography>
 
                         <input type='text' name="id" readOnly hidden value={student._id}></input>
+                        
                         <Input required type='text' name="name" label="Họ và tên" size="lg" defaultValue={student.name} />
+
+                        <Input type='text' name='student_id' label='Mã định danh' size='lg' defaultValue={student.student_id} maxLength={12} minLength={12}/>
 
                         <Input required name="dob" type="date" label="Ngày sinh" size="lg" defaultValue={student.dob} />
 
-                        <Select required name="gender" label="Giới tính" size="lg" onChange={(val) => setGender(val)} value={student.gender}>
+                        <Select required name="gender" label="Giới tính" size="lg" onChange={(val) => setGender(val)} >
                           <Option value="Nam">Nam</Option>
                           <Option value="Nữ">Nữ</Option>
                         </Select>
 
-                        <Select required name="class_id" label="Lớp" size="lg" onChange={(val) => setClass_Id(val)} value={student.class_id._id}>
+                        <Select required name="class_id" label="Lớp" size="lg" onChange={(val) => setClass_Id(val)} >
                           {classList ? classList.map(el =>
                             <Option value={el._id} key={el._id}>{el.name}</Option>
                           ) : ''}
                         </Select>
 
-                        <Select required name="user_id" label="Phụ huynh" size="lg" onChange={(val) => setUser_Id(val)} value={student.user_id._id}>
+                        <Select required name="user_id" label="Phụ huynh" size="lg" onChange={(val) => setUser_Id(val)} >
                           {parentList ? parentList.map(el =>
                             <Option value={el._id} key={el._id}>{el.username}</Option>
                           ) : ''}

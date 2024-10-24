@@ -23,11 +23,14 @@ import TimeTable from './timetable/TimeTable'
 import ShowActivity from './activity/ShowActivity'
 import AddActivity from './activity/AddActivity'
 import AddClass from './classes/AddClass'
+import UserList from './user/UserList'
+import AddUser from './user/AddUser'
+import EditUser from './user/EditUser'
 
 function AdminDashboard() {
   const dispatch = useDispatch()
 
-  const {isOpen} = useSelector(state => state.user);
+  const { isOpen } = useSelector(state => state.user);
 
 
   return (
@@ -42,9 +45,9 @@ function AdminDashboard() {
         <div className="flex-1 overflow-y-auto">
           <div className="top-0 sticky flex flex-row justify-between w-full px-4 py-1 items-center shadow-md bg-white">
             <div>
-            <button onClick={() => dispatch(showSideBar())} className={isOpen ? 'hidden' : 'visible'}>☰</button>
+              <button onClick={() => dispatch(showSideBar())} className={isOpen ? 'hidden' : 'visible'}>☰</button>
             </div>
-            
+
             <Button onClick={() => dispatch(logoutUser())}>Đăng xuất</Button>
           </div>
 
@@ -55,31 +58,36 @@ function AdminDashboard() {
 
             {/* Teacher route */}
             <Route path="/Admin/teachers/" element={<ShowTeacher />} />
-            <Route path="admin/teachers/add" element={<AddTeacher />}/>
-            <Route path="/admin/teachers/view/:id" element={<ViewTeacher />}/>
+            <Route path="admin/teachers/add" element={<AddTeacher />} />
+            <Route path="/admin/teachers/view/:id" element={<ViewTeacher />} />
             {/* Student route */}
             <Route path="/admin/students/" element={<ShowStudent />} />
             {/* <Route path="/admin/students/add" element={<AddStudent />} /> */}
-            <Route path="/admin/students/view/:id" element={<ViewStudent />}/>
+            <Route path="/admin/students/view/:id" element={<ViewStudent />} />
             {/* <Route path="/admin/students/marks/:id" element={<StudentExamMarks/>} />
             <Route path="/Admin/students/attendance/:id" element={<StudentAttendance situation="Student" />} /> */}
 
             {/* Activity route */}
             <Route path="/admin/activities/" element={<ShowActivity />} />
-            <Route path="admin/activities/add" element={<AddActivity />}/>
+            <Route path="admin/activities/add" element={<AddActivity />} />
 
 
             {/* Classes route */}
             <Route path="/admin/classes/" element={<ShowClasses />} />
             <Route path="/admin/classes/add" element={<AddClass />} />
-            
+
             {/* Notice router */}
             <Route path="/admin/notices/" element={<ShowNotice />} />
-            <Route path="admin/notices/add" element={<AddNotice />}/>
-            <Route path="/admin/notices/view/:id" element={<ViewNotice />}/>
+            <Route path="admin/notices/add" element={<AddNotice />} />
+            <Route path="/admin/notices/view/:id" element={<ViewNotice />} />
 
             {/* Timetable route */}
-            <Route path="admin/timetable/" element={<TimeTable/>}/>
+            <Route path="admin/timetable/" element={<TimeTable />} />
+
+            {/* User route */}
+            <Route path="admin/user/" element={<UserList />} />
+            <Route path="admin/user/add" element={<AddUser />} />
+            <Route path='admin/user/:id' element={<EditUser />} />
           </Routes>
         </div>
       </div>
