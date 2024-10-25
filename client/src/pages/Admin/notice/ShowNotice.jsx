@@ -13,7 +13,7 @@ import {
   Typography,
   Textarea
 } from "@material-tailwind/react";
-
+import { format } from 'date-fns';
 
 function ShowNotice() {
 
@@ -76,7 +76,7 @@ function ShowNotice() {
             <tr key={index} className="even:bg-blue-gray-50/50">
               <td className='p-4'>{index + 1}</td>
               <td className='p-4'>{notice.title}</td>
-              <td className='p-4'>{notice.date}</td>
+              <td className='p-4'>{format(new Date(notice.date), 'yyyy/MM/dd')}</td>
 
               <td className="p-4 justify-evenly flex">
                 <Link to={`/admin/notices/view/${notice._id}`}>

@@ -89,7 +89,7 @@ const addSchedule = async (req, res) => {
 
         if (scheduleIndex > -1) {
             // WeekStart exists, update the existing schedule
-            existingClass.schedule[scheduleIndex] = { weekStart, weekEnd, content };
+            existingClass.schedule[scheduleIndex] =  data ;
         } else {
             // WeekStart does not exist, add a new schedule element
             existingClass.schedule.push(data);

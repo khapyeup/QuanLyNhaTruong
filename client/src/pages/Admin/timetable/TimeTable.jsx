@@ -13,43 +13,44 @@ const TimeTable = () => {
     const { classList, classDetails, loading } = useSelector(state => state.sclass)
     const { activityList } = useSelector(state => state.activity);
 
+    const [classId, setClassId] = useState('')
     const [startDate, setStartDate] = useState(new Date());
-    
-    
+    const [timetable, setTimetable] = useState([]);
+
+    const startOfSelectedWeek = startOfWeek(startDate, { weekStartsOn: 1 });
+    const endOfSelectedWeek = endOfWeek(startDate, { weekStartsOn: 1 });
+
+    const daysOfWeek = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+
     const handleDateChange = (event) => {
         const date = new Date(event.target.value);
         setStartDate(date);
     };
-    const startOfSelectedWeek = startOfWeek(startDate, { weekStartsOn: 1 });
-    const endOfSelectedWeek = endOfWeek(startDate, { weekStartsOn: 1 });
-
-
-    const daysOfWeek = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
-
-    const [timetable, setTimetable] = useState(
-        daysOfWeek.map(day => ({
-            day,
-            periods: [{}]
-        }))
-    );
-    const [classId, setClassId] = useState('')
 
     const handlePeriodChange = (dayIndex, periodIndex, event) => {
-        const values = [...timetable];
-        values[dayIndex] = {
-            ...values[dayIndex],
-            periods: values[dayIndex].periods.map((period, idx) =>
-                idx === periodIndex
-                    ? { ...period, [event.target.name]: event.target.value }
-                    : period
-            )
+        const values = [...timetable]; // Create a shallow copy
+        const { name, value } = event.target;
+
+        const updatedPeriod = {
+            ...values[dayIndex].periods[periodIndex], // Spread the existing period
+            [name]: value,
         };
+
+        // If groupActivity is changed, reset activity
+        if (name === 'groupActivity') {
+            updatedPeriod.activity = ''; // Reset activity when group changes
+            const group = activityList.find(group => group._id === value);
+            updatedPeriod.activityOptions = group.activity || []; // Set options
+        }
+
+        values[dayIndex].periods[periodIndex] = updatedPeriod; // Assign updated period back
+
         setTimetable(values);
     };
 
     const handleAddPeriod = (dayIndex) => {
         const values = [...timetable];
-        values[dayIndex] = { ...values[dayIndex], periods: [...values[dayIndex].periods, { startTime: '', endTime: '', activity: '' }] }
+        values[dayIndex] = { ...values[dayIndex], periods: [...values[dayIndex].periods, { startTime: '', endTime: '', groupActivity: '', activity: '', selectedGroup: '' }] }
         setTimetable(values);
     };
 
@@ -80,16 +81,21 @@ const TimeTable = () => {
 
     const onChangeClass = (e) => {
         const sclass = classList.find(el => el._id.includes(e.target.value));
-        
         const editSclass = sclass.schedule.find(schedule => schedule.weekStart.includes(format(startOfSelectedWeek, 'yyyy/MM/dd')))
+
         if (editSclass)
-            setTimetable(editSclass.content)
+            setTimetable(editSclass.content.map(period => ({
+                ...period,
+                selectedGroup: '',
+                activityOptions: []
+            })));
+
         else
             setTimetable(daysOfWeek.map(day => ({
                 day,
-                periods: [{}]
+                periods: [{ startTime: '', endTime: '', groupActivity: '', activity: '', selectedGroup: '', activityOptions: [] }]
             })))
-
+        console.log(timetable)
         setClassId(sclass._id)
 
     }
@@ -97,11 +103,11 @@ const TimeTable = () => {
     useEffect(() => {
         dispatch(getClassList());
         dispatch(getActivityList());
-    }, [classId])
+    }, [dispatch])
 
     return (
         <>
-            {console.log(timetable)}
+
             <input type='date' onChange={handleDateChange} value={format(startDate, 'yyyy-MM-dd')} />
             <div>
                 Tuan da chon: {format(startOfSelectedWeek, 'yyyy/MM/dd')} - {format(endOfSelectedWeek, 'yyyy/MM/dd')}
@@ -152,11 +158,27 @@ const TimeTable = () => {
                                         required
                                     /> */}
 
-                                    <select onChange={(event) => handlePeriodChange(dayIndex, periodIndex, event)} required name="activity" defaultValue={period.activity}>
+                                    {/* <select onChange={(event) => handlePeriodChange(dayIndex, periodIndex, event)} required name="activity" defaultValue={period.activity}>
                                         {activityList.map(activity =>
                                             <option value={activity.activity_name} key={activity._id}>{activity.activity_name}</option>
                                         )}
                                     </select>
+                                     */}
+                                    <p>Chọn nhóm hoạt động:</p>
+                                    <select value={period.groupActivity} name='groupActivity' className='border-2 border-black' onChange={(e) => handlePeriodChange(dayIndex, periodIndex, e)}>
+                                        <option value="">Chọn nhóm hoạt động</option>
+                                        {activityList.map(group =>
+                                            <option value={group._id} key={group._id}>{group.group_activity}</option>
+                                        )}
+                                    </select>
+                                    <p>Chọn hoạt động:</p>
+                                    <select value={period.activity} name='activity' className='border-2 border-black' onChange={(e) => handlePeriodChange(dayIndex, periodIndex, e)}>
+                                        <option value="">Chọn hoạt động</option>
+                                        {period?.activityOptions?.map(activity =>
+                                            <option value={activity.name} key={activity._id}>{activity.name}</option>
+                                        )}
+                                    </select>
+
                                     <button className='border bg-red-500 px-3 py-1 rounded-lg' type="button" onClick={() => handleRemovePeriod(dayIndex, periodIndex)}>Xóa</button>
                                 </div>
                             ))}

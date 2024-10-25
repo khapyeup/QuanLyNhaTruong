@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const activitySchema = new mongoose.Schema(
     [{
-        group_activity: { type: String, reuired: true },
+        group_activity: { type: String, required: true},
         activity: [{
             name: { type: String, required: true }
         }

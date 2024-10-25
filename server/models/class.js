@@ -10,7 +10,8 @@ const classSchema = new mongoose.Schema({
             periods: [{
                 startTime: { type: String },
                 endTime: { type: String },
-                activity: { type: String }
+                groupActivity: { type: mongoose.Schema.Types.ObjectId, ref: 'Activity' },
+                activity: {type: String}
             }]
         }]
     }]
