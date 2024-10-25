@@ -115,23 +115,46 @@ const ViewStudent = () => {
 
               {/* Thong tin phu huynh */}
               <Card>
-                <CardHeader className='h-10 grid place-items-center' color='gray'>Thông tin phụ huynh</CardHeader>
+                <CardHeader className='h-10 grid place-items-center' color='gray'>Thông tin cha</CardHeader>
                 <CardBody>
                   <div className='flex gap-3'>
-                    <Typography className='font-bold'>Tên phụ huynh: </Typography>
-                    <Typography>{studentDetails.user_id?.contact_info.name}</Typography>
+                    <Typography className='font-bold'>Tên cha: </Typography>
+                    <Typography>{studentDetails.user_id?.contact_info.father_name}</Typography>
                   </div>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>Email:</Typography>
-                    <Typography> {studentDetails.user_id?.contact_info.email}</Typography>
+                    <Typography> {studentDetails.user_id?.contact_info.father_email}</Typography>
                   </div>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>Số điện thoại: </Typography>
-                    <Typography>{studentDetails.user_id?.contact_info.phone}</Typography>
+                    <Typography>{studentDetails.user_id?.contact_info.father_phone}</Typography>
                   </div>
+                  <div className='flex gap-3'>
+                    <Typography className='font-bold'>CCCD: </Typography>
+                    <Typography>{studentDetails.user_id?.contact_info.father_cccd}</Typography>
+                  </div>
+                </CardBody>
+              </Card>
 
-
-
+              <Card>
+                <CardHeader className='h-10 grid place-items-center' color='gray'>Thông tin mẹ</CardHeader>
+                <CardBody>
+                  <div className='flex gap-3'>
+                    <Typography className='font-bold'>Tên cha: </Typography>
+                    <Typography>{studentDetails.user_id?.contact_info.mother_name}</Typography>
+                  </div>
+                  <div className='flex gap-3'>
+                    <Typography className='font-bold'>Email:</Typography>
+                    <Typography> {studentDetails.user_id?.contact_info.mother_email}</Typography>
+                  </div>
+                  <div className='flex gap-3'>
+                    <Typography className='font-bold'>Số điện thoại: </Typography>
+                    <Typography>{studentDetails.user_id?.contact_info.mother_phone}</Typography>
+                  </div>
+                  <div className='flex gap-3'>
+                    <Typography className='font-bold'>CCCD: </Typography>
+                    <Typography>{studentDetails.user_id?.contact_info.mother_cccd}</Typography>
+                  </div>
                 </CardBody>
               </Card>
             </TabPanel>

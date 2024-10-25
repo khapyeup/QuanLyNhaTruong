@@ -5,7 +5,7 @@ import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeach
 import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} from "../controllers/notice-controller.js";
 import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent} from "../controllers/student-controller.js";
 import {getClassList, addSchedule, getDetailClass, updateClass, addClass} from "../controllers/class-controller.js";
-import { addActivity, deleteActivity, getActivityList, updateActivity } from "../controllers/activity-controller.js";
+import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
 
 
 const router = express.Router();
@@ -46,9 +46,16 @@ router.put('/classes/edit/:id', updateClass)
 router.post('/classes/add', addClass)
 router.put('/classes/schedule/:classId', addSchedule)
 router.get('/classes/view/:classId', getDetailClass)
-//Activity
-router.get("/activity", getActivityList);
-router.post("/activity/add", addActivity);
-router.put('/activity/edit/:id', updateActivity);
-router.delete('/activity/delete/:id', deleteActivity);
+
+
+//Group - Activity
+router.post("/group_activity", addGroupActivity);
+router.get("/group_activity", getAllGroupActivity);
+router.put("/group_activity/:id", updateGroupActivity);
+router.delete('/group_activity/:id', deleteGroupActivity);
+// Activity
+router.post("/group_activity/:id/activity", addActivity);
+router.put("/group_activity/:id/activity/:activityId", updateActivity);
+router.delete('/group_activity/:id/activity/:activityId', deleteActivity);
+
 export default router;

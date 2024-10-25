@@ -30,6 +30,7 @@ const AddTeacher = () => {
             <div className="flex justify-center items-center bg-blue-gray-300 top-0">
                 <div className='w-full lg:w-1/2 p-5 bg-white'>
                     <Typography variant='h4'>Thêm giáo viên</Typography>
+                    
                     <form className="text-black flex flex-col gap-5 my-6 px-10" onSubmit={handleSubmit(submitHandler)}>
                         <label htmlFor='name'>Họ và tên</label>
                         <input className='border p-2 rounded-lg shadow-lg' {...register("name", { required: "Không được bỏ trống họ và tên" })} placeholder='Họ và tên' type="text" name="name" id='name' />

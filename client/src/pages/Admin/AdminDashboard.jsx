@@ -3,12 +3,9 @@ import AdminSidebar from './AdminSidebar'
 import { Routes, Route, Navigate } from "react-router-dom"
 import AdminHomepage from './AdminHomepage'
 import ShowStudent from './student/ShowStudent'
-import ShowSubject from './subject/ShowSubject'
 import ShowClasses from './classes/ShowClasses'
 import ShowNotice from './notice/ShowNotice'
-import AddStudent from "./student/AddStudent"
-import StudentExamMarks from "./student/StudentExamMarks"
-import StudentAttendance from "./student/StudentAttendance"
+
 import ViewStudent from "./student/ViewStudent"
 import { Button } from '@material-tailwind/react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,12 +17,11 @@ import AddNotice from './notice/AddNotice'
 import ViewNotice from './notice/ViewNotice'
 import { showSideBar } from '../../redux/userRelated/userHandle'
 import TimeTable from './timetable/TimeTable'
-import ShowActivity from './activity/ShowActivity'
-import AddActivity from './activity/AddActivity'
 import AddClass from './classes/AddClass'
 import UserList from './user/UserList'
 import AddUser from './user/AddUser'
 import EditUser from './user/EditUser'
+import ShowGroupActivity from './activity/ShowGroupActivity'
 
 function AdminDashboard() {
   const dispatch = useDispatch()
@@ -68,8 +64,8 @@ function AdminDashboard() {
             <Route path="/Admin/students/attendance/:id" element={<StudentAttendance situation="Student" />} /> */}
 
             {/* Activity route */}
-            <Route path="/admin/activities/" element={<ShowActivity />} />
-            <Route path="admin/activities/add" element={<AddActivity />} />
+            <Route path="/admin/activities/" element={<ShowGroupActivity />} />
+            
 
 
             {/* Classes route */}
@@ -91,7 +87,6 @@ function AdminDashboard() {
           </Routes>
         </div>
       </div>
-
 
     </>
   )

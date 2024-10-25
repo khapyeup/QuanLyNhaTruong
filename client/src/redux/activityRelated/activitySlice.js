@@ -11,7 +11,7 @@ const activitySlice = createSlice({
     initialState,
     reducers: {
         getSuccess: (state, action) => {
-            state.activityList = action.payload.data;
+            state.activityList = action.payload;
             state.error = null;
         }
     }
