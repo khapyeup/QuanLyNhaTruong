@@ -4,13 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 
 const ParentNofication = () => {
-    const dispatch = useDispatch();
+    
 
     const { noticeList } = useSelector(state => state.notice);
 
-    useEffect(() => {
-        dispatch(getNoticeList());
-    }, [])
+   
 
     return (<>
         <p>Thông báo</p>

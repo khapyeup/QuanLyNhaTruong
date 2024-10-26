@@ -3,7 +3,8 @@ import User from '../models/user.js'
 const parentLogin = async (req, res) => {
     try {
         if (req.body.username && req.body.password) {
-            let parent = await User.findOne({username: req.body.username, role: "parent"})
+            let parent = await User.findOne({username: req.body.username, role: "parent"}).populate('student_id').exec()
+            
             if (parent) {
                 if (parent.password === req.body.password) {
                     parent.password = undefined;
@@ -18,7 +19,7 @@ const parentLogin = async (req, res) => {
             res.json({ message: "Cần nhập tài khoản và mật khẩu" })
         }
     } catch (error) {
-        res.status(500).json(err);
+        res.status(500).json(error);
     }
 }
 

@@ -3,7 +3,7 @@ import {addUser, adminLogin, getDetailUser, getUserList, updateUser} from "../co
 import {getParentList, parentLogin} from "../controllers/parent-controller.js"
 import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher} from "../controllers/teacher-controller.js";
 import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} from "../controllers/notice-controller.js";
-import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent} from "../controllers/student-controller.js";
+import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent, getStudentByUser} from "../controllers/student-controller.js";
 import {getClassList, addSchedule, getDetailClass, updateClass, addClass} from "../controllers/class-controller.js";
 import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
 
@@ -36,6 +36,7 @@ router.delete("/notices/delete/:id", deleteNotice)
 
 //Student
 router.get("/students", getStudentList)
+router.get("/user/:userId/students", getStudentByUser)
 router.get("/students/view/:id", getDetailStudent)
 router.post("/students/add", addStudent)
 router.put("/students/edit/:id", updateStudent)

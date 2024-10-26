@@ -128,5 +128,22 @@ const updateStudent = async (req, res) => {
 
 }
 
+const getStudentByUser = async (req, res) => {
+    try {
+        const {userId} = req.params;
+        
+        const students = await Student.find({ user_id: userId }).populate('class_id');
 
-export { addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent }
+        if (!students) {
+            return res.status(404).json({ message: 'No students found for this user' });
+        }
+        
+        res.json(students);
+    } catch (error) {
+        console.error("Error fetching students:", error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
+
+export { addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent, getStudentByUser }
