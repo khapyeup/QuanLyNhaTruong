@@ -21,9 +21,14 @@ const addStudent = async (req, res) => {
         attendance: [],
         behaviour: []
     });
-    
+
     try {
         await newStudent.save();
+        await User.updateOne(
+            { _id: data.user_id },
+            { $push: { student_id: newStudent._id } }
+        )
+
         console.log('Add new student successfully:\n ' + newStudent);
         res.status(200).json('Add new student successfully');
     } catch (error) {
@@ -36,16 +41,31 @@ const deleteStudent = async (req, res) => {
     const studentId = req.params.id;
 
     try {
+        const student = await Student.findById(studentId);
+        if (!student) {
+            console.log("Student not found.");
+            return res.send('Student not found')
+        }
+        const userId = student.user_id;
+
         await Student.findByIdAndDelete(studentId);
-        res.send('Student deleted successfully');
+        console.log("student deleted successfully!")
+
+        await User.updateOne(
+            { _id: userId },
+            { $pull: { student_id: studentId } }
+        );
+
+        console.log("Student ID removed from user successfully!");
     } catch (error) {
+        console.log('Error deleting student', error)
         res.status(500).send(error);
     }
 }
 
 const getDetailStudent = async (req, res) => {
     const studentId = req.params.id;
-    console.log("getDetailStudent/"+ studentId)
+    console.log("getDetailStudent/" + studentId)
     try {
         const student = await Student.findById(studentId).populate('class_id').populate('user_id');
         if (student) {
@@ -59,19 +79,51 @@ const getDetailStudent = async (req, res) => {
 }
 
 const updateStudent = async (req, res) => {
-
-    const studentId = req.params.id;
-    const updateData = req.body;
-
     try {
-        const updatedStudent = await Student.findByIdAndUpdate(studentId, updateData, { new: true });
-        if (updatedStudent) {
-            res.send('Student updated successfully');
-        } else {
-            res.status(404).send('Student not found');
+        const studentId = req.params.id;
+        const newUserId = req.body.user_id;
+        const newStudentData = req.body;
+
+
+        //Find student by ID
+        const student = await Student.findById(studentId);
+        if (!student) {
+            console.log("Student not found.");
+            res.json('Student not found');
+            return
         }
+
+        const oldUserId = student.user_id;
+
+        //Remove the old student ID from the previous user
+        if (oldUserId) {
+            await User.updateOne(
+                { _id: oldUserId },
+                { $pull: { student_id: studentId } }
+            );
+            console.log('Old student ID removed from the previous user');
+        }
+
+        //Update the student with the new user ID
+        const updatedStudent = await Student.findByIdAndUpdate(
+            studentId,
+            newStudentData,
+            { new: true } // Return the updated document
+        );
+        console.log("Student updated successfully:", updatedStudent);
+
+        if (newUserId) {
+            await User.updateOne(
+                { _id: newUserId },
+                { $addToSet: { student_id: studentId } }
+            )
+            console.log("New student ID added to the new user.");
+            res.json('New student ID added to the new user.')
+        }
+
     } catch (error) {
-        res.status(500).send('Error updating student: ' + error.message);
+        console.error("Error updating student user ID:", error);
+        res.status(500).json(error);
     }
 
 }

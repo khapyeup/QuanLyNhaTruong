@@ -10,7 +10,7 @@ import { getActivityList } from '../../../redux/activityRelated/activityHandle';
 
 const TimeTable = () => {
     const dispatch = useDispatch()
-    const { classList, classDetails, loading } = useSelector(state => state.sclass)
+    const { classList, loading } = useSelector(state => state.sclass)
     const { activityList } = useSelector(state => state.activity);
 
     const [classId, setClassId] = useState('')
@@ -25,27 +25,73 @@ const TimeTable = () => {
     const handleDateChange = (event) => {
         const date = new Date(event.target.value);
         setStartDate(date);
+    
+        // Recalculate week start and end dates based on the new date
+        const newStartOfWeek = startOfWeek(date, { weekStartsOn: 1 });
+        const newEndOfWeek = endOfWeek(date, { weekStartsOn: 1 });
+    
+        // Find the class based on the current selected `classId`
+        const selectedClass = classList.find(el => el._id === classId);
+        if (selectedClass) {
+            const weekSchedule = selectedClass.schedule.find(schedule => 
+                schedule.weekStart.includes(format(newStartOfWeek, 'yyyy/MM/dd'))
+            );
+    
+            if (weekSchedule) {
+                // Update timetable with the new schedule for the selected week
+                setTimetable(weekSchedule.content.map(day => ({
+                    ...day,
+                    periods: day.periods.map(period => ({
+                        ...period,
+                        activityOptions: period.groupActivity
+                            ? (activityList.find(group => group._id === period.groupActivity)?.activity || [])
+                            : []
+                    }))
+                })));
+            } else {
+                // If no existing schedule for the selected week, initialize with empty periods
+                setTimetable(daysOfWeek.map(day => ({
+                    day,
+                    periods: [{ startTime: '', endTime: '', groupActivity: '', activity: '', selectedGroup: '', activityOptions: [] }]
+                })));
+            }
+        }
     };
+    
 
     const handlePeriodChange = (dayIndex, periodIndex, event) => {
-        const values = [...timetable]; // Create a shallow copy
         const { name, value } = event.target;
 
-        const updatedPeriod = {
-            ...values[dayIndex].periods[periodIndex], // Spread the existing period
-            [name]: value,
-        };
+        // Create a shallow copy of the timetable
+        const updatedTimetable = timetable.map((day, dIdx) => {
+            if (dIdx !== dayIndex) return day; // Keep other days unchanged
 
-        // If groupActivity is changed, reset activity
-        if (name === 'groupActivity') {
-            updatedPeriod.activity = ''; // Reset activity when group changes
-            const group = activityList.find(group => group._id === value);
-            updatedPeriod.activityOptions = group.activity || []; // Set options
-        }
+            // Create a new copy of the periods
+            const updatedPeriods = day.periods.map((period, pIdx) => {
+                if (pIdx !== periodIndex) return period; // Keep other periods unchanged
 
-        values[dayIndex].periods[periodIndex] = updatedPeriod; // Assign updated period back
+                // Initialize updatedPeriod with the current period's values
+                const updatedPeriod = { ...period, [name]: value };
 
-        setTimetable(values);
+                // If groupActivity is changed, reset activity and update activityOptions
+                if (name === 'groupActivity') {
+                    updatedPeriod.activity = ''; // Reset activity
+                    const group = activityList.find(group => group._id === value);
+                    updatedPeriod.activityOptions = group ? group.activity : []; // Set options or empty array
+                }
+
+                return updatedPeriod;
+            });
+
+            // Return the updated day with the modified periods
+            return {
+                ...day,
+                periods: updatedPeriods,
+            };
+        });
+
+        // Update state with the new timetable
+        setTimetable(updatedTimetable);
     };
 
     const handleAddPeriod = (dayIndex) => {
@@ -77,26 +123,30 @@ const TimeTable = () => {
         }
         console.log(data);
         dispatch(updateSchedule(classId, data))
+        window.location.reload();
     };
 
     const onChangeClass = (e) => {
         const sclass = classList.find(el => el._id.includes(e.target.value));
-        const editSclass = sclass.schedule.find(schedule => schedule.weekStart.includes(format(startOfSelectedWeek, 'yyyy/MM/dd')))
+    const editSclass = sclass.schedule.find(schedule => schedule.weekStart.includes(format(startOfSelectedWeek, 'yyyy/MM/dd')))
 
-        if (editSclass)
-            setTimetable(editSclass.content.map(period => ({
+    if (editSclass) {
+        setTimetable(editSclass.content.map(day => ({
+            ...day,
+            periods: day.periods.map(period => ({
                 ...period,
-                selectedGroup: '',
-                activityOptions: []
-            })));
-
-        else
-            setTimetable(daysOfWeek.map(day => ({
-                day,
-                periods: [{ startTime: '', endTime: '', groupActivity: '', activity: '', selectedGroup: '', activityOptions: [] }]
-            })))
-        console.log(timetable)
-        setClassId(sclass._id)
+                activityOptions: period.groupActivity
+                    ? (activityList.find(group => group._id === period.groupActivity)?.activity || [])
+                    : []
+            }))
+        })));
+    } else {
+        setTimetable(daysOfWeek.map(day => ({
+            day,
+            periods: [{ startTime: '', endTime: '', groupActivity: '', activity: '', selectedGroup: '', activityOptions: [] }]
+        })));
+    }
+    setClassId(sclass._id);
 
     }
 
@@ -104,6 +154,8 @@ const TimeTable = () => {
         dispatch(getClassList());
         dispatch(getActivityList());
     }, [dispatch])
+
+    
 
     return (
         <>
@@ -117,7 +169,7 @@ const TimeTable = () => {
             <div className='p-4'>
                 <div className='flex flex-col md:flex-row gap-3'>
                     <p>Chọn lớp:</p>
-                    <select className='border-2 border-black' onChange={onChangeClass}>
+                    <select name='date' className='border-2 border-black' onChange={onChangeClass}>
                         <option>------</option>
                         {classList?.map(sclass =>
                             <option value={sclass._id} key={sclass._id}>{sclass.name}</option>
@@ -174,9 +226,10 @@ const TimeTable = () => {
                                     <p>Chọn hoạt động:</p>
                                     <select value={period.activity} name='activity' className='border-2 border-black' onChange={(e) => handlePeriodChange(dayIndex, periodIndex, e)}>
                                         <option value="">Chọn hoạt động</option>
-                                        {period?.activityOptions?.map(activity =>
+                                        {period.activityOptions?.map(activity =>
                                             <option value={activity.name} key={activity._id}>{activity.name}</option>
                                         )}
+                                        
                                     </select>
 
                                     <button className='border bg-red-500 px-3 py-1 rounded-lg' type="button" onClick={() => handleRemovePeriod(dayIndex, periodIndex)}>Xóa</button>
