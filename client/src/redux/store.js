@@ -7,6 +7,7 @@ import { teacherReducer } from './teacherRelated/teacherSlice';
 import { parentReducer } from "./parentRelated/parentSlice";
 import { activityReducer} from './activityRelated/activitySlice';
 import { financeReducer } from "./financeRelated/financeSlice";
+import { chatReducer } from "./chatRelated/chatSlice";
 
 const store = configureStore({
   reducer: {
@@ -18,7 +19,8 @@ const store = configureStore({
     sclass: sclassReducer,
     parent: parentReducer,
     activity: activityReducer,
-    finance: financeReducer
+    finance: financeReducer,
+    chat: chatReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

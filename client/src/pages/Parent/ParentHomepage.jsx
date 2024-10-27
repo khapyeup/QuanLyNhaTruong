@@ -52,10 +52,10 @@ const ParentHomepage = () => {
         </div>
         <div className='flex justify-evenly items-center'>
           <Card className="w-96">
-            <Typography>Thong tin phu huynh</Typography>
+            <Typography>Thông tin phụ huynh</Typography>
             <List>
               <ListItem ripple={false} className="py-1 pr-1 pl-4 text-blue">
-                Username
+                Tên đăng nhập
                 <ListItemSuffix>
                   <Typography variant="text" color="blue-gray">
                     {currentUser.username}

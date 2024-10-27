@@ -7,6 +7,8 @@ import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStude
 import {getClassList, addSchedule, getDetailClass, updateClass, addClass} from "../controllers/class-controller.js";
 import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
 import { addFinance, deleteFinance, getAllFinanceRecords, getFinanceByUserId, recordPayment, updateFinance } from "../controllers/finance-controller.js";
+import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
+import { createMessage, getMessage } from "../controllers/message-controller.js";
 
 
 const router = express.Router();
@@ -67,6 +69,14 @@ router.post('/finances', addFinance);
 router.put('/finances/:id', updateFinance)
 router.delete('/finances/:id', deleteFinance)
 router.post('/payments', recordPayment);
+
+//Chat
+router.post('/chats', createChat);
+router.get('/chats/:userId', findUserChat);
+router.get('/chats/find/:firstId/:secondId', findChat);
+//Message
+router.post('/messages', createMessage);
+router.get('/messages/:chatId', getMessage);
 
 
 export default router;

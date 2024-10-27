@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addSuccess } from "../noticeRelated/noticeSlice";
+
 
 const initialState = {
     activityList: [],
