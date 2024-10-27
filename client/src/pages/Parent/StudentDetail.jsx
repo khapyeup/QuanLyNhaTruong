@@ -1,32 +1,15 @@
-import React, { useEffect } from 'react'
-import {
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
-  CardHeader,
-  Card,
-  CardBody,
-  Typography
-} from "@material-tailwind/react";
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom'
+import { getDetailStudent } from '../../redux/studentRelated/studentHandle';
+import { Tabs, TabsHeader, TabsBody, Tab, TabPanel, Card, CardHeader, CardBody, Typography } from '@material-tailwind/react';
 
+function StudentDetail() {
+  const dispatch = useDispatch();
+  
+  const {studentId} = useParams();
 
-import { getDetailStudent } from '../../../redux/studentRelated/studentHandle';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-
-
-
-const ViewStudent = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { studentDetails, loading } = useSelector(state => state.student)
-  const params = useParams()
-  const id = params.id
-
-  const TABLE_HEAD = ["Điểm kiểm tra 1", "Điểm kiểm tra 2", "Điểm cuối kì", "Điểm trung bình"];
-  const TABLE_ROWS = [];
+  const {studentDetails} = useSelector(state => state.student);
 
   const TABLE_HEAD_BEHAVIOUR = ["Vi phạm", "Ngày"]
   const TABLE_ROWS_BEHAVIOUR = studentDetails.behaviour;
@@ -34,28 +17,19 @@ const ViewStudent = () => {
   const TABLE_HEAD_ATTENDANCE = ['Tình trạng', 'Ngày']
   const TABLE_ROWS_ATTENDANCE = studentDetails.attendance;
 
-
-
-  console.log(studentDetails)
   useEffect(() => {
-    dispatch(getDetailStudent(id))
-
-  }, [id, dispatch])
+    dispatch(getDetailStudent(studentId))
+  }, [])
   return (
-    <>
-      {console.log(loading)}
-      {loading ? <p className='h-full w-full text-3xl text-red-900'>
-        Đang tải
-      </p> : <div>
-        
-        <Tabs value="info">
+    <div>
+      <Tabs value="info">
           <TabsHeader>
             <Tab key="info" value="info">
               <p>Thông tin</p>
             </Tab>
 
             <Tab key="behaviour" value="behaviour">
-              <p>Vi phạm</p>
+              <p>Thành tích</p>
             </Tab>
             <Tab key="attendance" value="attendance">
               <p>Điểm danh</p>
@@ -245,9 +219,8 @@ const ViewStudent = () => {
             </TabPanel>
           </TabsBody>
         </Tabs>
-      </div>}
-    </>
+    </div>
   )
 }
 
-export default ViewStudent
+export default StudentDetail

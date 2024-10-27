@@ -14,6 +14,7 @@ import { showSideBar } from '../../redux/userRelated/userHandle';
 
 import { HiOutlineBell } from "react-icons/hi2";
 import ParentNofication from './ParentNofication';
+import StudentDetail from './StudentDetail';
 
 
 function ParentDashboard() {
@@ -48,7 +49,7 @@ function ParentDashboard() {
               <Button onClick={() => dispatch(logoutUser())}>Đăng xuất</Button>
               {isNoficationMenuOpen ?
                 <div className='p-2 max-w-72 w-72 overflow-y-auto absolute top-12 right-36 border-black border-2 rounded-lg bg-white'>
-                  <ParentNofication/>
+                  <ParentNofication />
                 </div>
                 : ''}
             </div>
@@ -60,6 +61,7 @@ function ParentDashboard() {
             <Route path="*" element={<Navigate to="/" />} />
             <Route path="/parent/dashboard" element={<ParentHomepage />} />
             <Route path='/parent/student' element={<ParentStudent />} />
+            <Route path='/parent/student/:studentId' element={<StudentDetail />} />
             <Route path='/parent/notice' element={<ParentNotice />} />
             <Route path='/parent/finance' element={<ParentFinance />} />
             <Route path='/parent/message' element={<ParentMessage />} />

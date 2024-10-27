@@ -6,6 +6,7 @@ import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} f
 import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent, getStudentByUser} from "../controllers/student-controller.js";
 import {getClassList, addSchedule, getDetailClass, updateClass, addClass} from "../controllers/class-controller.js";
 import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
+import { addFinance, deleteFinance, getAllFinanceRecords, getFinanceByUserId, recordPayment, updateFinance } from "../controllers/finance-controller.js";
 
 
 const router = express.Router();
@@ -58,5 +59,14 @@ router.delete('/group_activity/:id', deleteGroupActivity);
 router.post("/group_activity/:id/activity", addActivity);
 router.put("/group_activity/:id/activity/:activityId", updateActivity);
 router.delete('/group_activity/:id/activity/:activityId', deleteActivity);
+
+//Finance
+router.get('/finances', getAllFinanceRecords);
+router.get('/finances/user/:userId', getFinanceByUserId)
+router.post('/finances', addFinance);
+router.put('/finances/:id', updateFinance)
+router.delete('/finances/:id', deleteFinance)
+router.post('/payments', recordPayment);
+
 
 export default router;

@@ -1,17 +1,24 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { Button } from '@material-tailwind/react';
+import { getStudentByUser } from '../../redux/studentRelated/studentHandle';
 
 function ParentStudent() {
+  const dispatch = useDispatch();
+
   const [search, setSearch] = useState('');
 
   const { studentList } = useSelector(state => state.student);
+  const {currentUser} = useSelector(state => state.user);
 
   const handleSearch = (e) => {
     setSearch(e.target.value.toLowerCase())
-    console.log(search)
   }
+
+  useEffect(() => {
+    dispatch(getStudentByUser(currentUser._id));
+  }, [])
   return (
     <div>
       <div className='p-9 flex flex-col gap-y-5'>
@@ -48,7 +55,7 @@ function ParentStudent() {
                 <td className='p-4'>{student.class_id.name}</td>
                 <td className="p-4 justify-evenly flex">
 
-                  <Link to={`/admin/students/view/${student._id}`}>
+                  <Link to={`/parent/student/${student._id}`}>
                     <Button className="bg-green-700">Chi tiết</Button>
                   </Link>
 
