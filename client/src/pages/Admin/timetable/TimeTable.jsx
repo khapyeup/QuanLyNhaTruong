@@ -162,7 +162,7 @@ const TimeTable = () => {
 
             <input type='date' onChange={handleDateChange} value={format(startDate, 'yyyy-MM-dd')} />
             <div>
-                Tuan da chon: {format(startOfSelectedWeek, 'yyyy/MM/dd')} - {format(endOfSelectedWeek, 'yyyy/MM/dd')}
+                Tuần đã chọn: {format(startOfSelectedWeek, 'yyyy/MM/dd')} - {format(endOfSelectedWeek, 'yyyy/MM/dd')}
             </div>
 
 
