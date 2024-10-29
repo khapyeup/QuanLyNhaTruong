@@ -1,14 +1,14 @@
-import Teacher from '../models/teacher.js'
+import User from "../models/user.js";
 
 const getTeacherList = async (req, res) => {
     try {
-        let result = await Teacher.find().populate('class_id')
-        if (result.length > 0)
-            res.send(result);
-        else
-            res.send({ message: "Không có giáo viên nào!" })
+        let result = await User.find({ role: 'teacher' }).populate('teacherInfo.class')
+
+        res.status(200).json(result);
+
     } catch (error) {
-        res.status(500).json(error)
+        console.log('Error getTeacherList\n', error);
+        res.status(500).json({ message: 'Error get teachers' })
     }
 }
 
@@ -16,27 +16,25 @@ const getDetailTeacher = async (req, res) => {
     const teacherId = req.params.id;
 
     try {
-        const teacher = await Teacher.findById(teacherId).populate('class_id');
-        if (teacher) {
-            res.json(teacher);
-        } else {
-            res.status(404).send('Teacher not found');
-        }
+        const result = await User.findOne({ _id: teacherId, role: 'teacher' })
+            .populate('teacherInfo.class')
+            .exec((err, user) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                res.status(200).json(result);
+            })
     } catch (error) {
-        res.status(500).send('Error retrieving teacher details: ' + error.message);
+        res.status(500).json('Error retrieving teacher details: ' + error.message);
     }
 }
 
 const addTeacher = async (req, res) => {
-    const { name, email, phone, class_id, gender } = req.body;
+    const { username, password, role, teacherInfo } = req.body;
 
-    const newTeacher = new Teacher({
-        name,
-        email,
-        phone,
-        class_id,
-        gender,
-        attendance: []
+    const newTeacher = new User({
+        username, password, role, teacherInfo
     });
 
     try {
@@ -52,12 +50,9 @@ const updateTeacher = async (req, res) => {
     const updateData = req.body;
     console.log("updateTeacher with id:" + teacherId + " req.body: " + updateData)
     try {
-        const updatedTeacher = await Teacher.findByIdAndUpdate(teacherId, updateData, { new: true });
-        if (updatedTeacher) {
-            res.send('Teacher updated successfully');
-        } else {
-            res.status(404).send({message: 'Không thể update teacher'});
-        }
+        const updatedTeacher = await User.findByIdAndUpdate(teacherId, updateData, { new: true });
+            res.json('Teacher updated successfully', updatedTeacher);
+        
     } catch (error) {
         res.status(500).send(error);
     }
@@ -67,7 +62,7 @@ const deleteTeacher = async (req, res) => {
     const teacherId = req.params.id;
 
     try {
-        await Teacher.findByIdAndDelete(teacherId);
+        await User.findByIdAndDelete(teacherId);
         res.send('Teacher deleted successfully');
     } catch (error) {
         res.status(500).send(error);
