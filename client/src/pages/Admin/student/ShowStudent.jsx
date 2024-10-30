@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from "react-router-dom";
 import { getStudentList } from '../../../redux/studentRelated/studentHandle';
 import Modal from '../../component/Modal';
@@ -19,23 +20,23 @@ import {
 import { updateStudent, deleteStudent } from '../../../redux/studentRelated/studentHandle';
 import { getParentList } from '../../../redux/parentRelated/parenHandle';
 import AddStudent from './AddStudent'
+import UpdateStudent from './UpdateStudent';
 
 
 
 function ShowStudent() {
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const { studentList, error, response, message } = useSelector((state) => state.student);
+  const { studentList, error, response } = useSelector((state) => state.student);
   const { classList } = useSelector(state => state.sclass);
   const { parentList } = useSelector(state => state.parent)
 
-  const [class_id, setClass_Id] = useState('');
-  const [user_id, setUser_Id] = useState('');
-  const [gender, setGender] = useState('');
+  const [student, setStudent] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
   const [search, setSearch] = useState('');
 
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
 
 
@@ -43,27 +44,9 @@ function ShowStudent() {
     setOpenAddModal(!openAddModal)
   }
 
-  const handleEditClick = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const id = form.id.value;
-    const student_id = form.student_id.value;
-    const name = form.name.value;
-    const dob = form.dob.value;
-    const address = form.address.value;
-
-    console.log({ name,student_id ,dob, address, gender, user_id, class_id })
-    dispatch(updateStudent(id, { name,student_id ,dob, address, gender, user_id, class_id }))
-    if (response || error)
-      alert(response.message)
-    else
-      alert("Sửa thành công");
-  }
 
   const handleAddStudent = () => {
     handleAddModal();
-    console.log(openAddModal);
-
   }
 
   const handleDelete = (_id) => {
@@ -80,11 +63,8 @@ function ShowStudent() {
     dispatch(getClassList());
     dispatch(getStudentList());
     dispatch(getParentList());
-
   }, [])
   return <>
-    {message ? <p className='w-full p-2 bg-green-500'>{message}</p> : ''}
-
     <AddStudent open={openAddModal} showModal={handleAddModal} />
 
     <div className='p-9 flex flex-col gap-y-5'>
@@ -124,52 +104,7 @@ function ShowStudent() {
                 <Link to={`/admin/students/view/${student._id}`}>
                   <Button className="bg-green-700">Chi tiết</Button>
                 </Link>
-                <Modal buttonData={"Chỉnh sửa"} buttonColor={"bg-orange-500 "}>
-                  <form onSubmit={handleEditClick}>
-                    <Card className="mx-auto w-full max-w-[24rem]">
-                      <CardBody className="flex flex-col gap-4">
-                        <Typography variant="h4" color="blue-gray">
-                          Nhập thông tin chỉnh sửa
-                        </Typography>
-
-                        <input type='text' name="id" readOnly hidden value={student._id}></input>
-                        
-                        <Input required type='text' name="name" label="Họ và tên" size="lg" defaultValue={student.name} />
-
-                        <Input type='text' name='student_id' label='Mã định danh' size='lg' defaultValue={student.student_id} maxLength={12} minLength={12}/>
-
-                        <Input required name="dob" type="date" label="Ngày sinh" size="lg" defaultValue={student.dob} />
-
-                        <Select required name="gender" label="Giới tính" size="lg" onChange={(val) => setGender(val)} >
-                          <Option value="Nam">Nam</Option>
-                          <Option value="Nữ">Nữ</Option>
-                        </Select>
-
-                        <Select required name="class_id" label="Lớp" size="lg" onChange={(val) => setClass_Id(val)} >
-                          {classList ? classList.map(el =>
-                            <Option value={el._id} key={el._id}>{el.name}</Option>
-                          ) : ''}
-                        </Select>
-
-                        <Select required name="user_id" label="Phụ huynh" size="lg" onChange={(val) => setUser_Id(val)} >
-                          {parentList ? parentList.map(el =>
-                            <Option value={el._id} key={el._id}>{el.username}</Option>
-                          ) : ''}
-                        </Select>
-
-                        <Input required name="address" type="text" label="Địa chỉ" size="lg" defaultValue={student.address} />
-
-
-                      </CardBody>
-                      <CardFooter className="pt-0">
-                        <Button type='submit' variant="gradient" fullWidth>
-                          Chỉnh sửa
-                        </Button>
-
-                      </CardFooter>
-                    </Card>
-                  </form>
-                </Modal>
+                <Button onClick={() => {setStudent(student); setUpdateModal(true)}}>Chỉnh sửa</Button>
                 <Modal buttonData={"Xóa"} buttonColor={"bg-red-500"}>
                   <Card>
 
@@ -189,7 +124,8 @@ function ShowStudent() {
         </tbody>
       </table>
     </div>
-
+    
+    {updateModal ? <UpdateStudent student={student} onClose={() => setUpdateModal(false)}/> : ''}
   </>
 
 

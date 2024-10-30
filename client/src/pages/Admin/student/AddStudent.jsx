@@ -12,6 +12,7 @@ const AddStudent = ({ open, showModal }) => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
+  const { message } = useSelector(state => state.student);
   const { parentList } = useSelector(state => state.parent)
   const { classList } = useSelector(state => state.sclass)
 
@@ -21,15 +22,7 @@ const AddStudent = ({ open, showModal }) => {
   const submitHandler = (e) => {
     const newStudentData = { ...e, avatar: imageFileName };
     
-    try {
-      dispatch(addStudent(newStudentData))
-      alert('Them thanh cong')
-    }
-    catch (error) {
-      alert('Co loi');
-    }
-    window.location.reload();
-
+    dispatch(addStudent(newStudentData))
   }
 
   const handleFileChange = (e) => {
@@ -56,17 +49,17 @@ const AddStudent = ({ open, showModal }) => {
 
 
             <form className=" flex flex-col md:gap-2" onSubmit={handleSubmit(submitHandler)}>
-              
+
               <Input label='Họ và tên' className='border p-2 rounded-lg shadow-lg' {...register("name", { required: "Không được bỏ trống họ và tên" })} placeholder='Họ và tên' type="text" name="name" id='name' />
-              
-              
-              <Input label='Mã định danh' className='border p-2 rounded-lg shadow-lg' {...register("student_id", { required: "Không được bỏ trống mã định danh", maxLength: 12, minLength: 12,pattern: /^\d+$/ })} placeholder='Mã định danh' type="text" name="student_id" id='student_id' />
+
+
+              <Input label='Mã định danh' className='border p-2 rounded-lg shadow-lg' {...register("student_id", { required: "Không được bỏ trống mã định danh", maxLength: 12, minLength: 12, pattern: /^\d+$/ })} placeholder='Mã định danh' type="text" name="student_id" id='student_id' />
               {errors.student_id?.type == 'required' && <p className='text-red-800 font-bold'>* {errors.student_id.message}</p>}
               {errors.student_id?.type == 'pattern' && <p className='text-red-800 font-bold'>* Mã định danh chỉ có số</p>}
               {errors.student_id?.type == 'maxLength' && <p className='text-red-800 font-bold'>* Mã định danh có tối đa 12 số</p>}
               {errors.student_id?.type == 'minLength' && <p className='text-red-800 font-bold'>* Mã định danh có 12 số</p>}
 
-             
+
               <Input label='Ngày sinh' className='border p-2 rounded-lg shadow-lg'  {...register("dob", { required: "Không được bỏ trống tuổi" })} type="date" name="dob" placeholder='Ngày sinh' id="dob" />
 
               <label>Chọn lớp</label>
@@ -88,11 +81,11 @@ const AddStudent = ({ open, showModal }) => {
                 <option value="Nữ">Nữ</option>
               </select>
 
-              
+
               <Input label='Địa chỉ'  {...register("address", { required: "Không được bỏ trống địa chỉ" })} type="text" name="address" placeholder='Địa chỉ' id="address" />
 
 
-              
+
               <Input onChange={handleFileChange} type='file' label='Ảnh đại diện' name='avatar' required />
 
               {errors.name && <p className='text-red-800 font-bold'>* {errors.name.message}</p>}
@@ -100,11 +93,11 @@ const AddStudent = ({ open, showModal }) => {
               {errors.parentname && <p className='text-red-800 font-bold'>* {errors.parentname.message}</p>}
               {errors.avatarUrl && <p className='text-red-800 font-bold'>* {errors.avatarUrl.message}</p>}
 
-                <div className='flex flex-col md:flex-row justify-evenly'>
+              <div className='flex flex-col md:flex-row justify-evenly'>
                 <Button className=" hover:bg-slate-400 text-white rounded-lg p-2" type="submit">Thêm học sinh</Button>
                 <Button className="bg-cyan-700 text-white rounded-lg p-2" onClick={showModal}>Hủy bỏ</Button>
-                </div>
-             
+              </div>
+
             </form>
           </CardBody>
         </Card>
