@@ -2,7 +2,7 @@ import User from "../models/user.js";
 
 const getTeacherList = async (req, res) => {
     try {
-        let result = await User.find({ role: 'teacher' }).populate('teacherInfo.class')
+        let result = await User.find({ role: 'teacher' }).populate('teacherInfo.class').select('-password')
 
         res.status(200).json(result);
 
@@ -14,17 +14,10 @@ const getTeacherList = async (req, res) => {
 
 const getDetailTeacher = async (req, res) => {
     const teacherId = req.params.id;
-
+    
     try {
-        const result = await User.findOne({ _id: teacherId, role: 'teacher' })
-            .populate('teacherInfo.class')
-            .exec((err, user) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                res.status(200).json(result);
-            })
+        const result = await User.findOne({ _id: teacherId, role: 'teacher' }).populate('teacherInfo.class').populate("teacherInfo.activityAssign").select('-password')
+        res.send(result);
     } catch (error) {
         res.status(500).json('Error retrieving teacher details: ' + error.message);
     }

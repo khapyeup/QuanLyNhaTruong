@@ -55,7 +55,7 @@ function AdminDashboard() {
             {/* Teacher route */}
             <Route path="/Admin/teachers/" element={<ShowTeacher />} />
             <Route path="admin/teachers/add" element={<AddTeacher />} />
-            <Route path="/admin/teachers/view/:id" element={<ViewTeacher />} />
+            <Route path="/admin/teachers/:id" element={<ViewTeacher />} />
             {/* Student route */}
             <Route path="/admin/students/" element={<ShowStudent />} />
             {/* <Route path="/admin/students/add" element={<AddStudent />} /> */}

@@ -4,6 +4,7 @@ import { getTeacherList } from '../../../redux/teacherRelated/teacherHandle';
 import { getClassList } from '../../../redux/sclassRelated/sclassHandle';
 import { Button, Dialog } from '@material-tailwind/react'
 import AddTeacher from './AddTeacher';
+import { Link } from 'react-router-dom';
 
 
 function ShowTeacher() {
@@ -47,8 +48,9 @@ function ShowTeacher() {
               <td className='p-4'>{index + 1}</td>
               <td className='p-4'>{teacher.teacherInfo.name}</td>
               <td className='p-4'>{teacher.teacherInfo.gender}</td>
+              <td className='p-4'>{teacher.teacherInfo.class.name}</td>
               <td className="p-4 justify-evenly flex">
-                <Button className="bg-green-700">Chi tiết</Button>
+                <Link to={`/admin/teachers/${teacher._id}`}><Button className="bg-green-700">Chi tiết</Button></Link>
                 <Button className="bg-green-700">Sửa</Button>
                 <Button className="bg-green-700">Xóa</Button>
               </td>
