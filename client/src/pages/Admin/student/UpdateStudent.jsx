@@ -28,7 +28,8 @@ function UpdateStudent({ onClose, student }) {
         <div className='inset-0 fixed flex justify-center items-center bg-black/20' onClick={onClose}>
             <div className='opacity-100 bg-white w-1/4 px-2 py-3 rounded-lg' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-center'>
-                    Nhập thông tin chỉnh sửa
+                    
+                    <p className='text-center w-full'>Nhập thông tin chỉnh sửa</p>
                     <IoMdClose onClick={onClose} className='cursor-pointer text-2xl text-red-500 hover:text-black' />
                 </div>
                 <form onSubmit={handleSubmit(submit)}>

@@ -31,17 +31,29 @@ const getDetailTeacher = async (req, res) => {
 }
 
 const addTeacher = async (req, res) => {
-    const { username, password, role, teacherInfo } = req.body;
+    const { username, password, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
 
     const newTeacher = new User({
-        username, password, role, teacherInfo
+        username, 
+        password,
+        role: 'teacher',
+        profile,
+        teacherInfo: {
+            name,
+            email,
+            phone,
+            gender,
+            class: sclass,
+            activityAssign,
+            attendance: []
+        }
     });
 
     try {
         await newTeacher.save();
-        res.status(201).send('New teacher added successfully');
+        res.status(201).json('Thêm giáo viên thành công!');
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json(error);
     }
 }
 

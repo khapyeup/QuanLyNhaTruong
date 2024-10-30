@@ -17,8 +17,10 @@ export const getTeacherList = () => async (dispatch) => {
 export const addTeacher = (data) => async (dispatch) => {
     try {
         const result = await axios.post("http://localhost:3000/teachers/add", data)
+        alert(result.data)
         dispatch(addSuccess())
     } catch (error) {
+        alert(error.response.data.errorResponse.errmsg)
         dispatch(getFailed(error))
     }
 }

@@ -31,7 +31,7 @@ function AdminDashboard() {
 
   return (
     <>
-      <div className='w-full h-screen flex flex-col md:flex-row'>
+      <div className='w-screen min-w-full h-screen flex flex-col md:flex-row'>
         <div className="">
           {/* Sidebar */}
           <AdminSidebar />

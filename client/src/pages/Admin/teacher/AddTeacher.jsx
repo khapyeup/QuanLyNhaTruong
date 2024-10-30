@@ -2,77 +2,132 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addTeacher } from '../../../redux/teacherRelated/teacherHandle';
 import { useForm } from "react-hook-form"
-import { useNavigate } from 'react-router-dom';
 import { getClassList } from '../../../redux/sclassRelated/sclassHandle';
-import { Button, Typography } from '@material-tailwind/react';
+import { Button, Typography, Input, Card } from '@material-tailwind/react';
+import { getActivityList } from '../../../redux/activityRelated/activityHandle';
 
 const AddTeacher = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
+
     const { register, handleSubmit, formState: { errors } } = useForm();
 
+    const { classList } = useSelector(state => state.sclass);
+    const { activityList } = useSelector(state => state.activity);
 
-    const { classList } = useSelector(state => state.sclass)
-
-    const subjectList = ['Toán', 'Tiếng việt', 'Tập viết', 'Tập vẽ', 'Âm nhạc', 'Tiếng anh']
-
-    const submitHandler = (e) => {
-        console.log(e)
-        dispatch(addTeacher(e))
-        navigate('/admin/teachers/')
+    const onSubmit = (data) => {
+        data.profile = data.profile[0].name;
+        dispatch(addTeacher(data));
     }
 
     useEffect(() => {
         dispatch(getClassList());
+        dispatch(getActivityList());
     }, [])
     return (
         <>
-            <div className="flex justify-center items-center bg-blue-gray-300 top-0">
-                <div className='w-full lg:w-1/2 p-5 bg-white'>
-                    <Typography variant='h4'>Thêm giáo viên</Typography>
-                    
-                    <form className="text-black flex flex-col gap-5 my-6 px-10" onSubmit={handleSubmit(submitHandler)}>
-                        <label htmlFor='name'>Họ và tên</label>
-                        <input className='border p-2 rounded-lg shadow-lg' {...register("name", { required: "Không được bỏ trống họ và tên" })} placeholder='Họ và tên' type="text" name="name" id='name' />
-                        <label htmlFor='email'>Email</label>
-                        <input className='border p-2 rounded-lg shadow-lg'  {...register("email", { required: "Không được bỏ trống email" })} type="email" name="email" placeholder='Email' id="email" />
+            <Card color="transparent" className='items-center pt-2'>
+                <Typography variant="h4" color="blue-gray">
+                    Thêm giáo viên mới
+                </Typography>
 
-                        <label htmlFor='phone'>Số điện thoại</label>
-                        <input className='border p-2 rounded-lg shadow-lg'  {...register("phone", { required: "Không được bỏ trống số điện thoại" })} type="text" name="phone" placeholder='Số điện thoại' id="phone" />
+                <form className="mt-2 mb-2 sm:w-72" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="mb-1 flex flex-col gap-3">
 
-                        <label htmlFor='class_id'>Chủ nhiệm lớp</label>
-                        <select className='border p-2 rounded-lg shadow-lg'  {...register("class_id")} name="class_id" id='class_id'>
-                            {classList ? classList.map(el =>
-                                <option value={el._id} key={el.class_id}>{el.name}</option>
-                            ) : ''}
-                        </select>
+                        <Input
+                            type="text"
+                            name='username'
+                            label='Tên đăng nhập'
+                            {...register("username")}
+                            required
+                        />
 
-
-
-                        <label htmlFor='gender'>Giới tính</label>
-                        <select required className='border p-2 rounded-lg shadow-lg'  {...register("gender")} name="gender" id="gender">
-                            <option value="Nam">Nam</option>
-                            <option value="Nữ">Nữ</option>
-                        </select>
-                        
-                        <label htmlFor='subject'>Daỵ môn</label>
-                        <select {...register("subject")} className='border p-2 rounded-lg shadow-lg' required name="subject" label="Môn" size="lg" id="subject">
-                          {subjectList.map(el =>
-                            <option value={el} key={el}>{el}</option>
-                          )}
-                        </select>
+                        <Input
+                            type="password"
+                            name='password'
+                            label='Mật khẩu'
+                            {...register("password")}
+                            required
+                        />
 
 
-                        {errors.name && <p className='text-red-800 font-bold'>* {errors.name.message}</p>}
-                        {errors.age && <p className='text-red-800 font-bold'>* {errors.age.message}</p>}
-                        {errors.age && <p className='text-red-800 font-bold'>* {errors.parentname.message}</p>}
-                        <Button className=" hover:bg-slate-400 text-white rounded-lg p-2" type="submit">Thêm học sinh</Button>
-                        <Button className="bg-cyan-700 text-white rounded-lg p-2" onClick={() => navigate('/admin/teachers/')}>Hủy bỏ</Button>
-                    </form>
-                </div>
+                        <Input
+                            type='text'
+                            label='Tên giáo viên'
+                            name='name'
+                            {...register("name")}
+                            required
+                        />
 
-            </div>
 
+                        <Input
+                            label='Tuổi'
+                            type='number'
+                            name='age'
+                            {...register("age")}
+                            required
+                        />
+
+
+                        <Input
+                            label='Email'
+                            type='email'
+                            name='email'
+                            {...register("email", { required: true })}
+                            required
+                        />
+
+
+                        <Input
+                            label='Số điện thoại'
+                            type='text'
+                            name='phone'
+                            {...register("phone", { required: true })}
+                            required
+                        />
+                        <div className='flex flex-col'>
+                            <label htmlFor='gender'>Giới tính</label>
+                            <select className='border-2 p-1' name="gender" id='gender' {...register("gender", { required: true })} required>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+
+                        <div className='flex flex-col'>
+                            <label htmlFor='sclass'>Lớp</label>
+                            <select className='border-2 p-1' name="sclass" id='sclass' {...register("sclass", { required: true })} required>
+                                {classList.map((sclass) => (
+                                    <option value={sclass._id}>{sclass.name}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className='flex flex-col'>
+                            <label htmlFor='activityAssign'>Hoạt động</label>
+                            <select className='border-2 p-1' name="activityAssign" id='activityAssign' {...register("activityAssign", { required: true })} required>
+                                {activityList.map((activity) => (
+                                    <option value={activity._id}>{activity.group_activity}</option>
+                                ))}
+                            </select>
+                        </div>
+
+
+
+                        <label htmlFor='profile'>Ảnh đại diện</label>
+                        <input
+                            {...register("profile")}
+                            id='profile'
+                            type='file'
+                            name='profile'
+                            required
+                        />
+                    </div>
+
+                    <Button type='submit' className='mt-2' fullWidth>
+                        Thêm
+                    </Button>
+
+                </form>
+            </Card>
         </>
     )
 }

@@ -25,7 +25,7 @@ function AdminSidebar() {
 
     return (
         <>
-            <Card className={isOpen ? "h-[calc(100vh-2rem)] w-full bg-black max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5" : 'hidden'}>
+            <Card className={isOpen ? "h-screen w-full bg-black max-w-[17rem] p-4 shadow-xl shadow-blue-gray-900/5" : 'hidden'}>
                 <div className="mb-2 p-4 flex justify-between items-center gap-2">
                     <Typography variant="h5" color="white">
                         Quản lý nhà trường

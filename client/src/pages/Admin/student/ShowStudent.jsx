@@ -28,8 +28,7 @@ function ShowStudent() {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const { studentList, error, response } = useSelector((state) => state.student);
-  const { classList } = useSelector(state => state.sclass);
-  const { parentList } = useSelector(state => state.parent)
+  
 
   const [student, setStudent] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -43,7 +42,6 @@ function ShowStudent() {
   const handleAddModal = () => {
     setOpenAddModal(!openAddModal)
   }
-
 
   const handleAddStudent = () => {
     handleAddModal();
@@ -96,7 +94,7 @@ function ShowStudent() {
             <tr key={index} className="even:bg-blue-gray-50/50">
               <td className='p-4'>{index + 1}</td>
               <td className='p-4'>{student.name}</td>
-              <td className='p-4'>{student.dob}</td>
+              <td className='p-4'>{new Date(student.dob).toLocaleDateString()}</td>
               <td className='p-4'>{student.gender}</td>
               <td className='p-4'>{student.class_id.name}</td>
               <td className="p-4 justify-evenly flex">
