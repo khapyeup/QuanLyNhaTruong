@@ -43,13 +43,13 @@ function UpdateStudent({ onClose, student }) {
                             <Input name="dob" type="date" label="Ngày sinh" size="lg" {...register("dob", { required: true })} defaultValue={student.dob} />
 
                             <label>Giới tính</label>
-                            <select className='border-2 p-2 rounded-lg' name="gender" label="Giới tính" size="lg" {...register("gender", { required: true })} value={student.gender}>
+                            <select className='border-2 p-2 rounded-lg' name="gender" label="Giới tính" size="lg" {...register("gender", { required: true })} defaultValue={student.gender}>
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                             </select>
 
                             <label>Lớp</label>
-                            <select className='border-2 p-2 rounded-lg' required name="class_id" label="Lớp" size="lg"  {...register("class_id", { required: true })} value={student.class_id?._id}>
+                            <select className='border-2 p-2 rounded-lg' required name="class_id" label="Lớp" size="lg"  {...register("class_id", { required: true })} defaultValue={student.class_id?._id}>
                                <option></option>
                                 {classList ? classList.map(el =>
                                     <option value={el._id} key={el._id}>{el.name}</option>
@@ -57,7 +57,7 @@ function UpdateStudent({ onClose, student }) {
                             </select>
 
                             <label htmlFor='user_id'>Tài khoản phụ huynh</label>
-                            <select required id="user_id" className='border-2 p-2 rounded-lg' name="user_id" label="Phụ huynh" size="lg" {...register("user_id", { required: true })} value={student.user_id?._id}>
+                            <select required id="user_id" className='border-2 p-2 rounded-lg' name="user_id" label="Phụ huynh" size="lg" {...register("user_id", { required: true })} defaultValue={student.user_id?._id}>
                                 <option></option>
                                 {parentList ? parentList.map(el =>
                                     <option value={el._id} key={el._id}>{el.username}</option>

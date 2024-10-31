@@ -25,14 +25,6 @@ const addStudent = async (req, res) => {
     try {
         await newStudent.save();
 
-        await User.updateOne(
-            { _id: data.user_id },
-            {
-                $push: { "parentInfo.student_id": newStudent._id }
-            },
-
-        )
-
         console.log('Add new student successfully:\n ' + newStudent);
         res.status(200).json('Add new student successfully');
     } catch (error) {
@@ -53,18 +45,10 @@ const deleteStudent = async (req, res) => {
         const userId = student.user_id;
         const sclassId = student.class_id;
 
-        await Student.findByIdAndDelete(studentId);
+        await Student.findOneAndDelete({_id: studentId});
         console.log("student deleted successfully!")
 
-        //Xoá học sinh khỏi user
-        await User.updateOne(
-            { _id: userId },
-            {
-                $pull: {
-                    "parentInfo.student_id": studentId,
-                }
-            }
-        );
+        
 
         console.log("Student ID removed from user successfully!");
     } catch (error) {
@@ -103,33 +87,16 @@ const updateStudent = async (req, res) => {
             return
         }
 
-        const oldUserId = student.user_id;
-
-        //Remove the old student ID from the previous user
-        if (oldUserId) {
-            await User.updateOne(
-                { _id: oldUserId },
-                { $pull: { student_id: studentId } }
-            );
-            console.log('Old student ID removed from the previous user');
-        }
 
         //Update the student with the new user ID
-        const updatedStudent = await Student.findByIdAndUpdate(
-            studentId,
+        const updatedStudent = await Student.findOneAndUpdate(
+            {_id: studentId},
             newStudentData,
             { new: true } // Return the updated document
         );
         console.log("Student updated successfully:", updatedStudent);
 
-        if (newUserId) {
-            await User.updateOne(
-                { _id: newUserId },
-                { $addToSet: { student_id: studentId } }
-            )
-            console.log("New student ID added to the new user.");
-            res.json('New student ID added to the new user.')
-        }
+       
 
     } catch (error) {
         console.error("Error updating student user ID:", error);
