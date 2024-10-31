@@ -70,9 +70,9 @@ const AddStudent = ({ open, showModal }) => {
               </select>
               <label>Chọn tài khoản phụ huynh</label>
               <select className='border p-2 rounded-lg shadow-lg'  {...register("user_id")} name="user_id" id="user_id">
-                {parentList ? parentList.map(el =>
+                {parentList && parentList.map(el =>
                   <option value={el._id} key={el.username}>{el.username}</option>
-                ) : ''}
+                )}
               </select>
 
               <label>Chọn giới tính</label>

@@ -39,7 +39,7 @@ function AdminDashboard() {
 
         {/* Navbar */}
         <div className="flex-1 overflow-y-auto">
-          <div className="top-0 sticky flex flex-row justify-between w-full px-4 py-1 items-center shadow-md bg-white">
+          <div className="flex flex-row justify-between w-full px-4 py-1 items-center shadow-md bg-white">
             <div>
               <button onClick={() => dispatch(showSideBar())} className={isOpen ? 'hidden' : 'visible'}>☰</button>
             </div>

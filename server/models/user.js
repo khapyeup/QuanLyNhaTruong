@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     profile: {type: String, required: true},
     parentInfo: {
         student_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
-        class_id: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Class' }],
+        sclass: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Class' }],
         fatherEmail: { type: String },
         fatherPhone: { type: String},
         fatherName: { type: String},

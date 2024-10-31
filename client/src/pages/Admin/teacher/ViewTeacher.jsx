@@ -23,6 +23,7 @@ function ViewTeacher() {
                     <img className='rounded-full border-2 border-black size-48' src={`/${teacherDetails.profile}`}/>
                     <Card className='mt-5'>
                         <CardBody>
+                        <Typography>Tài khoản: {teacherDetails.username}</Typography>
                             <Typography>Họ và tên: {teacherDetails.teacherInfo?.name}</Typography>
                             <Typography>Giới tính: {teacherDetails.teacherInfo?.gender}</Typography>
                             <Typography>Tuổi: {teacherDetails.teacherInfo?.age}</Typography>

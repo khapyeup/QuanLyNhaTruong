@@ -60,23 +60,7 @@ export const getUserDetails = (id) => async (dispatch) => {
     }
 }
 
-export const deleteUser = (id, address) => async (dispatch) => {
-    dispatch(getRequest());
-    dispatch(getFailed("Sorry the delete function has been disable for now"))
-}
 
-export const updateUser = (fields, id) => async (dispatch) => {
-    dispatch(getRequest());
-
-    try {
-        const result = await axios.put(`http://localhost:3000/users/${id}`, fields, { headers: { 'Content-Type': 'application/json' } });
-        if (result.data) {
-            dispatch(doneSuccess(result.data));
-        }
-    } catch (error) {
-        dispatch(getError(error));
-    }
-}
 
 export const addStuff = (fields, address) => async (dispatch) => {
     dispatch(authRequest());
@@ -95,24 +79,6 @@ export const addStuff = (fields, address) => async (dispatch) => {
         dispatch(authError(error));
     }
 };
-
-export const addUser = (data) => async (dispatch) => {
-    try {
-        const result = await axios.post('http://localhost:3000/users/add', data);
-        if (!result)
-        {
-            alert('Có lỗi, kiểm tra console');
-            console.log(result);
-            dispatch(getFailed(result));
-        }
-    } catch (error) {
-        alert('Có lỗi, kiểm tra console');
-        console.log(error);
-        dispatch(getError(error));
-        
-    }
-}
-
 
 export const showSideBar = () => (dispatch) => {
     dispatch(isOpen());

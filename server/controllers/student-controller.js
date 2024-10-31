@@ -24,9 +24,13 @@ const addStudent = async (req, res) => {
 
     try {
         await newStudent.save();
+
         await User.updateOne(
             { _id: data.user_id },
-            { $push: { student_id: newStudent._id } }
+            {
+                $push: { "parentInfo.student_id": newStudent._id }
+            },
+
         )
 
         console.log('Add new student successfully:\n ' + newStudent);
@@ -47,13 +51,19 @@ const deleteStudent = async (req, res) => {
             return res.send('Student not found')
         }
         const userId = student.user_id;
+        const sclassId = student.class_id;
 
         await Student.findByIdAndDelete(studentId);
         console.log("student deleted successfully!")
 
+        //Xoá học sinh khỏi user
         await User.updateOne(
             { _id: userId },
-            { $pull: { student_id: studentId } }
+            {
+                $pull: {
+                    "parentInfo.student_id": studentId,
+                }
+            }
         );
 
         console.log("Student ID removed from user successfully!");
@@ -130,14 +140,14 @@ const updateStudent = async (req, res) => {
 
 const getStudentByUser = async (req, res) => {
     try {
-        const {userId} = req.params;
-        
+        const { userId } = req.params;
+
         const students = await Student.find({ user_id: userId }).populate('class_id');
 
         if (!students) {
             return res.status(404).json({ message: 'No students found for this user' });
         }
-        
+
         res.json(students);
     } catch (error) {
         console.error("Error fetching students:", error);

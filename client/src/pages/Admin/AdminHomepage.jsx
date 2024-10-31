@@ -130,9 +130,9 @@ function AdminHomepage() {
 
 
   return <>
-    <div className='flex flex-col flex-1 p-14 gap-7 overflow-scroll'>
+    <div className='flex flex-col flex-1 p-14 gap-7 '>
       {/* Container render total */}
-      <div className=" p-2 gap-y-7 flex flex-col lg:flex-row justify-evenly items-center">
+      <div className=" p-2 gap-y-7 flex flex-row justify-evenly items-center flex-wrap">
         <div className="text-white rounded-lg  bg-red-400 flex flex-col items-center justify-center gap-2 shadow-lg border p-2 min-w-56 min-h-40  hover:transition-transform hover:scale-110">
           <PiStudent className='size-20' />
           <p>Số lượng học sinh</p>

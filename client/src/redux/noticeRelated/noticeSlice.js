@@ -24,9 +24,11 @@ const noticeSlice = createSlice({
         getFailed: (state, action) => {
             state.error = null;
             state.response = action.payload;
+            state.message = 'Có lỗi'
         },
         getError: (state, action) => {
             state.error = action.payload;
+            state.message = 'Có lỗi'
             state.response = null;
         },
         addSuccess: (state) => {
