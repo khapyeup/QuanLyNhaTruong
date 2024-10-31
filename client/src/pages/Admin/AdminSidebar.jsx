@@ -64,7 +64,7 @@ function AdminSidebar() {
                     </NavLink>
                     <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/user/"}>
                     <FaUser />
-                        Phu huynh
+                        Phụ huynh
                     </NavLink>
                 </List>
             </Card>

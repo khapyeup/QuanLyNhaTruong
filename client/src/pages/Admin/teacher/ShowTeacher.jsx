@@ -5,13 +5,18 @@ import { getClassList } from '../../../redux/sclassRelated/sclassHandle';
 import { Button, Dialog } from '@material-tailwind/react'
 import AddTeacher from './AddTeacher';
 import { Link } from 'react-router-dom';
+import UpdateTeacher from './UpdateTeacher';
+import DeleteTeacher from './DeleteTeacher';
 
 
 function ShowTeacher() {
 
   const dispatch = useDispatch()
 
+  const [teacher, setTeacher] = useState(null)
   const [addModal, setAddModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const { teacherList } = useSelector((state) => state.teacher);
   const { classList } = useSelector(state => state.sclass);
@@ -19,7 +24,7 @@ function ShowTeacher() {
   useEffect(() => {
     dispatch(getClassList());
     dispatch(getTeacherList());
-  }, [])
+  }, [dispatch])
   return <>
 
     <div className='p-9 flex flex-col gap-y-5'>
@@ -49,10 +54,10 @@ function ShowTeacher() {
               <td className='p-4'>{teacher.teacherInfo.name}</td>
               <td className='p-4'>{teacher.teacherInfo.gender}</td>
               <td className='p-4'>{teacher.teacherInfo.class.name}</td>
-              <td className="p-4 justify-evenly flex">
+              <td className="p-4 gap-5 flex">
                 <Link to={`/admin/teachers/${teacher._id}`}><Button className="bg-green-700">Chi tiết</Button></Link>
-                <Button className="bg-green-700">Sửa</Button>
-                <Button className="bg-green-700">Xóa</Button>
+                <Button onClick={() => {setUpdateModal(true); setTeacher(teacher)}}>Chỉnh sửa</Button>
+                <Button onClick={() => {setDeleteModal(true); setTeacher(teacher)}} className="bg-red-700">Xóa</Button>
               </td>
             </tr>
           )}
@@ -60,9 +65,17 @@ function ShowTeacher() {
       </table>
     </div>
     
-    {/* Modal */}
+    {/*Add Modal */}
     <Dialog open={addModal} handler={() => setAddModal(false)} size='sm'>
-      <AddTeacher />
+      <AddTeacher open={() => setAddModal(false)}/>
+    </Dialog>
+    {/*Update Modal */}
+    <Dialog open={updateModal} handler={() => setUpdateModal(false)} size='sm'>
+      <UpdateTeacher teacher={teacher} open={() => setUpdateModal(false)}/>
+    </Dialog>
+     {/*Delete Modal */}
+     <Dialog open={deleteModal} handler={() => setDeleteModal(false)} size='sm'>
+      <DeleteTeacher teacher={teacher} open={() => setDeleteModal(false)}/>
     </Dialog>
   </>
 

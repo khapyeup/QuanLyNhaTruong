@@ -2,7 +2,7 @@ import User from "../models/user.js";
 
 const getTeacherList = async (req, res) => {
     try {
-        let result = await User.find({ role: 'teacher' }).populate('teacherInfo.class').select('-password')
+        let result = await User.find({ role: 'teacher' }).populate('teacherInfo.class')
 
         res.status(200).json(result);
 
@@ -24,7 +24,7 @@ const getDetailTeacher = async (req, res) => {
 }
 
 const addTeacher = async (req, res) => {
-    const { username, password, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
+    const { username, password,age, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
 
     const newTeacher = new User({
         username, 
@@ -33,6 +33,7 @@ const addTeacher = async (req, res) => {
         profile,
         teacherInfo: {
             name,
+            age,
             email,
             phone,
             gender,
@@ -52,11 +53,16 @@ const addTeacher = async (req, res) => {
 
 const updateTeacher = async (req, res) => {
     const teacherId = req.params.id;
-    const updateData = req.body;
-    console.log("updateTeacher with id:" + teacherId + " req.body: " + updateData)
+    const { username, password,age, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
+    console.log("updateTeacher with id:" + teacherId)
     try {
-        const updatedTeacher = await User.findByIdAndUpdate(teacherId, updateData, { new: true });
-            res.json('Teacher updated successfully', updatedTeacher);
+        const updatedTeacher = await User.findByIdAndUpdate(
+            teacherId,
+            {
+                username, password,age, profile, name, email, phone, gender, sclass, activityAssign 
+            }
+            , { new: true });
+            res.json('Teacher updated successfully');
         
     } catch (error) {
         res.status(500).send(error);

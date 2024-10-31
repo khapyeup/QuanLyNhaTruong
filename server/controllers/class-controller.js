@@ -21,27 +21,27 @@ const addClass = async (req, res) => {
             weekStart: '',
             weekEnd: '',
             content: [{
-                day: 'Thu 2',
+                day: 'Thứ 2',
                 periods: [{}]
             },
             {
-                day: 'Thu 3',
+                day: 'Thứ 3',
                 periods: [{}]
             },
             {
-                day: 'Thu 4',
+                day: 'Thứ 4',
                 periods: [{}]
             },
             {
-                day: 'Thu 5',
+                day: 'Thứ 5',
                 periods: [{}]
             },
             {
-                day: 'Thu 6',
+                day: 'Thứ 6',
                 periods: [{}]
             },
             {
-                day: 'Thu 7',
+                day: 'Thứ 7',
                 periods: [{}]
             }]
         }]

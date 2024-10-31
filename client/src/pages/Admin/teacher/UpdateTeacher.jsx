@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { addTeacher } from '../../../redux/teacherRelated/teacherHandle';
+import { updateTeacher } from '../../../redux/teacherRelated/teacherHandle';
 import { useForm } from "react-hook-form"
 import { getClassList } from '../../../redux/sclassRelated/sclassHandle';
 import { Button, Typography, Input, Card } from '@material-tailwind/react';
 import { getActivityList } from '../../../redux/activityRelated/activityHandle';
 
-const AddTeacher = ({open}) => {
+const UpdateTeacher = ({teacher, open}) => {
     const dispatch = useDispatch()
 
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -16,7 +16,7 @@ const AddTeacher = ({open}) => {
 
     const onSubmit = (data) => {
         data.profile = data.profile[0].name;
-        dispatch(addTeacher(data));
+        dispatch(updateTeacher(teacher._id, data));
         open();
     }
 
@@ -28,11 +28,11 @@ const AddTeacher = ({open}) => {
         <>
             <Card color="transparent" className='items-center pt-2'>
                 <Typography variant="h4" color="blue-gray">
-                    Thêm giáo viên mới
+                    Cập nhật giáo viên
                 </Typography>
 
                 <form className="mt-2 mb-2 sm:w-72" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="mb-1 flex flex-col gap-3">
+                    <div className="mb-1 flex flex-col gap-2">
 
                         <Input
                             type="text"
@@ -40,6 +40,7 @@ const AddTeacher = ({open}) => {
                             label='Tên đăng nhập'
                             {...register("username")}
                             required
+                            defaultValue={teacher.username}
                         />
 
                         <Input
@@ -48,6 +49,7 @@ const AddTeacher = ({open}) => {
                             label='Mật khẩu'
                             {...register("password")}
                             required
+                            defaultValue={teacher.password}
                         />
 
 
@@ -57,6 +59,7 @@ const AddTeacher = ({open}) => {
                             name='name'
                             {...register("name")}
                             required
+                            defaultValue={teacher.teacherInfo.name}
                         />
 
 
@@ -66,6 +69,7 @@ const AddTeacher = ({open}) => {
                             name='age'
                             {...register("age")}
                             required
+                            defaultValue={teacher.teacherInfo.age}
                         />
 
 
@@ -75,6 +79,7 @@ const AddTeacher = ({open}) => {
                             name='email'
                             {...register("email", { required: true })}
                             required
+                            defaultValue={teacher.teacherInfo.email}
                         />
 
 
@@ -84,10 +89,13 @@ const AddTeacher = ({open}) => {
                             name='phone'
                             {...register("phone", { required: true })}
                             required
+                            defaultValue={teacher.teacherInfo.phone}
                         />
                         <div className='flex flex-col'>
                             <label htmlFor='gender'>Giới tính</label>
-                            <select className='border-2 p-1' name="gender" id='gender' {...register("gender", { required: true })} required>
+                            <select className='border-2 p-1' name="gender" id='gender' {...register("gender", { required: true })} required
+                            defaultValue={teacher.teacherInfo.gender}
+                            >
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                             </select>
@@ -95,18 +103,18 @@ const AddTeacher = ({open}) => {
 
                         <div className='flex flex-col'>
                             <label htmlFor='sclass'>Lớp</label>
-                            <select className='border-2 p-1' name="sclass" id='sclass' {...register("sclass", { required: true })} required>
+                            <select className='border-2 p-1' name="sclass" id='sclass' {...register("sclass", { required: true })} required defaultValue={teacher.teacherInfo.class._id}>
                                 {classList.map((sclass) => (
-                                    <option key={sclass._id} value={sclass._id}>{sclass.name}</option>
+                                    <option value={sclass._id}>{sclass.name}</option>
                                 ))}
                             </select>
                         </div>
 
                         <div className='flex flex-col'>
                             <label htmlFor='activityAssign'>Hoạt động</label>
-                            <select className='border-2 p-1' name="activityAssign" id='activityAssign' {...register("activityAssign", { required: true })} required>
+                            <select className='border-2 p-1' name="activityAssign" id='activityAssign' {...register("activityAssign", { required: true })} required defaultValue={teacher.teacherInfo.activityAssign}>
                                 {activityList.map((activity) => (
-                                    <option key={activity._id} value={activity._id}>{activity.group_activity}</option>
+                                    <option value={activity._id}>{activity.group_activity}</option>
                                 ))}
                             </select>
                         </div>
@@ -120,6 +128,7 @@ const AddTeacher = ({open}) => {
                             type='file'
                             name='profile'
                             required
+                            
                         />
                     </div>
 
@@ -133,4 +142,4 @@ const AddTeacher = ({open}) => {
     )
 }
 
-export default AddTeacher
+export default UpdateTeacher
