@@ -65,7 +65,7 @@ function AddUser() {
                     <div className='border p-3 rounded-xl flex flex-col gap-2 md:gap-4 mt-5'>
                         <h1>Thông tin mẹ</h1>
                         <Input type='text' label='Tên mẹ'  {...register('motherName', { required: true })} name='motherName' />
-                        <Input type='number' label='Tuổi' {...register('fatherAge', { required: true })} name='fatherAge' />
+                        <Input type='number' label='Tuổi' {...register('motherAge', { required: true })} name='motherAge' />
                         <Input type='text' label='Email' {...register('motherEmail', { required: true })} name='motherEmail' />
                         <Input type='text' label='Điện thoại' {...register('motherPhone', { required: true })} name='motherPhone' />
                         <Input type='text' label='CCCD' {...register('motherPassport', { required: true })} name='motherPassport' />

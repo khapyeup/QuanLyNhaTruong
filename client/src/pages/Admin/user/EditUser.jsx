@@ -83,7 +83,7 @@ function EditUser() {
 
                             <div className='flex justify-between flex-col lg:flex-row gap-2 '>
                                 <Button type='submit'>Thêm tài khoản</Button>
-                                <Link to={'/admin/user'}><Button className='bg-red-600 w-full'>Hủy bỏ</Button></Link>
+                                <Link to={'/admin/user/'}><Button className='bg-red-600 w-full'>Hủy bỏ</Button></Link>
                             </div>
 
                         </div>

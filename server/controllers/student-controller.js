@@ -45,12 +45,9 @@ const deleteStudent = async (req, res) => {
         const userId = student.user_id;
         const sclassId = student.class_id;
 
-        await Student.findOneAndDelete({_id: studentId});
+        await Student.findOneAndDelete({ _id: studentId });
         console.log("student deleted successfully!")
 
-        
-
-        console.log("Student ID removed from user successfully!");
     } catch (error) {
         console.log('Error deleting student', error)
         res.status(500).send(error);
@@ -90,13 +87,13 @@ const updateStudent = async (req, res) => {
 
         //Update the student with the new user ID
         const updatedStudent = await Student.findOneAndUpdate(
-            {_id: studentId},
+            { _id: studentId },
             newStudentData,
             { new: true } // Return the updated document
         );
         console.log("Student updated successfully:", updatedStudent);
 
-       
+
 
     } catch (error) {
         console.error("Error updating student user ID:", error);
@@ -110,12 +107,11 @@ const getStudentByUser = async (req, res) => {
         const { userId } = req.params;
 
         const students = await Student.find({ user_id: userId }).populate('class_id');
-
-        if (!students) {
-            return res.status(404).json({ message: 'No students found for this user' });
-        }
-
+        
+        
         res.json(students);
+
+
     } catch (error) {
         console.error("Error fetching students:", error);
         res.status(500).json({ message: 'Server error' });

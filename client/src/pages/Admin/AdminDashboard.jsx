@@ -22,6 +22,7 @@ import UserList from './user/UserList'
 import AddUser from './user/AddUser'
 import EditUser from './user/EditUser'
 import ShowGroupActivity from './activity/ShowGroupActivity'
+import DetailUser from './user/DetailUser'
 
 function AdminDashboard() {
   const dispatch = useDispatch()
@@ -82,6 +83,7 @@ function AdminDashboard() {
 
             {/* User route */}
             <Route path="admin/user/" element={<UserList />} />
+            <Route path='admin/user/view/:id' element={<DetailUser />} />
             <Route path="admin/user/add" element={<AddUser />} />
             <Route path='admin/user/:id' element={<EditUser />} />
           </Routes>

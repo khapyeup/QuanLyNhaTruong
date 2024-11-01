@@ -26,7 +26,9 @@ const parentLogin = async (req, res) => {
 
 const getParentList = async (req, res) => {
     try {
-        let result = await User.find({ role: "parent" })
+        let result = await User.find({ role: "parent" }).populate({
+            path: 'parentInfo.student_id'
+        })
         
             res.json(result)
         
