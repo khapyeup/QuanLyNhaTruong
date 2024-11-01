@@ -42,9 +42,8 @@ const deleteStudent = async (req, res) => {
             console.log("Student not found.");
             return res.send('Student not found')
         }
-        const userId = student.user_id;
-        const sclassId = student.class_id;
-
+        
+       
         await Student.findOneAndDelete({ _id: studentId });
         console.log("student deleted successfully!")
 

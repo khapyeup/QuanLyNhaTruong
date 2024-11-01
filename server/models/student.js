@@ -95,23 +95,36 @@ studentSchema.pre('findOneAndUpdate', async function (next) {
     next();
 });
 
-studentSchema.post('findOneAndDelete', async function (doc) {
+
+studentSchema.pre('findOneAndDelete', async function (next) {
+    const doc = await this.model.findOne(this.getQuery());
     if (doc) {
         const user = await mongoose.model('User').findById(doc.user_id);
         if (user && user.role === 'parent') {
-
             const otherStudentsInSameClass = await mongoose.model('Student').find({
                 user_id: doc.user_id,
                 class_id: doc.class_id
             });
 
             // If no other students belong to the old class, remove it from `sclass`
-            if (otherStudentsInSameClass.length === 1) { // only this student is in the old class
+            if (otherStudentsInSameClass.length === 1) {
                 user.parentInfo.sclass = user.parentInfo.sclass.filter(
                     classId => !classId.equals(doc.class_id)
                 );
             }
-            
+
+
+            await user.save();
+        }
+    }
+    next();
+});
+
+studentSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        const user = await mongoose.model('User').findById(doc.user_id);
+        if (user && user.role === 'parent') {
+
             user.parentInfo.student_id = user.parentInfo.student_id.filter(
                 studentId => !studentId.equals(doc._id)
             )

@@ -49,7 +49,6 @@ function ShowStudent() {
 
   const handleDelete = (_id) => {
     dispatch(deleteStudent(_id));
-    window.location.reload();
   }
 
   const handleSearch = (e) => {

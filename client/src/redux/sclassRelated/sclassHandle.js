@@ -20,11 +20,14 @@ export const addClass = (data) => async (dispatch) => {
         const result = await axios.post(`http://localhost:3000/classes/add`, data)
         if (result) {
             console.log("Thêm lớp thành công");
+            return Promise.resolve();
         } else {
             dispatch(getFailed())
+            return Promise.reject();
         }
     } catch (error) {
         dispatch(getError())
+        return Promise.reject();
     }
 }
 
@@ -35,11 +38,14 @@ export const updateClass = (id, data) => async (dispatch) => {
         if (result) {
             alert('Cập nhật thành công')
             dispatch(getSuccess())
+            return Promise.resolve();
         } else {
             dispatch(getFailed())
+            return Promise.reject();
         }
     } catch (error) {
         dispatch(getError())
+        return Promise.reject();
     }
 }
 
@@ -49,6 +55,7 @@ export const updateSchedule = (classId, data) => async (dispatch) => {
         const result = await axios.put(`http://localhost:3000/classes/schedule/${classId}`, data)
         if (result) {
             dispatch(getSuccess())
+            return Promise.resolve();
         } else {
             dispatch(getFailed())
         }

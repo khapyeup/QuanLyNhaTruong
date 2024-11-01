@@ -19,9 +19,11 @@ export const addTeacher = (data) => async (dispatch) => {
         const result = await axios.post("http://localhost:3000/teachers/add", data)
         alert(result.data)
         dispatch(addSuccess())
+        return Promise.resolve();
     } catch (error) {
         alert(error.response.data.errorResponse.errmsg)
         dispatch(getFailed(error))
+        return Promise.reject();
     }
 }
 
@@ -32,10 +34,12 @@ export const deleteTeacher = (id) => async (dispatch) => {
             dispatch(getFailed(result));
         alert('Xoá thành công!')
         dispatch(deleteSuccess())
+        return Promise.resolve();
     } catch (error) {
         alert('Có lỗi khi xoá')
         console.log(error)
         dispatch(getError(error))
+        return Promise.reject();
     }
 }
 
@@ -56,16 +60,20 @@ export const updateTeacher = (id, data) => async (dispatch) => {
     try {
 
         const result = await axios.put(`http://localhost:3000/teachers/edit/${id}`, data);
-        if (result.message)
+        if (result.message) {
             dispatch(getFailed(result))
+            return Promise.reject();
+        }
         else {
             alert('Chỉnh sửa thành công!')
             dispatch(editSuccess())
+            return Promise.resolve();
         }
 
     } catch (error) {
         alert('Có lỗi')
         console.log(error)
         dispatch(getError(error))
+        return Promise.reject();
     }
 }

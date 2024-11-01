@@ -13,6 +13,7 @@ export const getParentList = () => async (dispatch) => {
             dispatch(getFailed(result));
     } catch (error) {
         dispatch(getError(result));
+        return Promise.reject();
     }  
 }
 
@@ -29,7 +30,7 @@ export const addParent = (data) => async (dispatch) => {
         alert('Có lỗi, kiểm tra console');
         console.log(error);
         dispatch(getError(error));
-        
+        return Promise.reject();
     }
 }
 
@@ -45,8 +46,10 @@ export const updateParent = (fields, id) => async (dispatch) => {
         const result = await axios.put(`http://localhost:3000/parents/${id}`, fields, { headers: { 'Content-Type': 'application/json' } });
         if (result.data) {
             dispatch(doneSuccess(result.data));
+            return Promise.resolve();
         }
     } catch (error) {
         dispatch(getError(error));
+        return Promise.reject();
     }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { addTeacher } from '../../../redux/teacherRelated/teacherHandle';
+import { addTeacher, getTeacherList } from '../../../redux/teacherRelated/teacherHandle';
 import { useForm } from "react-hook-form"
 import { getClassList } from '../../../redux/sclassRelated/sclassHandle';
 import { Button, Typography, Input, Card } from '@material-tailwind/react';
@@ -16,7 +16,9 @@ const AddTeacher = ({open}) => {
 
     const onSubmit = (data) => {
         data.profile = data.profile[0].name;
-        dispatch(addTeacher(data));
+        dispatch(addTeacher(data)).then(() => {
+            dispatch(getTeacherList())
+        });
         open();
     }
 

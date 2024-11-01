@@ -33,7 +33,7 @@ function AddUser() {
         }
 
         dispatch(addParent(user));
-        navigate('/admin/user');
+        navigate('/admin/user/');
 
 
     }
