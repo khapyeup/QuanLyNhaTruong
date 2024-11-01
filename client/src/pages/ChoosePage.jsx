@@ -48,7 +48,7 @@ function ChoosePage() {
         </Typography>
         <div class="flex justify-evenly">
         <Link to="/adminlogin"><Button className='hover:bg-blue-gray-600'>Admin</Button></Link>
-       
+        <Link to="/teacherlogin"><Button className='hover:bg-blue-gray-600'>Giáo viên</Button></Link>
        <Link to="/Parentlogin"><Button className='hover:bg-blue-gray-600'>Phụ huynh</Button></Link>
         </div>
         

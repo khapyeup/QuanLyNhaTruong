@@ -9,7 +9,7 @@ function LoginPage({ role }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const redirects = redirect();
+    
     const { status, currentUser, currentRole, response, error } = useSelector(state => state.user)
     const [message, setMessage] = useState("")
 
@@ -26,7 +26,7 @@ function LoginPage({ role }) {
                 navigate("/Admin/dashboard")
             } else if (currentRole === "parent") {
                 navigate("/Parent/dashboard")
-            }
+            } 
         } else if (status === "failed") {
             setMessage(response.message);
         } else if (status === "error") {

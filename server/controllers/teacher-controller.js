@@ -1,5 +1,23 @@
 import User from "../models/user.js";
 
+const teacherLogin = async (req,res) => {
+    if (req.body.username && req.body.password) {
+        let teacher = await User.findOne({ username: req.body.username, role: "teacher" });
+        if (teacher) {
+            if (teacher.password === req.body.password) {
+                teacher.password = undefined;
+                res.send(teacher)
+            } else {
+                res.send({ message: "Sai mật khẩu" })
+            }
+        } else {
+            res.send({ message: "Tài khoản không tồn tại!" })
+        }
+    } else {
+        res.send({ message: "Cần nhập tài khoản và mật khẩu" })
+    }
+}
+
 const getTeacherList = async (req, res) => {
     try {
         let result = await User.find({ role: 'teacher' }).populate('teacherInfo.class')
@@ -80,4 +98,4 @@ const deleteTeacher = async (req, res) => {
     }
 }
 
-export { getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher }
+export { getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher, teacherLogin }

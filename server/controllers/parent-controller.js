@@ -3,7 +3,7 @@ import User from '../models/user.js'
 const parentLogin = async (req, res) => {
     try {
         if (req.body.username && req.body.password) {
-            let parent = await User.findOne({ username: req.body.username, role: "parent" }).populate('student_id').exec()
+            let parent = await User.findOne({ username: req.body.username, role: "parent" }).populate('parentInfo.student_id').exec()
 
             if (parent) {
                 if (parent.password === req.body.password) {

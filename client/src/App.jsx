@@ -7,31 +7,37 @@ import LoginPage from './pages/LoginPage';
 import AdminDashBoard from "./pages/Admin/AdminDashboard"
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ParentDashboard from './pages/Parent/ParentDashboard';
+import TeacherLayout from './pages/Teacher/TeacherLayout';
 
 function App() {
-  const {currentRole} = useSelector(state => state.user);
+  const { currentRole } = useSelector(state => state.user);
 
   return (
     <Router>
-      {currentRole === null && 
+      {currentRole === null &&
         <Routes>
-          <Route path="/" element={<Homepage />}/>
-          <Route path="/choose" element={<ChoosePage />}/>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/choose" element={<ChoosePage />} />
 
-          <Route path="/Adminlogin" element={<LoginPage role="admin"/>}/>
+          <Route path="/Adminlogin" element={<LoginPage role="admin" />} />
           <Route path="/Parentlogin" element={<LoginPage role="parent" />} />
-
-          <Route path="*" element={<Navigate to="/"/>}/>
+          <Route path='/teacherlogin' element={<LoginPage role="teacher" />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       }
-      {currentRole === "admin" && 
+      {currentRole === "admin" &&
         <>
-        <AdminDashboard />
+          <AdminDashboard />
         </>
       }
-      {currentRole === "parent" && 
+      {currentRole === "parent" &&
         <>
-        <ParentDashboard />
+          <ParentDashboard />
+        </>
+      }
+      {currentRole === 'teacher' &&
+        <>
+          <TeacherLayout />
         </>
       }
     </Router>
