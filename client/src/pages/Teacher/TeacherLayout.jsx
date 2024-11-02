@@ -19,7 +19,7 @@ function TeacherLayout() {
             </div>
 
             {/* Phai */}
-            <div className='w-[90%] md:w-[92%] lg:w-[86%] bg-[#F7F8FA] overflow-scroll'>
+            <div className='w-[90%] md:w-[92%] lg:w-[86%] bg-[#F7F8FA] overflow-y-scroll'>
                 <NavTeacher />
                 <Routes>
                     <Route path='/' element={<TeacherDashboard />} />
