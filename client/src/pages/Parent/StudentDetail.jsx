@@ -94,19 +94,19 @@ function StudentDetail() {
                 <CardBody>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>Tên cha: </Typography>
-                    <Typography>{studentDetails.user_id?.contact_info.father_name}</Typography>
+                    <Typography>{studentDetails.user_id?.parentInfo.fatherName}</Typography>
                   </div>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>Email:</Typography>
-                    <Typography> {studentDetails.user_id?.contact_info.father_email}</Typography>
+                    <Typography> {studentDetails.user_id?.parentInfo.fatherEmail}</Typography>
                   </div>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>Số điện thoại: </Typography>
-                    <Typography>{studentDetails.user_id?.contact_info.father_phone}</Typography>
+                    <Typography>{studentDetails.user_id?.parentInfo.fatherPhone}</Typography>
                   </div>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>CCCD: </Typography>
-                    <Typography>{studentDetails.user_id?.contact_info.father_cccd}</Typography>
+                    <Typography>{studentDetails.user_id?.parentInfo.fatherPassport}</Typography>
                   </div>
                 </CardBody>
               </Card>
@@ -116,19 +116,19 @@ function StudentDetail() {
                 <CardBody>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>Tên cha: </Typography>
-                    <Typography>{studentDetails.user_id?.contact_info.mother_name}</Typography>
+                    <Typography>{studentDetails.user_id?.parentInfo.motherName}</Typography>
                   </div>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>Email:</Typography>
-                    <Typography> {studentDetails.user_id?.contact_info.mother_email}</Typography>
+                    <Typography> {studentDetails.user_id?.parentInfo.motherEmail}</Typography>
                   </div>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>Số điện thoại: </Typography>
-                    <Typography>{studentDetails.user_id?.contact_info.mother_phone}</Typography>
+                    <Typography>{studentDetails.user_id?.parentInfo.motherPhone}</Typography>
                   </div>
                   <div className='flex gap-3'>
                     <Typography className='font-bold'>CCCD: </Typography>
-                    <Typography>{studentDetails.user_id?.contact_info.mother_cccd}</Typography>
+                    <Typography>{studentDetails.user_id?.parentInfo.motherPassport}</Typography>
                   </div>
                 </CardBody>
               </Card>

@@ -25,7 +25,6 @@ const ParentHomepage = () => {
   const numberOfTeacher = teacherList && teacherList.length
   const numberOfStudent = studentList && studentList.length
 
-  console.log(currentUser)
   useEffect(() => {
     dispatch(getNoticeList())
     dispatch(getStudentByUser(currentUser._id))
@@ -66,7 +65,7 @@ const ParentHomepage = () => {
                 Email
                 <ListItemSuffix>
                   <Typography variant="text" color="blue-gray">
-                    {currentUser.contact_info.father_email}
+                    {currentUser.parentInfo.fatherEmail}
                   </Typography>
                 </ListItemSuffix>
               </ListItem>
@@ -74,7 +73,7 @@ const ParentHomepage = () => {
                 Số điện thoại
                 <ListItemSuffix>
                   <Typography variant="text" color="blue-gray">
-                    {currentUser.contact_info.father_phone}
+                    {currentUser.parentInfo.fatherPhone}
                   </Typography>
                 </ListItemSuffix>
               </ListItem>
