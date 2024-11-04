@@ -12,7 +12,9 @@ import {
     getError,
     getUserListDone,
     getRequest,
-    isOpen
+    isOpen,
+    setOnlineUsers,
+    setSocket
 } from "./userSlice"
 
 export const loginUser = (fields, role) => async (dispatch) => {
@@ -82,4 +84,13 @@ export const addStuff = (fields, address) => async (dispatch) => {
 
 export const showSideBar = () => (dispatch) => {
     dispatch(isOpen());
+};
+
+export const OnlineUsers = (data) => (dispatch) => {
+    
+    dispatch(setOnlineUsers(data))
+}
+
+export const SocketConnection = (socket) => (dispatch) => {
+    dispatch(setSocket(socket));
 }

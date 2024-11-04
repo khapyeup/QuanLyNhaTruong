@@ -10,7 +10,9 @@ const initialState = {
     currentRole: (JSON.parse(localStorage.getItem("user")) || {}).role || null,
     error: null,
     response: null,
-    isOpen: true
+    isOpen: true,
+    onlineUsers: [],
+    socket: null
 };
 
 const userSlice = createSlice({
@@ -84,6 +86,12 @@ const userSlice = createSlice({
             state.response = null;
             state.userList = action.payload;
             state.loading = false;
+        },
+        setOnlineUsers: (state, action) => {
+            state.onlineUsers = action.payload;
+        },
+        setSocket: (state, action) => {
+            state.socket = action.payload;
         }
 
     }
@@ -103,7 +111,9 @@ export const {
     getFailed,
     getError,
     getUserListDone,
-    isOpen
+    isOpen,
+    setOnlineUsers,
+    setSocket
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

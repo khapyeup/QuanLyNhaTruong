@@ -5,7 +5,7 @@ import UserSearchCard from './UserSearchCard';
 import { CiSearch } from "react-icons/ci";
 import axios from 'axios'
 
-const SearchUserParent = () => {
+const SearchUserParent = ({onClose}) => {
     const [searchUser, setSearchUser] = useState([]);
     const [searchKey, setSearchKey] = useState('')
     const [loading, setLoading] = useState(false);
@@ -51,7 +51,7 @@ const SearchUserParent = () => {
                     }
                     {searchUser.length !== 0 && !loading && (
                         searchUser.map((user, index) => (
-                            <UserSearchCard user={user} key={user._id}/>
+                            <UserSearchCard onClose={onClose } user={user} key={user._id}/>
                         )
                         )
                     )

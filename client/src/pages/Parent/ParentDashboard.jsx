@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ParentSidebar from './ParentSidebar';
-
 import ParentHomepage from './ParentHomepage';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import ParentStudent from './ParentStudent';
@@ -9,26 +8,44 @@ import ParentNotice from './ParentNotice';
 import { Button } from '@material-tailwind/react';
 import ParentFinance from './ParentFinance';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '../../redux/userRelated/userHandle';
+import { logoutUser, OnlineUsers, SocketConnection } from '../../redux/userRelated/userHandle';
 import { showSideBar } from '../../redux/userRelated/userHandle';
-
 import { HiOutlineBell } from "react-icons/hi2";
 import ParentNofication from './ParentNofication';
 import StudentDetail from './StudentDetail';
+import { io } from 'socket.io-client';
+import MessagePanel from '../component/MessagePanel';
 
 
 function ParentDashboard() {
   const dispatch = useDispatch()
 
-  const { isOpen } = useSelector(state => state.user);
-
+  const { isOpen, currentUser, onlineUsers } = useSelector(state => state.user);
+  
   const [isNoficationMenuOpen, setIsNoficationMenuOpen] = useState(false);
 
   const handleNoficationMenu = () => {
     setIsNoficationMenuOpen(!isNoficationMenuOpen);
-    console.log(isNoficationMenuOpen)
+   
   }
 
+  useEffect(() => {
+    const socket = io('http://localhost:3000', {
+      auth: {
+        userId: currentUser._id
+      }
+    });
+    dispatch(SocketConnection(socket));
+    
+    socket.on('onlineUsers', (data) => {
+      dispatch(OnlineUsers(data));
+    })
+
+     return () => {
+      socket.disconnect();
+    };
+  }, [])
+ 
   return (
     <>
       <div className='w-full h-screen flex flex-col md:flex-row'>
@@ -38,7 +55,7 @@ function ParentDashboard() {
         </div>
 
         {/* Navbar */}
-        <div className="flex-1 overflow-y-scroll bg-[#f8f9f7] h-screen">
+        <div className="flex-1 overflow-y-scroll h-screen">
           <div className=" flex flex-row justify-between w-full px-4 py-1 items-center shadow-md bg-white">
             <div>
               <button onClick={() => dispatch(showSideBar())} className={isOpen ? 'hidden' : 'visible'}>☰</button>
@@ -64,7 +81,8 @@ function ParentDashboard() {
             <Route path='/parent/student/:studentId' element={<StudentDetail />} />
             <Route path='/parent/notice' element={<ParentNotice />} />
             <Route path='/parent/finance' element={<ParentFinance />} />
-            <Route path='/parent/message' element={<ParentMessage />} />
+            <Route path='/parent/messages/*' element={<ParentMessage />} />
+            
           </Routes>
         </div>
       </div>

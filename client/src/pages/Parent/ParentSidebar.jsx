@@ -39,7 +39,7 @@ function ParentSidebar() {
                     <VscBellDot />
                     Thông báo
                 </NavLink>
-                <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/message/"}>
+                <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/messages/"}>
                     <FaChalkboardTeacher />
                     Nhắn tin
                 </NavLink>

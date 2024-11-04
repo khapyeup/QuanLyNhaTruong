@@ -1,12 +1,31 @@
-import React from 'react'
-import { Link, Route, Router, Routes, Navigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, Route, Routes, Navigate } from 'react-router-dom'
+import { io } from 'socket.io-client';
 
 import MenuTeacher from '../component/MenuTeacher'
 import NavTeacher from '../component/NavTeacher'
 import TeacherDashboard from './TeacherDashboard'
 import TeacherStudent from './TeacherStudent'
+import { useDispatch, useSelector } from 'react-redux'
+import { OnlineUsers } from '../../redux/userRelated/userHandle';
+
+
 
 function TeacherLayout() {
+    const dispatch = useDispatch();
+    const { currentUser } = useSelector(state => state.user);
+
+    useEffect(() => {
+        const socket = io('http://localhost:3000', {
+            auth: {
+                userId: currentUser._id
+            }
+        });
+
+        socket.on('onlineUsers', (data) => {
+            dispatch(OnlineUsers(data))
+        })
+    }, [])
     return (
         <div className='h-screen flex'>
             {/* Trai */}
