@@ -1,19 +1,20 @@
 import express from "express";
 import {addUser, adminLogin, getDetailUser, getUserList, updateUser} from "../controllers/admin-controller.js"
 import {addParent, deleteParent, getParentList, parentLogin, updateParent} from "../controllers/parent-controller.js"
-import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher, teacherLogin} from "../controllers/teacher-controller.js";
+import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher, teacherLogin, searchTeacherUser} from "../controllers/teacher-controller.js";
 import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} from "../controllers/notice-controller.js";
 import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent, getStudentByUser} from "../controllers/student-controller.js";
 import {getClassList, addSchedule, getDetailClass, updateClass, addClass} from "../controllers/class-controller.js";
 import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
 import { addFinance, deleteFinance, getAllFinanceRecords, getFinanceByUserId, recordPayment, updateFinance } from "../controllers/finance-controller.js";
-import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
-import { createMessage, getMessage } from "../controllers/message-controller.js";
+// import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
+// import { createMessage, getMessage } from "../controllers/message-controller.js";
 
 
 const router = express.Router();
 
 //Admin
+router.get("/", (req, res) => {res.send("Hello")})
 router.post("/Adminlogin", adminLogin)
 
 //User
@@ -32,6 +33,7 @@ router.get("/teachers/view/:id", getDetailTeacher)
 router.post("/teachers/add", addTeacher)
 router.put("/teachers/edit/:id", updateTeacher)
 router.delete("/teachers/delete/:id", deleteTeacher)
+router.post('/teachers/search', searchTeacherUser)
 //Notice
 router.get("/notices", getNoticeList)
 router.get("/notices/view/:id", getDetailNotice)
@@ -72,13 +74,7 @@ router.put('/finances/:id', updateFinance)
 router.delete('/finances/:id', deleteFinance)
 router.post('/payments', recordPayment);
 
-//Chat
-router.post('/chats', createChat);
-router.get('/chats/:userId', findUserChat);
-router.get('/chats/find/:firstId/:secondId', findChat);
-//Message
-router.post('/messages', createMessage);
-router.get('/messages/:chatId', getMessage);
+
 
 
 export default router;

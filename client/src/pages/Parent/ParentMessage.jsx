@@ -1,53 +1,42 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import {Dialog} from '@material-tailwind/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserChat } from '../../redux/chatRelated/chatHandle'
-import { getUserDetails } from '../../redux/userRelated/userHandle';
-
+import { IoPersonAddOutline } from "react-icons/io5";
+import SearchUserParent from '../component/searchUserParent';
+import { io } from "socket.io-client";
 
 function ParentMessage() {
-  const dispatch = useDispatch();
-
-  const { userChat, loading } = useSelector(state => state.chat);
-  const { currentUser, userDetails } = useSelector(state => state.user);
-
-  
- 
+  const [openSearch, setOpenSearch] = useState(false);
 
   useEffect(() => {
-    dispatch(getUserChat(currentUser._id));
-  }, [])
+    const socket = io('http://localhost:3000');
+    
+  },[])
+
   return <>
-    {loading ? (<p>Đang tải</p>) : (
-      <div className='container'>
+    <div className='flex h-screen'>
+      {/* Ben trai */}
+      <div className='w-[40%] md:w-[25%] border rounded'>
+        <div className='flex justify-between items-center p-5'>
+          <h1 className='font-bold text-xl'>Đoạn chat</h1>
+          <IoPersonAddOutline onClick={() => setOpenSearch(true)} className='size-10 cursor-pointer bg-gray-300 rounded-2xl p-2.5'/>
+        </div>
+        {/* Danh sach doan chat */}
+        <div>
 
-        {userChat.length > 0 ? (
-          //  ben trai
-          <div className='flex h-full'>
-            <div className='w-1/4 h-screen overflow-y-auto border py-4 min-w-1/4'>
-              <p className='font-bold text-xl mb-5'>Danh sách chat</p>
-
-              {userChat.map(chat => (
-                <div className='p-2 rounded-lg hover:bg-gray-200 bg-gray-200' key={chat._id}>
-                  <h2 className='font-bold'>{chat.members[1].username}</h2>
-                  <p>Chào cô giáo</p>
-                </div>
-              ))}
-            </div>
-
-            {/* BenPhai */}
-            <div className='flex-1'>
-              <header class="bg-white p-4 border">
-                <h1 class="text-2xl font-semibold">teacher</h1>
-              </header>
-              <form className='flex items-center mt-96'>
-                <input type='text' className='border w-full border-black text-xl p-2'/>
-                <button className='relative right-10 bg-blue-700 rounded-full p-1'>Gửi</button>
-              </form>
-            </div>
-          </div>
-        ) : <p>Không có đoạn chat nào</p>}
+        </div>
+        
       </div>
-    )}
+      
+      {/* Ben phai */}
+      <div className='w-[60%] md:w-[75%]'>
+        <p>r</p>
+      </div>
+    </div>
+
+    <Dialog open={openSearch} handler={() => setOpenSearch(!openSearch)}>
+      <SearchUserParent />
+    </Dialog>
   </>
 
 

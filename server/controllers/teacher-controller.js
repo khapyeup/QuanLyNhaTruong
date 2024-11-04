@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 
-const teacherLogin = async (req,res) => {
+const teacherLogin = async (req, res) => {
     if (req.body.username && req.body.password) {
         let teacher = await User.findOne({ username: req.body.username, role: "teacher" });
         if (teacher) {
@@ -32,7 +32,7 @@ const getTeacherList = async (req, res) => {
 
 const getDetailTeacher = async (req, res) => {
     const teacherId = req.params.id;
-    
+
     try {
         const result = await User.findOne({ _id: teacherId, role: 'teacher' }).populate('teacherInfo.class').populate("teacherInfo.activityAssign").select('-password')
         res.send(result);
@@ -42,10 +42,10 @@ const getDetailTeacher = async (req, res) => {
 }
 
 const addTeacher = async (req, res) => {
-    const { username, password,age, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
+    const { username, password, age, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
 
     const newTeacher = new User({
-        username, 
+        username,
         password,
         role: 'teacher',
         profile,
@@ -71,17 +71,17 @@ const addTeacher = async (req, res) => {
 
 const updateTeacher = async (req, res) => {
     const teacherId = req.params.id;
-    const { username, password,age, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
+    const { username, password, age, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
     console.log("updateTeacher with id:" + teacherId)
     try {
         const updatedTeacher = await User.findByIdAndUpdate(
             teacherId,
             {
-                username, password,age, profile, name, email, phone, gender, sclass, activityAssign 
+                username, password, age, profile, name, email, phone, gender, sclass, activityAssign
             }
             , { new: true });
-            res.json('Teacher updated successfully');
-        
+        res.json('Teacher updated successfully');
+
     } catch (error) {
         res.status(500).send(error);
     }
@@ -98,4 +98,18 @@ const deleteTeacher = async (req, res) => {
     }
 }
 
-export { getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher, teacherLogin }
+const searchTeacherUser = async (req, res) => {
+    try {
+        const { search } = req.body;
+
+        const query = new RegExp(search, "i", "g");
+        
+        const user = await User.find({ "teacherInfo.name": query, role: 'teacher' });
+
+        return res.json(user);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
+export { getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher, teacherLogin, searchTeacherUser }

@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema(
     {
-        chatId: String,
-        senderId: String,
-        text: String
+        text: { type: String, default: '' },
+        imageUrl: { type: String, default: '' },
+        fileUrl: { type: String, default: '' },
+        seen: { type: Boolean, default: false }
     },
     {
         timestamps: true

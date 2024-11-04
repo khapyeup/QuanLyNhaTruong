@@ -20,7 +20,7 @@ function ParentSidebar() {
     return (
         <Card className={isOpen ? "h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5" : 'hidden'}>
             <div className="mb-2 p-4 flex justify-between items-center gap-2">
-                <Typography variant="h5" color="white">
+                <Typography variant="h5" >
                     Nhà trường ABC
                 </Typography>
                 <Button className='' onClick={() => dispatch(showSideBar())}>X</Button>
