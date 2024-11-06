@@ -6,7 +6,7 @@ const UserSearchCard = ({user, onClose}) => {
   return (
     <Link onClick={onClose} to={`${user._id}`} className='flex gap-5 items-center hover:bg-gray-300 cursor-pointer rounded font-sans p-2'>
       <Avatar userId={user._id} size={12} imgUrl={user.profile} />
-      <p>{user.teacherInfo.name}</p>
+      <p>{user.teacherInfo.name || user.parentInfo.fatherName}</p>
     </Link>
   )
 }

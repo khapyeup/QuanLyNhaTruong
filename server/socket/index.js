@@ -18,6 +18,32 @@ const io = new Server(server, {
 
 const onlineUsers = new Set();
 
+//Function update conversation
+const getConversations = async (sender) => {
+    const conversations = await Conversation.find({
+        participants: { $in: [sender] }
+    }).populate('participants').populate('messages');
+
+    let index = -1;
+    if (conversations.length > 0) {
+        
+        index = conversations[0].participants[0]._id.toString() === sender ? 1 : 0;
+    }
+
+    let payload = conversations?.map((conversation) => (
+        {
+            _id: conversation._id,
+            name: conversation.participants[index]?.teacherInfo.name || conversation.participants[index]?.parentInfo.fatherName,
+            sender: conversation.participants[index]?._id,
+            profile: conversation.participants[index]?.profile,
+            lastMessage: conversation.messages[conversation.messages.length - 1],
+            totalUnSeen: (conversation.messages.filter((message) => message?.sender.toString() === conversation.participants[index]._id.toString() && !message?.seen))?.length
+        }
+    ))
+
+    return payload;
+}
+
 io.on('connection', async (socket) => {
     console.log('User connected ', socket.id);
 
@@ -30,24 +56,11 @@ io.on('connection', async (socket) => {
     socket.join(user?._id.toString());
     //Add to onlineUser array
     onlineUsers.add(user?._id.toString());
-    
+
 
 
     socket.on('getConversations', async (sender) => {
-        const conversations = await Conversation.find({
-            participants: {$in: [sender]}
-        }).populate('participants').populate('messages');
-
-       let payload =  conversations?.map((conversation) => (
-        {
-            _id: conversation._id,
-            participants: conversation.participants,
-            lastMessage: conversation.messages[conversation.messages.length-1],
-            totalUnSeen: (conversation.messages.filter((message) => message?.sender.toString() === conversation.participants[1]._id.toString() && !message?.seen))?.length
-        }
-       ))
-        
-
+        let payload = await getConversations(sender);
         socket.emit('conversations', payload || []);
     })
 
@@ -59,7 +72,7 @@ io.on('connection', async (socket) => {
 
         const payload = {
             _id: user?._id.toString(),
-            name: user?.teacherInfo.name,
+            name: user?.teacherInfo.name || user?.parentInfo.fatherName,
             profile: user?.profile,
             online: onlineUsers.has(data.receiver),
         }
@@ -94,10 +107,23 @@ io.on('connection', async (socket) => {
         await conversation.save();
 
         const getMessages = await Conversation.findOne({
-            participants: {$all: [message.sender, message.receiver]}
-        }).populate('messages').sort({'updateAt': -1});
+            participants: { $all: [message.sender, message.receiver] }
+        }).populate('messages').sort({ 'updateAt': -1 });
 
-        
+        //After sending message, update seen to true
+        const updateSeen = await Message.updateMany({
+            sender: message.receiver,
+            receiver: message.sender,
+        },
+            { seen: true }
+        );
+
+        //Send conversations after user send a messages
+        let payloadSender = await getConversations(message.sender);
+        let payloadReceiver = await getConversations(message.receiver);
+
+        io.to([message.sender]).emit('conversations', payloadSender);
+        io.to([message.receiver]).emit('conversations', payloadReceiver);
         io.to([message.sender, message.receiver]).emit('messages', getMessages.messages);
 
     })

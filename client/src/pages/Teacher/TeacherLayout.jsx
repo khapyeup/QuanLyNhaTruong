@@ -7,7 +7,8 @@ import NavTeacher from '../component/NavTeacher'
 import TeacherDashboard from './TeacherDashboard'
 import TeacherStudent from './TeacherStudent'
 import { useDispatch, useSelector } from 'react-redux'
-import { OnlineUsers } from '../../redux/userRelated/userHandle';
+import { OnlineUsers, SocketConnection } from '../../redux/userRelated/userHandle';
+import TeacherMessage from './TeacherMessage';
 
 
 
@@ -22,9 +23,14 @@ function TeacherLayout() {
             }
         });
 
+        dispatch(SocketConnection(socket));
         socket.on('onlineUsers', (data) => {
             dispatch(OnlineUsers(data))
         })
+
+        return () => {
+            socket.disconnect();
+          };
     }, [])
     return (
         <div className='h-screen flex'>
@@ -45,6 +51,7 @@ function TeacherLayout() {
                     <Route path='*' element={<Navigate to="/" />} />
                     <Route path='dashboard' element={<TeacherDashboard />} />
                     <Route path='students' element={<TeacherStudent />} />
+                    <Route path='messages/*' element={<TeacherMessage />} />
                 </Routes>
             </div>
         </div>

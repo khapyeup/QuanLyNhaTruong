@@ -28,7 +28,7 @@ function MenuTeacher() {
         {
             label: 'Tin nhắn',
             icon: <IoChatbubbleEllipses  className='text-xl'/>,
-            href: '/chat'
+            href: '/messages'
         },
         {
             label: 'Thời khoá biểu',

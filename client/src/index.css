@@ -6,3 +6,7 @@
     @apply scale-110 text-black;
 }
 
+.active.conversation{
+    @apply bg-gray-200 scale-100
+}
+

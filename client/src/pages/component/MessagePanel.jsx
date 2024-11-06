@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { format, intlFormat } from "date-fns";
 import { Link, useParams } from 'react-router-dom'
@@ -11,13 +11,10 @@ import { sendMessage } from '../../redux/chatRelated/chatHandle';
 
 
 function MessagePanel() {
+  const bottomRef = useRef(null);
   const user = useSelector(state => state.user);
   const { socket } = useSelector(state => state.user);
-
   const { userId } = useParams();
-
-
-
   const [userDetail, setUserDetail] = useState({
     _id: '',
     name: '',
@@ -32,8 +29,8 @@ function MessagePanel() {
     fileUrl: '',
     seen: false,
   })
-
   const [messages, setMessages] = useState([]);
+
 
 
   const uploadImage = async (e) => {
@@ -44,6 +41,9 @@ function MessagePanel() {
     setMessage((prev) => {
       return { ...prev, imageUrl: uploadPhoto.url }
     })
+
+    if (uploadPhoto.url)
+      alert('Upload thanh cong!')
   }
 
   const inputMessage = (e) => {
@@ -66,6 +66,8 @@ function MessagePanel() {
 
   }
   console.log(message)
+  
+  
   useEffect(() => {
     if (socket) {
       socket.emit('load-receiverInfo', { sender: user.currentUser._id, receiver: userId });
@@ -80,10 +82,17 @@ function MessagePanel() {
       })
     }
   }, [socket, userId, user])
+
+  useEffect(() => {
+    // Scroll to the bottom every time messages change
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
   return (
     <div>
       <header className='sticky top-0 border-2 rounded bg-white '>
-        <div className='flex gap-5 px-1 py-2 items-center rounded ml-2'>
+        <div ref={bottomRef} className='flex gap-5 px-1 py-2 items-center rounded ml-2'>
           <Link to={'/parent/messages/'}><FaArrowLeftLong size={35} className='transition hover:scale-110 cursor-pointer rounded-full hover:bg-gray-400 p-2' /></Link>
           <Avatar size={12} imgUrl={userDetail?.profile} userId={userDetail._id} />
           <div>
@@ -96,7 +105,7 @@ function MessagePanel() {
       {/* Show all message */}
       <div className='overflow-y-scroll flex flex-col gap-1 overflow-x-hidden h-[calc(100vh-64px-40px-16px-40px)] px-5 py-4'>
         {messages?.map((message) => (
-          <div className={`px-3 py-2 rounded-2xl w-fit ${message.sender === user.currentUser._id ? `bg-blue-500 text-white ml-auto text-right` : `bg-gray-200`}`} key={message._id}>
+          <div className={`px-3 py-2 rounded-2xl w-fit ${message.sender === user.currentUser._id ? `bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white ml-auto text-right` : `bg-gray-200`}`} key={message._id}>
             {message.imageUrl && <img className='size-96 ' src={message.imageUrl} />}
 
             {message.text && (
@@ -109,6 +118,7 @@ function MessagePanel() {
 
           </div>
         ))}
+        <div ref={bottomRef}></div>
       </div>
 
       {/* Send Message Input */}

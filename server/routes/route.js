@@ -1,6 +1,6 @@
 import express from "express";
 import {addUser, adminLogin, getDetailUser, getUserList, updateUser} from "../controllers/admin-controller.js"
-import {addParent, deleteParent, getParentList, parentLogin, updateParent} from "../controllers/parent-controller.js"
+import {addParent, deleteParent, getParentList, parentLogin, searchParentUser, updateParent} from "../controllers/parent-controller.js"
 import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher, teacherLogin, searchTeacherUser} from "../controllers/teacher-controller.js";
 import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} from "../controllers/notice-controller.js";
 import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent, getStudentByUser} from "../controllers/student-controller.js";
@@ -23,10 +23,12 @@ router.get('/users', getUserList)
 
 // Parent
 router.post("/Parentlogin", parentLogin)
+router.post('/parents/search', searchParentUser)
 router.get("/parents", getParentList)
 router.post('/parents', addParent)
 router.put('/parents/:id', updateParent)
 router.delete('/parents/:id', deleteParent)
+
 //Teacher
 router.post('/teacherlogin', teacherLogin)
 router.get("/teachers", getTeacherList)

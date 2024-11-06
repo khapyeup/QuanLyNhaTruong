@@ -5,7 +5,7 @@ import UserSearchCard from './UserSearchCard';
 import { CiSearch } from "react-icons/ci";
 import axios from 'axios'
 
-const SearchUserParent = ({onClose}) => {
+const SearchUser = ({onClose, role}) => {
     const [searchUser, setSearchUser] = useState([]);
     const [searchKey, setSearchKey] = useState('')
     const [loading, setLoading] = useState(false);
@@ -13,7 +13,7 @@ const SearchUserParent = ({onClose}) => {
     const handleSearch = async () => {
         try {
             setLoading(true);
-            const response = await axios.post('http://localhost:3000/teachers/search',
+            const response = await axios.post(`http://localhost:3000/${role}s/search`,
                 { search: searchKey }
             )
 
@@ -46,7 +46,7 @@ const SearchUserParent = ({onClose}) => {
                     )
                     }
                     {loading && (
-                        <p className='text-center'><Loading size={12} /></p>
+                        <p>Loading....</p>
                     )
                     }
                     {searchUser.length !== 0 && !loading && (
@@ -62,4 +62,4 @@ const SearchUserParent = ({onClose}) => {
     )
 }
 
-export default SearchUserParent
+export default SearchUser

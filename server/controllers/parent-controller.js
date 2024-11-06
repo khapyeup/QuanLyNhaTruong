@@ -23,6 +23,20 @@ const parentLogin = async (req, res) => {
     }
 }
 
+const searchParentUser = async (req, res) => {
+    try {
+        const { search } = req.body;
+
+        const query = new RegExp(search, "i", "g");
+        
+        const user = await User.find({ "parentInfo.fatherName": query, role: 'parent' });
+
+        return res.json(user);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
 
 const getParentList = async (req, res) => {
     try {
@@ -91,4 +105,4 @@ const deleteParent = async (req, res) => {
 
 
 
-export { parentLogin, getParentList, addParent, updateParent, deleteParent };
+export { parentLogin, getParentList, searchParentUser, addParent, updateParent, deleteParent };

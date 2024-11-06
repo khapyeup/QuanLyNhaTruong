@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { Dialog } from '@material-tailwind/react'
-import { useDispatch, useSelector } from 'react-redux'
 import { IoPersonAddOutline } from "react-icons/io5";
 import SearchUser from '../component/SearchUser';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import MessagePanel from '../component/MessagePanel';
 import Conversations from '../component/Conversations';
 
 
 
-function ParentMessage() {
+function TeacherMessage() {
   const [openSearch, setOpenSearch] = useState(false);
-
+ 
+ 
   return <>
     <div className='flex'>
       {/* Ben trai */}
@@ -20,10 +20,10 @@ function ParentMessage() {
           <h1 className='font-bold text-xl'>Đoạn chat</h1>
           <IoPersonAddOutline onClick={() => setOpenSearch(true)} className='transition hover:scale-110 size-10 cursor-pointer bg-gray-300 rounded-2xl p-2.5' />
         </div>
-
+        
         {/* Danh sach doan chat */}
         <div>
-          <Conversations />
+          <Conversations/>
         </div>
 
       </div>
@@ -32,14 +32,14 @@ function ParentMessage() {
       <div className='w-[60%] md:w-[75%]'>
         {/*Children is MessagePanel.jsx */}
         <Routes>
-          <Route path=':userId' element={<MessagePanel />} />
+          <Route path=':userId' element={<MessagePanel/> } />
         </Routes>
 
       </div>
     </div>
 
     <Dialog open={openSearch} handler={() => setOpenSearch(!openSearch)}>
-      <SearchUser role={'teacher'} onClose={() => setOpenSearch(!openSearch)} />
+      <SearchUser role={'parent'} onClose={() => setOpenSearch(!openSearch) } />
     </Dialog>
   </>
 
@@ -47,4 +47,4 @@ function ParentMessage() {
 
 }
 
-export default ParentMessage
+export default TeacherMessage

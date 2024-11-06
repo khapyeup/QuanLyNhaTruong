@@ -23,7 +23,7 @@ function NavTeacher() {
                 </div>
                 <img onClick={() => setOpen(!open)} className='size-12 object-cover rounded-full border-2 cursor-pointer' src={'/' + currentUser.profile} />
                 {open && (
-                    <div className='absolute top-[48px] right-10 border-2 rounded-lg'>
+                    <div className='absolute z-10 top-[48px] right-10 border-2 rounded-lg'>
                         <p onClick={logout} className='bg-white p-2 hover:bg-blue-gray-50 cursor-pointer'>Đăng xuất</p>
                     </div>
                 )}
