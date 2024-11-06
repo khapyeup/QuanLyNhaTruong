@@ -9,6 +9,7 @@ import TeacherStudent from './TeacherStudent'
 import { useDispatch, useSelector } from 'react-redux'
 import { OnlineUsers, SocketConnection } from '../../redux/userRelated/userHandle';
 import TeacherMessage from './TeacherMessage';
+import TeacherAttendance from './TeacherAttendance';
 
 
 
@@ -52,6 +53,7 @@ function TeacherLayout() {
                     <Route path='dashboard' element={<TeacherDashboard />} />
                     <Route path='students' element={<TeacherStudent />} />
                     <Route path='messages/*' element={<TeacherMessage />} />
+                    <Route path='attendance' element={<TeacherAttendance />} />
                 </Routes>
             </div>
         </div>

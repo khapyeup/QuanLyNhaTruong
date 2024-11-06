@@ -1,8 +1,11 @@
 import React from 'react'
+import TotalAbsent from '../component/TotalAbsent'
 
 const TeacherDashboard = () => {
   return (
-    <div>TeacherDashboard</div>
+    <div>
+      <TotalAbsent/>
+    </div>
   )
 }
 

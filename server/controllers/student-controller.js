@@ -42,8 +42,8 @@ const deleteStudent = async (req, res) => {
             console.log("Student not found.");
             return res.send('Student not found')
         }
-        
-       
+
+
         await Student.findOneAndDelete({ _id: studentId });
         console.log("student deleted successfully!")
 
@@ -106,8 +106,8 @@ const getStudentByUser = async (req, res) => {
         const { userId } = req.params;
 
         const students = await Student.find({ user_id: userId }).populate('class_id');
-        
-        
+
+
         res.json(students);
 
 
@@ -117,5 +117,53 @@ const getStudentByUser = async (req, res) => {
     }
 }
 
+const getTotalAttendance = async (req, res) => {
+    try {
+        // Get the start and end of today in local time
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0); // Set to midnight
 
-export { addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent, getStudentByUser }
+        const todayEnd = new Date();
+        todayEnd.setHours(23, 59, 59, 999); // Set to the end of the day
+
+        // Find students with attendance status "Vắng" for today
+        const studentsAttendance = await Student.find({
+            attendance: {
+                $elemMatch: {
+                    date: { $gte: todayStart, $lte: todayEnd },
+                    status: 'Hiện diện'
+                }
+            }
+        });
+
+        const students = await Student.find({});
+
+        const payload = {
+            attendance: studentsAttendance.length,
+            percent: Math.round(studentsAttendance.length/students.length*100) || 0,
+            totalStudent: students.length
+        }
+
+        res.status(200).json(payload);
+    } catch (error) {
+        console.error("Error getTotalAttendance ", error);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
+const getStudentByClass = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const response = await Student.find({
+            class_id : id
+        })
+
+        res.status(200).json(response);
+    } catch (error) {
+        console.error("Error getStudentByClass ", error);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
+export { addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent, getStudentByUser, getTotalAttendance, getStudentByClass }
