@@ -7,6 +7,7 @@ import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStude
 import {getClassList, addSchedule, getDetailClass, updateClass, addClass} from "../controllers/class-controller.js";
 import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
 import { addFinance, deleteFinance, getAllFinanceRecords, getFinanceByUserId, recordPayment, updateFinance } from "../controllers/finance-controller.js";
+import { getConversations, getMessages, newMessage } from "../controllers/chat-controller.js";
 // import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
 // import { createMessage, getMessage } from "../controllers/message-controller.js";
 
@@ -74,7 +75,9 @@ router.put('/finances/:id', updateFinance)
 router.delete('/finances/:id', deleteFinance)
 router.post('/payments', recordPayment);
 
-
-
+//Chat
+router.get('/conversations/:sender', getConversations)
+router.get('/messages/:sender&:receiver', getMessages)
+router.post('/messages', newMessage)
 
 export default router;

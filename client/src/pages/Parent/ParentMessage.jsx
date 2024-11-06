@@ -5,6 +5,8 @@ import { IoPersonAddOutline } from "react-icons/io5";
 import SearchUserParent from '../component/searchUserParent';
 import { Routes, Route} from 'react-router-dom';
 import MessagePanel from '../component/MessagePanel';
+import Conversations from '../component/Conversations';
+
 
 
 function ParentMessage() {
@@ -14,14 +16,15 @@ function ParentMessage() {
   return <>
     <div className='flex'>
       {/* Ben trai */}
-      <div className='w-[40%] md:w-[25%] border-2 rounded'>
+      <div className='w-[40%] md:w-[25%] border-2 rounded h-[calc(100vh-50px)]'>
         <div className='flex justify-between items-center p-5'>
           <h1 className='font-bold text-xl'>Đoạn chat</h1>
           <IoPersonAddOutline onClick={() => setOpenSearch(true)} className='transition hover:scale-110 size-10 cursor-pointer bg-gray-300 rounded-2xl p-2.5' />
         </div>
+        
         {/* Danh sach doan chat */}
         <div>
-
+          <Conversations/>
         </div>
 
       </div>
