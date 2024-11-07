@@ -3,7 +3,7 @@ import {addUser, adminLogin, getDetailUser, getUserList, updateUser} from "../co
 import {addParent, deleteParent, getParentList, parentLogin, searchParentUser, updateParent} from "../controllers/parent-controller.js"
 import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher, teacherLogin, searchTeacherUser} from "../controllers/teacher-controller.js";
 import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} from "../controllers/notice-controller.js";
-import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent, getStudentByUser, getTotalAttendance, getStudentByClass} from "../controllers/student-controller.js";
+import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent, getStudentByUser, getTotalAttendance, getStudentByClass, setAttendanceByClass} from "../controllers/student-controller.js";
 import {getClassList, addSchedule, getDetailClass, updateClass, addClass} from "../controllers/class-controller.js";
 import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
 import { addFinance, deleteFinance, getAllFinanceRecords, getFinanceByUserId, recordPayment, updateFinance } from "../controllers/finance-controller.js";
@@ -51,6 +51,7 @@ router.get("/user/:userId/students", getStudentByUser)
 router.get("/students/view/:id", getDetailStudent)
 router.get('/students/total-attendance-today', getTotalAttendance)
 router.post("/students/add", addStudent)
+router.post('/students/:class_id/attendance', setAttendanceByClass)
 router.put("/students/edit/:id", updateStudent)
 router.delete("/students/delete/:id", deleteStudent)
 //Classes

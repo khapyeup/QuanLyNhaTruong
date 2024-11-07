@@ -21,7 +21,7 @@ const TotalAbsent = () => {
 
     return (
         <div className='p-2 bg-cyan-200 flex flex-col gap-2'>
-            <p>Tổng số học sinh có mặt</p>
+            <p>Số học sinh có mặt hôm nay</p>
             <ProgressBar value={data?.percent}/>
             <p className='text-center'>{data?.attendance}/{data?.totalStudent}</p>
         </div>

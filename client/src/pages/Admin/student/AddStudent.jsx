@@ -23,6 +23,7 @@ const AddStudent = ({ open, showModal }) => {
     const newStudentData = { ...e, avatar: imageFileName };
     
     dispatch(addStudent(newStudentData))
+    
   }
 
   const handleFileChange = (e) => {

@@ -140,7 +140,7 @@ const getTotalAttendance = async (req, res) => {
 
         const payload = {
             attendance: studentsAttendance.length,
-            percent: Math.round(studentsAttendance.length/students.length*100) || 0,
+            percent: Math.round(studentsAttendance.length / students.length * 100) || 0,
             totalStudent: students.length
         }
 
@@ -153,10 +153,10 @@ const getTotalAttendance = async (req, res) => {
 
 const getStudentByClass = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
         const response = await Student.find({
-            class_id : id
+            class_id: id
         })
 
         res.status(200).json(response);
@@ -166,4 +166,41 @@ const getStudentByClass = async (req, res) => {
     }
 }
 
-export { addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent, getStudentByUser, getTotalAttendance, getStudentByClass }
+const setAttendanceByClass = async (req, res) => {
+    const { attendance, day } = req.body;
+    const attendanceDate = day ? new Date(day) : new Date(); // Default to today if no date is provided
+
+    try {
+        const promises = Object.entries(attendance).map(async ([studentId, attendanceStatus]) => {
+            // Check if attendance already exists for this student on the given date
+            const student = await Student.findOne({
+                _id: studentId,
+                "attendance.date": attendanceDate
+            });
+
+            if (student) {
+                // If attendance exists, update the status
+                await Student.updateOne(
+                    { _id: studentId, "attendance.date": attendanceDate },
+                    { $set: { "attendance.$.status": attendanceStatus } }
+                );
+            } else {
+                // If attendance doesn't exist, add a new attendance entry
+                await Student.updateOne(
+                    { _id: studentId },
+                    { $push: { attendance: { date: attendanceDate, status: attendanceStatus } } }
+                );
+            }
+        });
+
+        await Promise.all(promises); // Wait for all updates to complete
+        res.status(200).json({ message: 'Attendance status updated successfully for all students' });
+    } catch (error) {
+        console.error('Error recording attendance:', error);
+        res.status(500).json({ error: 'Failed to update attendance' });
+    }
+};
+
+
+
+export { addStudent, getStudentList, deleteStudent, getDetailStudent, updateStudent, getStudentByUser, getTotalAttendance, getStudentByClass, setAttendanceByClass }

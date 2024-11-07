@@ -66,7 +66,7 @@ function ShowStudent() {
 
     <div className='p-9 flex flex-col gap-y-5'>
       <div className='flex flex-col gap-2 lg:flex-row lg:justify-between'>
-        <Button class="bg-light-blue-600 text-white p-2 rounded-lg" onClick={handleAddStudent}>Thêm học sinh</Button>
+        <Button onClick={handleAddStudent}>Thêm học sinh</Button>
         <input className='w-1/5 border-2 border-black p-1 rounded-lg' placeholder='Tìm kiếm' onChange={handleSearch} />
 
       </div>
