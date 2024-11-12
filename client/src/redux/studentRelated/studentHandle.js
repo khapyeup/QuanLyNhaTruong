@@ -84,3 +84,13 @@ export const getStudentByUser = (userId) => async (dispatch) => {
     }
 }
 
+export const getStudentByClass = (classId) => async (dispatch) => {
+    try {
+        dispatch(getRequest())
+        const response = await axios.get(`http://localhost:3000/students/class/${classId}`);
+        dispatch(getSuccess(response));
+    } catch (error) {
+        dispatch(getError(error));
+    }
+}
+

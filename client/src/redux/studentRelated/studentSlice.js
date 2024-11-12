@@ -35,9 +35,9 @@ const studentSlice = createSlice({
         },
         getError: (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload.message || action.payload;
             state.response = null;
-            state.message = action.payload.message;
+            state.message = '';
         },
         addSuccess: (state) => {
             state.loading = false;

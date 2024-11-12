@@ -35,8 +35,7 @@ const AttendanceTable = ({ day, classId }) => {
         }
 
     }
-    console.log(day);
-    console.log(attendance);
+  
     useEffect(() => {
         if (classId) {
             const fetchStudent = async () => {
@@ -49,7 +48,7 @@ const AttendanceTable = ({ day, classId }) => {
 
     }, [classId])
 
-    console.log(students);
+    
     return (
         <>
             <ToastContainer position='bottom-right' />

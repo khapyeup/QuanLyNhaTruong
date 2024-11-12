@@ -33,7 +33,7 @@ function MenuTeacher() {
         {
             label: 'Thời khoá biểu',
             icon: <AiFillSchedule  className='text-xl'/>,
-            href: '/schedule'
+            href: '/timetable'
         }
     ];
 

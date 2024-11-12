@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { OnlineUsers, SocketConnection } from '../../redux/userRelated/userHandle';
 import TeacherMessage from './TeacherMessage';
 import TeacherAttendance from './TeacherAttendance';
+import DetailStudent from './DetailStudent';
+import TeacherTimetable from './TeacherTimetable';
 
 
 
@@ -52,8 +54,10 @@ function TeacherLayout() {
                     <Route path='*' element={<Navigate to="/" />} />
                     <Route path='dashboard' element={<TeacherDashboard />} />
                     <Route path='students' element={<TeacherStudent />} />
+                    <Route path='students/:id' element={<DetailStudent/> }/>
                     <Route path='messages/*' element={<TeacherMessage />} />
                     <Route path='attendance' element={<TeacherAttendance />} />
+                    <Route path='timetable' element={<TeacherTimetable/>} />
                 </Routes>
             </div>
         </div>

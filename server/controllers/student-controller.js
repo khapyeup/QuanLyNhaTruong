@@ -157,7 +157,7 @@ const getStudentByClass = async (req, res) => {
 
         const response = await Student.find({
             class_id: id
-        })
+        }).populate('class_id');
 
         res.status(200).json(response);
     } catch (error) {
