@@ -4,7 +4,7 @@ import {addParent, deleteParent, getParentList, parentLogin, searchParentUser, u
 import {getTeacherList, getDetailTeacher, addTeacher, updateTeacher, deleteTeacher, teacherLogin, searchTeacherUser} from "../controllers/teacher-controller.js";
 import {getNoticeList, getDetailNotice, addNotice, updateNotice, deleteNotice} from "../controllers/notice-controller.js";
 import {getStudentList, addStudent, deleteStudent, getDetailStudent, updateStudent, getStudentByUser, getTotalAttendance, getStudentByClass, setAttendanceByClass} from "../controllers/student-controller.js";
-import {getClassList, addSchedule, getDetailClass, updateClass, addClass} from "../controllers/class-controller.js";
+import {getClassList, addSchedule, getDetailClass, updateClass, addClass, getSchedule} from "../controllers/class-controller.js";
 import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
 import { addFinance, deleteFinance, getAllFinanceRecords, getFinanceByUserId, recordPayment, updateFinance } from "../controllers/finance-controller.js";
 import { getConversations, getMessages, newMessage } from "../controllers/chat-controller.js";
@@ -59,6 +59,7 @@ router.get("/classes", getClassList)
 router.put('/classes/edit/:id', updateClass)
 router.post('/classes/add', addClass)
 router.put('/classes/schedule/:classId', addSchedule)
+router.get('/classes/schedule', getSchedule);
 router.get('/classes/view/:classId', getDetailClass)
 
 
