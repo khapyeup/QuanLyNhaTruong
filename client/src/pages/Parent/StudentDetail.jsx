@@ -13,7 +13,7 @@ import {
   CardBody,
   Typography,
 } from "@material-tailwind/react";
-import BigCallendar from '../component/BigCalendar';
+import BigCallendar from "../component/BigCalendar";
 import { format, startOfWeek } from "date-fns";
 
 function StudentDetail() {
@@ -39,8 +39,10 @@ function StudentDetail() {
   const TABLE_ROWS_ATTENDANCE = studentDetails.attendance;
 
   const loadSchedule = () => {
-    const filter = studentDetails.class_id.schedule.find(schedule => schedule.weekStart.includes(weekStart));
-    setSchedule(filter)
+    const filter = studentDetails.class_id.schedule.find((schedule) =>
+      schedule.weekStart.includes(weekStart)
+    );
+    setSchedule(filter);
   };
 
   useEffect(() => {
@@ -274,8 +276,10 @@ function StudentDetail() {
 
           <TabPanel key="timetable" value="timetable">
             <div className="flex flex-wrap flex-row items-center gap-5">
-              <label>Chọn tuần</label>
+              <label htmlFor="date">Chọn tuần</label>
               <input
+                id="date"
+                className="border border-gray-600 p-2 rounded-xl"
                 type="date"
                 defaultValue={format(new Date(), "yyyy-MM-dd")}
                 onChange={(e) =>
@@ -296,7 +300,7 @@ function StudentDetail() {
               </button>
             </div>
             <div className="mt-5">
-              <BigCallendar timetable={schedule}/>
+              <BigCallendar timetable={schedule} />
             </div>
           </TabPanel>
         </TabsBody>
