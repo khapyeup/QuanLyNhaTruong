@@ -65,7 +65,7 @@ function MessagePanel() {
     }))
 
   }
-  console.log(message)
+  
   
   
   useEffect(() => {

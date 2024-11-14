@@ -57,7 +57,10 @@ const getDetailStudent = async (req, res) => {
     const studentId = req.params.id;
     console.log("getDetailStudent/" + studentId)
     try {
-        const student = await Student.findById(studentId).populate('class_id').populate('user_id');
+        const student = await Student.findById(studentId).populate({
+            path: 'class_id',
+            populate: {path: 'schedule.content.periods.groupActivity'}
+        }).populate('user_id');
         if (student) {
             res.json(student);
         } else {

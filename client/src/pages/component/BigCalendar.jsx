@@ -2,7 +2,7 @@ import { CiClock2 } from "react-icons/ci";
 import { IoBookOutline } from "react-icons/io5";
 
 function BigCalendar({ timetable }) {
-  console.log(timetable);
+ 
   return (
     <>
       {timetable ? (

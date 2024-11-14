@@ -54,6 +54,7 @@ router.post("/students/add", addStudent)
 router.post('/students/:class_id/attendance', setAttendanceByClass)
 router.put("/students/edit/:id", updateStudent)
 router.delete("/students/delete/:id", deleteStudent)
+
 //Classes
 router.get("/classes", getClassList)
 router.put('/classes/edit/:id', updateClass)
