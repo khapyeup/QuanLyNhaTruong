@@ -29,8 +29,8 @@ function ChoosePage() {
     }, [currentRole, currentUser, status, redirects])
 
     return <>
-    <div className='grid place-items-center w-full h-screen bg-white'>
-    <Card className="max-w-[24rem] overflow-hidden">
+    <div className='grid place-items-center w-full h-screen'>
+    <Card className="md:w-1/2 bg-black">
       <CardHeader
         floated={false}
         shadow={false}
@@ -38,18 +38,18 @@ function ChoosePage() {
         className="m-0 rounded-none"
       >
         <img
-          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-          alt="ui/ux review check"
+          src="/bgchooseacc.png"
+          alt="Background"
         />
       </CardHeader>
       <CardBody>
-        <Typography variant="h4" color="blue-gray">
+        <Typography variant="h4" color='white'>
           Bạn muốn đăng nhập bằng tài khoản nào?
         </Typography>
-        <div className="flex justify-evenly">
-        <Link to="/adminlogin"><Button className='hover:bg-blue-gray-600'>Admin</Button></Link>
-        <Link to="/teacherlogin"><Button className='hover:bg-blue-gray-600'>Giáo viên</Button></Link>
-       <Link to="/Parentlogin"><Button className='hover:bg-blue-gray-600'>Phụ huynh</Button></Link>
+        <div className="flex gap-6 mt-6">
+        <Link to="/adminlogin"><Button className='bg-red-700 hover:bg-red-800'>Admin</Button></Link>
+        <Link to="/teacherlogin"><Button className='bg-red-700 hover:bg-red-800'>Giáo viên</Button></Link>
+       <Link to="/Parentlogin"><Button className='bg-red-700 hover:bg-red-800'>Phụ huynh</Button></Link>
         </div>
         
       </CardBody>

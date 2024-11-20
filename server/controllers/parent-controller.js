@@ -10,13 +10,13 @@ const parentLogin = async (req, res) => {
                     parent.password = undefined;
                     res.json(parent)
                 } else {
-                    res.json({ message: "Sai mật khẩu" })
+                    res.status(400).json({ message: "Sai mật khẩu" })
                 }
             } else {
-                res.json({ message: "Tài khoản không tồn tại!" })
+                res.status(400).json({ message: "Tài khoản không tồn tại!" })
             }
         } else {
-            res.json({ message: "Cần nhập tài khoản và mật khẩu" })
+            res.status(400).json({ message: "Cần nhập tài khoản và mật khẩu" })
         }
     } catch (error) {
         res.status(500).json(error);

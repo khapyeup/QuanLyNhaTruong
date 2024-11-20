@@ -16,8 +16,8 @@ function App() {
     <Router>
       {currentRole === null &&
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/choose" element={<ChoosePage />} />
+          
+          <Route path="/" element={<ChoosePage />} />
 
           <Route path="/Adminlogin" element={<LoginPage role="admin" />} />
           <Route path="/Parentlogin" element={<LoginPage role="parent" />} />

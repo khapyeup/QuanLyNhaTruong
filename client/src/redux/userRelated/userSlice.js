@@ -5,11 +5,10 @@ const initialState = {
     loading: false,
     userList: [],
     userDetails: [],
-    tempDetails: [],
     currentUser: JSON.parse(localStorage.getItem("user")) || null,
     currentRole: (JSON.parse(localStorage.getItem("user")) || {}).role || null,
     error: null,
-    response: null,
+    
     isOpen: true,
     onlineUsers: [],
     socket: null
@@ -43,14 +42,6 @@ const userSlice = createSlice({
             state.respone = null;
             state.error = null;
         },
-        authFailed: (state, action) => {
-            state.status = "failed";
-            state.response = action.payload;
-        },
-        authError: (state, action) => {
-            state.status = "error";
-            state.error = action.payload;
-        },
         authLogout: (state) => {
             localStorage.removeItem("user");
             state.currentUser = null;
@@ -68,11 +59,6 @@ const userSlice = createSlice({
             state.error = null;
             state.loading = false;
             state.response = null;
-        },
-        getFailed: (state, action) => {
-            state.response = action.payload;
-            state.error = null;
-            state.loading = false;
         },
         getError: (state, action) => {
             state.error = action.payload;
@@ -103,12 +89,9 @@ export const {
     underControl,
     stuffAdded,
     authSuccess,
-    authFailed,
-    authError,
     authLogout,
     doneSuccess,
     getDeleteSuccess,
-    getFailed,
     getError,
     getUserListDone,
     isOpen,

@@ -8,13 +8,13 @@ const teacherLogin = async (req, res) => {
                 teacher.password = undefined;
                 res.send(teacher)
             } else {
-                res.send({ message: "Sai mật khẩu" })
+                res.status(400).json({ message: "Sai mật khẩu" })
             }
         } else {
-            res.send({ message: "Tài khoản không tồn tại!" })
+            res.status(400).json({ message: "Tài khoản không tồn tại!" })
         }
     } else {
-        res.send({ message: "Cần nhập tài khoản và mật khẩu" })
+        res.status(400).json({ message: "Cần nhập tài khoản và mật khẩu" })
     }
 }
 

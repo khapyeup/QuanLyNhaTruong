@@ -15,7 +15,7 @@ import { getConversations, getMessages, newMessage } from "../controllers/chat-c
 const router = express.Router();
 
 //Admin
-router.get("/", (req, res) => {res.send("Hello")})
+router.get("/", (req, res) => {res.send("Hello World")});
 router.post("/Adminlogin", adminLogin)
 
 //User
