@@ -30,7 +30,7 @@ function ChoosePage() {
 
     return <>
     <div className='grid place-items-center w-full h-screen'>
-    <Card className="md:w-1/2 bg-black">
+    <Card className="md:w-1/2">
       <CardHeader
         floated={false}
         shadow={false}
@@ -43,7 +43,7 @@ function ChoosePage() {
         />
       </CardHeader>
       <CardBody>
-        <Typography variant="h4" color='white'>
+        <Typography variant="h4">
           Bạn muốn đăng nhập bằng tài khoản nào?
         </Typography>
         <div className="flex gap-6 mt-6">

@@ -24,7 +24,7 @@ const adminLogin = async (req, res) => {
 const getUserList = async (req, res) => {
   try {
     const userList = await User.find({ role: "parent" });
-    res.json(userList);
+    res.status(500).json({message: "Khong the get users"});
   } catch (error) {
     res.json(error);
   }

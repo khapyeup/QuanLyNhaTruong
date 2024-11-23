@@ -24,12 +24,19 @@ import EditUser from './user/EditUser'
 import ShowGroupActivity from './activity/ShowGroupActivity'
 import DetailUser from './user/DetailUser'
 
+//Test redux query
+import { useGetUsersQuery } from '../../redux/apiSlice'
+
 function AdminDashboard() {
+  //Test redux query
+  const {data, isLoading, isSuccess, isError, error} = useGetUsersQuery();
+  // console.log();
+
   const dispatch = useDispatch()
 
   const { isOpen } = useSelector(state => state.user);
 
-
+  
   return (
     <>
       <div className='w-screen min-w-full h-screen flex flex-col md:flex-row'>
