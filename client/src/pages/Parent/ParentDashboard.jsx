@@ -8,8 +8,7 @@ import ParentNotice from './ParentNotice';
 import { Button } from '@material-tailwind/react';
 import ParentFinance from './ParentFinance';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser, OnlineUsers, SocketConnection } from '../../redux/userRelated/userHandle';
-import { showSideBar } from '../../redux/userRelated/userHandle';
+
 import { HiOutlineBell } from "react-icons/hi2";
 import ParentNofication from './ParentNofication';
 import StudentDetail from './StudentDetail';

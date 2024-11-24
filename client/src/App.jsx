@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useSelector } from 'react-redux';
 import ChoosePage from './pages/ChoosePage';
 import LoginPage from './pages/LoginPage';
-import AdminDashBoard from "./pages/Admin/AdminDashboard"
-import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminLayout from './pages/Admin/AdminLayout';
 import ParentDashboard from './pages/Parent/ParentDashboard';
 import TeacherLayout from './pages/Teacher/TeacherLayout';
 
@@ -26,7 +25,7 @@ function App() {
       }
       {currentRole === "admin" &&
         <>
-          <AdminDashboard />
+          <AdminLayout />
         </>
       }
       {currentRole === "parent" &&

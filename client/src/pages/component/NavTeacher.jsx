@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutUser } from '../../redux/userRelated/userHandle';
+
 
 function NavTeacher() {
     const dispatch = useDispatch();

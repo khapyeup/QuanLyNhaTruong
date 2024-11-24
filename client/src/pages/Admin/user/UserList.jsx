@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
 
-import { getUserList } from '../../../redux/userRelated/userHandle';
+
 
 import { CiCircleInfo } from "react-icons/ci";
 import { MdOutlineModeEditOutline } from "react-icons/md";

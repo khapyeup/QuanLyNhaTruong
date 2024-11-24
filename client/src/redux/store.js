@@ -1,4 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
+
+
 import { userReducer } from "./userRelated/userSlice";
 import { studentReducer } from "./studentRelated/studentSlice";
 import { noticeReducer } from "./noticeRelated/noticeSlice";
@@ -10,6 +12,7 @@ import { financeReducer } from "./financeRelated/financeSlice";
 import { chatReducer } from "./chatRelated/chatSlice";
 
 import { apiSlice } from "./apiSlice";
+import { rtkQueryErrorLogger } from "./middleware/handleError";
 
 const store = configureStore({
   reducer: {
@@ -28,7 +31,10 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).prepend().concat(apiSlice.middleware),
+    })
+      .prepend()
+      .concat(rtkQueryErrorLogger)
+      .concat(apiSlice.middleware),
 });
 
 export default store;

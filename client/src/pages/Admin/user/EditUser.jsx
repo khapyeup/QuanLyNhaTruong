@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails } from '../../../redux/userRelated/userHandle';
+
 import { updateParent } from '../../../redux/parentRelated/parenHandle';
 
 function EditUser() {

@@ -1,5 +1,4 @@
-import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import {
     Card,
     Typography,
@@ -13,66 +12,67 @@ import { FaChalkboardTeacher, FaUser  } from "react-icons/fa";
 import { MdOutlineSubject } from "react-icons/md";
 import { BiSolidNotification } from "react-icons/bi";
 import { SiGoogleclassroom } from "react-icons/si";
-import { showSideBar } from '../../redux/userRelated/userHandle'
+
 import { useSelector, useDispatch } from 'react-redux';
 
 function AdminSidebar() {
-    const dispatch = useDispatch()
-
-    const { isOpen } = useSelector(state => state.user);
-
+    const navItem = [
+        {
+            label: 'Trang chủ',
+            icon: <TfiDashboard className='text-xl'/>,
+            href: '/'
+        },
+        {
+            label: 'Học sinh',
+            icon: <PiStudent  className='text-xl'/>,
+            href: '/admin/students'
+        },
+        {
+            label: 'Giáo viên',
+            icon: <FaChalkboardTeacher  className='text-xl'/>,
+            href: '/admin/teachers'
+        },
+        {
+            label: 'Thông báo',
+            icon: <BiSolidNotification  className='text-xl'/>,
+            href: '/admin/notices'
+        },
+        {
+            label: 'Thời khoá biểu',
+            icon: <AiTwotoneSchedule  className='text-xl'/>,
+            href: '/admin/timetable'
+        },
+        {
+            label: 'Lớp',
+            icon: <SiGoogleclassroom className='text-xl'/>,
+            href: '/admin/classes'
+        },
+        {
+            label: 'Phụ huynh',
+            icon: <FaUser className='text-xl'/>,
+            href: '/admin/user'
+        },
+        {
+            label: 'Hoạt động',
+            icon: <MdOutlineSubject className='text-xl'/>,
+            href: '/admin/activities'
+        }
+    ];
 
 
     return (
-        <>
-            <Card className={isOpen ? "h-screen w-full max-w-[17rem] p-4 shadow-xl shadow-blue-gray-900/5" : 'hidden'}>
-                <div className="mb-2 p-4 flex justify-between items-center gap-2">
-                    <Typography variant="h5" color="black">
-                        Quản lý nhà trường
-                    </Typography>
-                    <Button className='text-white' onClick={() => dispatch(showSideBar())}>X</Button>
+        <div className='flex flex-col gap-4 '>
+            {navItem.map((item) => (
+                <div className='min-w-8' key={item.label}>
+                    <NavLink className='flex items-center gap-2 text-[14px] justify-center lg:justify-start text-gray-700 hover:scale-105 transition hover:text-black' to={item.href}>
+                    {item.icon}
+                    <p className='hidden lg:block'>{item.label}</p>
+                    </NavLink>
                 </div>
-
-                <List className=''>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/"}>
-                        <TfiDashboard className='size-6' />
-                        Trang chủ
-                    </NavLink>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/students/"}>
-                        <PiStudent className='size-6' />
-                        Học sinh
-                    </NavLink>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/teachers/"}>
-                        <FaChalkboardTeacher />
-                        Giáo viên
-                    </NavLink>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/activities/"}>
-                        <MdOutlineSubject />
-                        Hoạt động
-                    </NavLink>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/notices/"}>
-                        <BiSolidNotification />
-                        Thông báo
-                    </NavLink>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/timetable/"}>
-                        <AiTwotoneSchedule />
-                        Thời khóa biểu
-                    </NavLink>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/classes/"}>
-                    <SiGoogleclassroom />
-                        Lớp
-                    </NavLink>
-                    <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/admin/user/"}>
-                    <FaUser />
-                        Phụ huynh
-                    </NavLink>
-                </List>
-            </Card>
-
-
-        </>
-
+            ))}
+        </div>
     )
+    
 }
 
 export default AdminSidebar

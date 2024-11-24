@@ -26,7 +26,7 @@ const getTeacherList = async (req, res) => {
 
     } catch (error) {
         console.log('Error getTeacherList\n', error);
-        res.status(500).json({ message: 'Error get teachers' })
+        res.status(500).json({ message: 'Có lỗi khi lấy dữ liệu giáo viên' })
     }
 }
 
