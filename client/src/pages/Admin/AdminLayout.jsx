@@ -58,7 +58,7 @@ function AdminLayout() {
         </div>
 
         {/* Navbar */}
-        <div className="md:w-[92%] lg:w-[86%] bg-[#F7F8FA] overflow-y-scroll">
+        <div className="w-full md:w-[92%] lg:w-[86%] bg-[#F7F8FA] overflow-y-scroll">
           <div className="flex flex-row justify-end w-full px-6  py-1 items-center bg-white border-y-2">
             <Menu>
               <MenuHandler>

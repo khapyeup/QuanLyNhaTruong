@@ -2,7 +2,9 @@ import Class from "../models/class.js";
 
 const getClassList = async (req, res) => {
   try {
-    let result = await Class.find().populate("schedule.content.periods.groupActivity");
+    let result = await Class.find().populate(
+      "schedule.content.periods.groupActivity"
+    );
     if (result.length > 0) res.json(result);
     else res.json({ message: "Không có lớp nào" });
   } catch (error) {
@@ -83,7 +85,7 @@ const addSchedule = async (req, res) => {
     //kiem tra xem da co lich nay chua
     const existingClass = await Class.findOne({ _id: classId });
     if (!existingClass) {
-      return res.status(404).send({ message: "Class not found" });
+      return res.status(404).json({ message: "Không tìm thấy lớp" });
     }
     const scheduleIndex = existingClass.schedule.findIndex(
       (schedule) => schedule.weekStart === data.weekStart
@@ -97,8 +99,9 @@ const addSchedule = async (req, res) => {
       existingClass.schedule.push(data);
     }
     await existingClass.save();
+    res.status(200).json({ message: "Cập nhật thời khoá biểu thành công!" });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: "Có lỗi khi cập nhật thời khoá biểu" });
   }
 };
 
@@ -108,28 +111,24 @@ const getDetailClass = async (req, res) => {
     console.log("getDetailClasses: ID " + classId);
     const result = await Class.findOne({ _id: classId });
     if (result) res.json(result);
-    else res.json({ message: "Không tìm thấy class" });
+    else res.json({ message: "Không tìm thấy lớp" });
   } catch (error) {
-    res.json(error);
+    res.status(500).json(error);
   }
 };
 
 const getSchedule = async (req, res) => {
-  const { classId, date } = req.body;
+  const { classId } = req.params;
   try {
-    const sclass = await Class.findOne({
-      _id: classId,
-      "schedule.weekStart": date,
-    }).populate("schedule.content.periods.groupActivity");
+    const sclass = await Class.findById(classId).populate(
+      "schedule.content.periods.groupActivity"
+    );
 
-    if (sclass) {
-        const schedule = sclass.schedule.filter(schedule => schedule.weekStart.includes(date));
-        res.json(schedule);
-    } else {
-        res.json([]);
-    }
+    if (!sclass)
+      return res.status(500).json({ message: "Không tìm thấy thời khoá biểu" });
+    return res.status(200).json(sclass.schedule);
   } catch (error) {
-    res.status(500).json({ error: "Có lỗi ở server" });
+    res.status(500).json({ message: "Có lỗi ở server" });
     console.log(error);
   }
 };

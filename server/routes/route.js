@@ -60,7 +60,7 @@ router.get("/classes", getClassList)
 router.put('/classes/edit/:id', updateClass)
 router.post('/classes/add', addClass)
 router.put('/classes/schedule/:classId', addSchedule)
-router.get('/classes/schedule', getSchedule);
+router.get('/classes/schedule/:classId', getSchedule);
 router.get('/classes/view/:classId', getDetailClass)
 
 
