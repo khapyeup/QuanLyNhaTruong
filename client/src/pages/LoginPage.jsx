@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "@material-tailwind/react";
 import { useLoginMutation } from "../redux/userRelated/userApiSlice";
 import { authSuccess } from "../redux/userRelated/userSlice";
-import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+
 
 function LoginPage({ role }) {
   const [login, {isLoading}] = useLoginMutation();
@@ -98,7 +97,6 @@ function LoginPage({ role }) {
           </div>
         </div>
       </div>
-      <ToastContainer/>
     </>
   );
 }

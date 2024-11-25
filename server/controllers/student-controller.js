@@ -16,20 +16,21 @@ const getStudentList = async (req, res) => {
 const addStudent = async (req, res) => {
     const data = req.body;
 
+    const existedStudent = await Student.findOne({student_id: data.student_id});
+    if (existedStudent) {
+        return res.status(500).json({message: "Mã định danh đã tồn tại!"})
+    }
     const newStudent = new Student({
         ...data,
-        attendance: [],
-        behaviour: []
     });
 
     try {
         await newStudent.save();
-
         console.log('Add new student successfully:\n ' + newStudent);
-        res.status(200).json('Add new student successfully');
+        res.status(200).json({message: "Thêm học sinh thành công"});
     } catch (error) {
         console.log('Add new student failed\n' + error)
-        res.status(500).json(error)
+        res.status(500).json({message: "Thêm học sinh thất bại"})
     }
 }
 
@@ -40,16 +41,16 @@ const deleteStudent = async (req, res) => {
         const student = await Student.findById(studentId);
         if (!student) {
             console.log("Student not found.");
-            return res.send('Student not found')
+            return res.status(500).json({message: 'Không tìm thấy học sinh!'})
         }
 
 
         await Student.findOneAndDelete({ _id: studentId });
-        console.log("student deleted successfully!")
+        return res.status(200).json({message: "Xoá học sinh thành công!"})
 
     } catch (error) {
-        console.log('Error deleting student', error)
-        res.status(500).send(error);
+        console.log('Có lỗi khi xoá học sinh', error)
+        res.status(500).json({message: "Có lỗi khi xoá học sinh"});
     }
 }
 
@@ -74,6 +75,7 @@ const getDetailStudent = async (req, res) => {
 const updateStudent = async (req, res) => {
     try {
         const studentId = req.params.id;
+        
         const newUserId = req.body.user_id;
         const newStudentData = req.body;
 
@@ -82,24 +84,22 @@ const updateStudent = async (req, res) => {
         const student = await Student.findById(studentId);
         if (!student) {
             console.log("Student not found.");
-            res.json('Student not found');
-            return
+            return res.status(500).json({message: 'Không tìm thấy học sinh'}); 
         }
 
 
         //Update the student with the new user ID
         const updatedStudent = await Student.findOneAndUpdate(
             { _id: studentId },
-            newStudentData,
-            { new: true } // Return the updated document
+            newStudentData
         );
-        console.log("Student updated successfully:", updatedStudent);
-
+        console.log("Student updated successfully:");
+        return res.status(200).json({message: 'Chỉnh sửa thành công!'});
 
 
     } catch (error) {
         console.error("Error updating student user ID:", error);
-        res.status(500).json(error);
+        res.status(500).json('Có lỗi khi chỉnh sửa học sinh');
     }
 
 }

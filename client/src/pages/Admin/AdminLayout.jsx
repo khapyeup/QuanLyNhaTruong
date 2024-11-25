@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import AdminSidebar from "./AdminSidebar";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AdminHomepage from "./AdminHomepage";
@@ -6,7 +9,9 @@ import ShowStudent from "./student/ShowStudent";
 import ShowClasses from "./classes/ShowClasses";
 import ShowNotice from "./notice/ShowNotice";
 
-import ViewStudent from "./student/ViewStudent";
+import AddStudent from "./student/AddStudent";
+import StudentDetails from "./student/StudentDetails";
+import UpdateStudent from "./student/UpdateStudent";
 import { useDispatch, useSelector } from "react-redux";
 
 import ShowTeacher from "./teacher/ShowTeacher";
@@ -30,18 +35,19 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
-} from "@material-tailwind/react"
+} from "@material-tailwind/react";
 import { authLogout } from "../../redux/userRelated/userSlice";
 
 function AdminLayout() {
   const dispatch = useDispatch();
-  
+
   const logout = () => {
     dispatch(authLogout());
-  }
+  };
 
   return (
     <>
+      
       <div className="h-screen flex">
         {/* Sidebar */}
         <div className=" md:w-[8%] lg:w-[14%] p-4">
@@ -52,14 +58,19 @@ function AdminLayout() {
         {/* Navbar */}
         <div className="md:w-[92%] lg:w-[86%] bg-[#F7F8FA] overflow-y-scroll">
           <div className="flex flex-row justify-end w-full px-6  py-1 items-center bg-white border-y-2">
-           <Menu>
-            <MenuHandler>
-              <img src="/admin.png" className="cursor-pointer rounded-full border border-black size-12"/>
-            </MenuHandler>
-            <MenuList>
-              <MenuItem className="flex items-center gap-2" onClick={logout}><IoIosLogOut/> Đăng xuất</MenuItem>
-            </MenuList>
-           </Menu>
+            <Menu>
+              <MenuHandler>
+                <img
+                  src="/admin.png"
+                  className="cursor-pointer rounded-full border border-black size-12"
+                />
+              </MenuHandler>
+              <MenuList>
+                <MenuItem className="flex items-center gap-2" onClick={logout}>
+                  <IoIosLogOut /> Đăng xuất
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </div>
 
           <Routes>
@@ -73,8 +84,15 @@ function AdminLayout() {
             <Route path="/admin/teachers/:id" element={<ViewTeacher />} />
             {/* Student route */}
             <Route path="/admin/students/" element={<ShowStudent />} />
-            {/* <Route path="/admin/students/add" element={<AddStudent />} /> */}
-            <Route path="/admin/students/view/:id" element={<ViewStudent />} />
+            <Route path="/admin/students/add" element={<AddStudent />} />
+            <Route
+              path="/admin/students/view/:id"
+              element={<StudentDetails />}
+            />
+            <Route
+              path="/admin/students/edit/:id"
+              element={<UpdateStudent />}
+            />
             {/* <Route path="/admin/students/marks/:id" element={<StudentExamMarks/>} />
             <Route path="/Admin/students/attendance/:id" element={<StudentAttendance situation="Student" />} /> */}
 

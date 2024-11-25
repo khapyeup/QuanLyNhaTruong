@@ -11,8 +11,11 @@ import { useGetStudentListQuery } from "../../redux/studentRelated/studentApiSli
 import { useGetNoticeListQuery } from "../../redux/noticeRelated/noticeApiSlice";
 import { useGetParentListQuery } from "../../redux/parentRelated/parentApiSlice";
 import { useGetSclassListQuery } from "../../redux/sclassRelated/sclassApiSlice";
+import { useSelector } from "react-redux";
 
 function AdminHomepage() {
+  const {currentUser} = useSelector(state => state.user)
+
   const { data: teacherList } = useGetTeacherListQuery();
   const { data: studentList } = useGetStudentListQuery();
   const { data: sclassList } = useGetSclassListQuery();
@@ -24,10 +27,11 @@ function AdminHomepage() {
   const numberOfStudent = studentList ? studentList.length : 0;
   const numberOfParent = parentList ? parentList.length : 0;
 
-  console.log(noticeList);
+  
   return (
     <>
       <div className="flex flex-col flex-1 p-14 gap-7 ">
+        <p>Xin chào, {currentUser.username}</p>
         {/* Container render total */}
         <div className=" p-2 gap-y-7 flex flex-row justify-evenly items-center flex-wrap">
           <div className="text-white rounded-lg  bg-red-400 flex flex-col items-center justify-center gap-2 shadow-lg border p-2 min-w-56 min-h-40   ">
@@ -58,12 +62,12 @@ function AdminHomepage() {
         <div>
           <div className="flex flex-row justify-between">
             <h1 className="font-bold text-xl">Thông báo</h1>
-            <Link to="/admin/notices">Xem tất cả</Link>
+            <Link className="font-bold" to="/admin/notices">Xem tất cả</Link>
           </div>
 
           <ul>
             {noticeList?.map((notice) => (
-              <li className="flex flex-wrap justify-between py-4 cursor-default hover:bg-gray-200 rounded-md">
+              <li key={notice._id} className="flex flex-wrap justify-between py-4 cursor-default hover:bg-gray-200 rounded-md">
                 <p>{notice.title}</p>
                 <p>{format(notice.date, "dd/MM/yyyy")}</p>
               </li>

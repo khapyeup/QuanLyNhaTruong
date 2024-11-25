@@ -1,87 +1,217 @@
-import React, { useEffect } from 'react'
-import { IoMdClose } from "react-icons/io";
-import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux';
-import { updateStudent } from '../../../redux/studentRelated/studentHandle';
-import { Card, CardBody, Typography, Input, CardFooter, Button } from '@material-tailwind/react';
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-function UpdateStudent({ onClose, student }) {
-    const dispatch = useDispatch();
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+import { useGetSclassListQuery } from "../../../redux/sclassRelated/sclassApiSlice";
+import { useGetParentListQuery } from "../../../redux/parentRelated/parentApiSlice";
+import { uploadFile } from "../../../helpers/uploadFile";
+import {
+  useEditStudentMutation,
+  useGetStudentDetailsQuery,
+} from "../../../redux/studentRelated/studentApiSlice";
 
-    const { classList } = useSelector(state => state.sclass)
-    const { parentList } = useSelector(state => state.parent)
+const UpdateStudent = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
+  const { id } = useParams();
 
+  const { data: studentDetails, isLoading: isLoadStudentDetails } =
+    useGetStudentDetailsQuery(id);
+  const { data: sclassList } = useGetSclassListQuery();
+  const { data: parentList } = useGetParentListQuery();
+  const [editStudent, { isLoading }] = useEditStudentMutation();
 
-    const submit = (data) => {
-        const { name, student_id, dob, gender, class_id, user_id, address } = data;
+  const [avartarUrl, setAvatarUrl] = useState("");
 
-        dispatch(updateStudent(student._id, { name, student_id, dob, gender, class_id, user_id, address }))
+  if (!isLoadStudentDetails && studentDetails) {
+    setValue("name", studentDetails.name);
+    setValue("student_id", studentDetails.student_id);
+    setValue("class_id", studentDetails.class_id._id);
+    setValue("dob", studentDetails.dob);
+    setValue("gender", studentDetails.gender);
+    setValue("address", studentDetails.address);
+    setValue("user_id", studentDetails.user_id._id);
+  }
 
-        onClose();
-    }
+  const uploadAvatar = async (e) => {
+    await uploadFile(e.target.files[0]).then((response) =>
+      setAvatarUrl(response.url)
+    );
+  };
 
+  const saveStudent = async (data) => {
+    data._id = studentDetails._id;
+    data.avatar = avartarUrl;
+    await editStudent(data)
+      .unwrap()
+      .then((response) => {
+        toast.success(response.message);
+        navigate("/admin/students");
+      });
+  };
 
-    return <>
-        <div className='inset-0 fixed flex justify-center items-center bg-black/20' onClick={onClose}>
-            <div className='opacity-100 bg-white w-1/4 px-2 py-3 rounded-lg' onClick={(e) => e.stopPropagation()}>
-                <div className='flex justify-between items-center'>
-                    
-                    <p className='text-center w-full'>Nhập thông tin chỉnh sửa</p>
-                    <IoMdClose onClick={onClose} className='cursor-pointer text-2xl text-red-500 hover:text-black' />
-                </div>
-                <form onSubmit={handleSubmit(submit)}>
-                    <Card className="mx-auto w-full max-w-[24rem]">
-                        <CardBody className="flex flex-col gap-4">
+  useEffect(() => {
+    setAvatarUrl(studentDetails?.avatar);
+  }, [studentDetails]);
 
-                            <Input type='text' name="name" label="Họ và tên" size="lg" {...register("name", { required: true })} defaultValue={student.name} />
-
-                            <Input type='text' name='student_id' label='Mã định danh' {...register("student_id", { required: true })} size='lg' defaultValue={student.student_id} />
-
-                            <Input name="dob" type="date" label="Ngày sinh" size="lg" {...register("dob", { required: true })} defaultValue={student.dob} />
-
-                            <label>Giới tính</label>
-                            <select className='border-2 p-2 rounded-lg' name="gender" label="Giới tính" size="lg" {...register("gender", { required: true })} defaultValue={student.gender}>
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                            </select>
-
-                            <label>Lớp</label>
-                            <select className='border-2 p-2 rounded-lg' required name="class_id" label="Lớp" size="lg"  {...register("class_id", { required: true })} defaultValue={student.class_id?._id}>
-                               <option></option>
-                                {classList ? classList.map(el =>
-                                    <option value={el._id} key={el._id}>{el.name}</option>
-                                ) : ''}
-                            </select>
-
-                            <label htmlFor='user_id'>Tài khoản phụ huynh</label>
-                            <select required id="user_id" className='border-2 p-2 rounded-lg' name="user_id" label="Phụ huynh" size="lg" {...register("user_id", { required: true })} defaultValue={student.user_id?._id}>
-                                <option></option>
-                                {parentList ? parentList.map(el =>
-                                    <option value={el._id} key={el._id}>{el.username}</option>
-                                ) : ''}
-                            </select>
-
-                            <Input name="address" type="text" label="Địa chỉ" size="lg" {...register("address", { required: true })} value={student.address} />
-
-
-                        </CardBody>
-                        <CardFooter className="pt-0">
-                            <Button type='submit' variant="gradient" fullWidth>
-                                Chỉnh sửa
-                            </Button>
-
-                        </CardFooter>
-                    </Card>
-                </form>
-            </div>
-        </div>
+  return (
+    <>
+      <div className="flex flex-col gap-6 p-10">
+        <h1 className="font-bold text-2xl">Chỉnh sửa học sinh</h1>
+        <form
+          onSubmit={handleSubmit(saveStudent)}
+          className="flex flex-col gap-4"
+        >
+          <div className="flex flex-col gap-2">
+            <label htmlFor="name">Họ và tên</label>
+            <input
+              {...register("name", {
+                required: { value: true, message: "Chưa nhập tên" },
+              })}
+              name="name"
+              id="name"
+              type="text"
+              className="p-2 rounded-lg border border-gray-400"
+            />
+            {errors.name && (
+              <p className="text-sm text-red-700">{errors.name.message}</p>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="student_id">Mã định danh</label>
+            <input
+              {...register("student_id", {
+                required: { value: true, message: "Chưa nhập mã định danh" },
+                maxLength: {
+                  value: 12,
+                  message: "Mã định danh có tối đa 12 kí tự",
+                },
+              })}
+              name="student_id"
+              id="student_id"
+              type="number"
+              className="p-2 rounded-lg border border-gray-400"
+            />
+            {errors.student_id && (
+              <p className="text-sm text-red-700">
+                {errors.student_id.message}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="dob">Ngày sinh</label>
+            <input
+              {...register("dob", {
+                required: { value: true, message: "Chưa nhập ngày sinh" },
+              })}
+              name="dob"
+              id="dob"
+              type="date"
+              className="p-2 rounded-lg border border-gray-400"
+            />
+            {errors.dob && (
+              <p className="text-sm text-red-700">{errors.dob.message}</p>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="gender">Giới tính</label>
+            <select
+              {...register("gender")}
+              id="gender"
+              name="gender"
+              className="p-2 rounded-lg border border-gray-400"
+            >
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="address">Địa chỉ</label>
+            <input
+              {...register("address", {
+                required: { value: true, message: "Chưa nhập địa chỉ" },
+              })}
+              className="p-2 rounded-lg border border-gray-400"
+              name="address"
+              id="address"
+              type="text"
+            />
+            {errors.address && (
+              <p className="text-sm text-red-700">{errors.address.message}</p>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="user_id">Chọn tài khoản phụ huynh quản lý</label>
+            <select
+              id="user_id"
+              name="user_id"
+              {...register("user_id")}
+              className="p-2 rounded-lg border border-gray-400"
+            >
+              {parentList?.map((parent) => (
+                <option key={parent._id} value={parent._id}>
+                  {parent.username}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="class_id">Chọn lớp</label>
+            <select
+              name="class_id"
+              id="class_id"
+              {...register("class_id")}
+              className="p-2 rounded-lg border border-gray-400"
+            >
+              {sclassList?.map((sclass) => (
+                <option key={sclass._id} value={sclass._id}>
+                  {sclass.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            {avartarUrl && (
+              <img
+                className="size-32 border border-black rounded-full mb-6"
+                src={avartarUrl}
+              />
+            )}
+            <input
+              onChange={uploadAvatar}
+              type="file"
+              className="p-2 rounded-lg border border-gray-400"
+            />
+          </div>
+          <div className="flex justify-end gap-4 ">
+            <Link to="/admin/students">
+              <button
+                className="hover:bg-gray-300 rounded-md p-2"
+                type="button"
+              >
+                Huỷ bỏ
+              </button>
+            </Link>
+            <button
+              disabled={isLoading}
+              className="bg-gray-600 p-2 rounded-md hover:bg-gray-700 text-white"
+              type="submit"
+            >
+              Lưu
+            </button>
+          </div>
+        </form>
+      </div>
     </>
+  );
+};
 
-
-
-}
-
-export default UpdateStudent
+export default UpdateStudent;

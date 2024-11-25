@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import {
   Tabs,
   TabsHeader,
@@ -10,43 +9,25 @@ import {
   CardBody,
   Typography
 } from "@material-tailwind/react";
+import { useParams } from 'react-router-dom';
+import Loading from '../../component/Loading';
+
+import { useGetStudentDetailsQuery } from '../../../redux/studentRelated/studentApiSlice';
 
 
-import { getDetailStudent } from '../../../redux/studentRelated/studentHandle';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-
-
-
-const ViewStudent = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { studentDetails, loading } = useSelector(state => state.student)
-  const params = useParams()
-  const id = params.id
-
-  const TABLE_HEAD = ["Điểm kiểm tra 1", "Điểm kiểm tra 2", "Điểm cuối kì", "Điểm trung bình"];
-  const TABLE_ROWS = [];
-
-  const TABLE_HEAD_BEHAVIOUR = ["Vi phạm", "Ngày"]
-  const TABLE_ROWS_BEHAVIOUR = studentDetails.behaviour;
+const StudentDetails = () => {
+  
+  const {id} = useParams()
+  
+  const {data: studentDetails, isLoading} = useGetStudentDetailsQuery(id);
 
   const TABLE_HEAD_ATTENDANCE = ['Tình trạng', 'Ngày']
-  const TABLE_ROWS_ATTENDANCE = studentDetails.attendance;
+  const TABLE_ROWS_ATTENDANCE = studentDetails?.attendance;
 
 
-
-  console.log(studentDetails)
-  useEffect(() => {
-    dispatch(getDetailStudent(id))
-
-  }, [id, dispatch])
   return (
     <>
-      {console.log(loading)}
-      {loading ? <p className='h-full w-full text-3xl text-red-900'>
-        Đang tải
-      </p> : <div>
+      {isLoading ? <Loading size={20}/> : <div>
         
         <Tabs value="info">
           <TabsHeader>
@@ -54,9 +35,7 @@ const ViewStudent = () => {
               <p>Thông tin</p>
             </Tab>
 
-            <Tab key="behaviour" value="behaviour">
-              <p>Vi phạm</p>
-            </Tab>
+            
             <Tab key="attendance" value="attendance">
               <p>Điểm danh</p>
             </Tab>
@@ -161,42 +140,6 @@ const ViewStudent = () => {
             </TabPanel>
 
 
-
-            <TabPanel key="behaviour" value="behaviour">
-              <table class="w-full text-left table-auto min-w-max">
-                <thead>
-                  <tr>
-                    {TABLE_HEAD_BEHAVIOUR.map(head =>
-                      <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                          {head}
-                        </p>
-                      </th>
-                    )}
-                  </tr>
-                </thead>
-                <tbody>
-                  {TABLE_ROWS_BEHAVIOUR && TABLE_ROWS_BEHAVIOUR.map(row =>
-                    <tr>
-                      <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                          {row.title}
-                        </p>
-                      </td>
-                      <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                          {row.date}
-                        </p>
-                      </td>
-
-                    </tr>
-                  )}
-
-                </tbody>
-              </table>
-            </TabPanel>
-
-
             {/* Điểm danh */}
             <TabPanel key="attendance" value='attendance'>
               <Card>
@@ -250,4 +193,4 @@ const ViewStudent = () => {
   )
 }
 
-export default ViewStudent
+export default StudentDetails
