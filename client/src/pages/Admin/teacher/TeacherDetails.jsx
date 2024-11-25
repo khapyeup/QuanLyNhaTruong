@@ -4,7 +4,7 @@ import { getDetailTeacher } from '../../../redux/teacherRelated/teacherHandle';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-function ViewTeacher() {
+function TeacherDetails() {
     const dispatch = useDispatch()
     
     const params = useParams()
@@ -40,4 +40,4 @@ function ViewTeacher() {
     )
 }
 
-export default ViewTeacher
+export default TeacherDetails

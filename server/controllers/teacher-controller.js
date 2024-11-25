@@ -26,7 +26,7 @@ const getTeacherList = async (req, res) => {
 
     } catch (error) {
         console.log('Error getTeacherList\n', error);
-        res.status(500).json({ message: 'Có lỗi khi lấy dữ liệu giáo viên' })
+        res.status(500).json({ message: 'Có lỗi khi lấy dữ liệu giáo viên' + error.message})
     }
 }
 
@@ -35,15 +35,19 @@ const getDetailTeacher = async (req, res) => {
 
     try {
         const result = await User.findOne({ _id: teacherId, role: 'teacher' }).populate('teacherInfo.class').populate("teacherInfo.activityAssign").select('-password')
-        res.send(result);
+        res.status(200).json(result);
     } catch (error) {
-        res.status(500).json('Error retrieving teacher details: ' + error.message);
+        res.status(500).json('Có lỗi khi lấy dữ liệu giáo viên: ' + error.message);
     }
 }
 
 const addTeacher = async (req, res) => {
     const { username, password, age, profile, name, email, phone, gender, sclass, activityAssign } = req.body;
-
+    const existedTeacher = await User.findOne({username: username})
+    if (existedTeacher)
+    {
+        return res.status(500).json({message: 'Tên đăng nhập đã tồn tại'})
+    }
     const newTeacher = new User({
         username,
         password,
@@ -57,7 +61,7 @@ const addTeacher = async (req, res) => {
             gender,
             class: sclass,
             activityAssign,
-            attendance: []
+            
         }
     });
 
@@ -65,7 +69,8 @@ const addTeacher = async (req, res) => {
         await newTeacher.save();
         res.status(201).json('Thêm giáo viên thành công!');
     } catch (error) {
-        res.status(500).json(error);
+        console.log(error);
+        res.status(500).json({message: 'Có lỗi khi thêm giáo viên ' + error});
     }
 }
 
@@ -80,10 +85,10 @@ const updateTeacher = async (req, res) => {
                 username, password, age, profile, name, email, phone, gender, sclass, activityAssign
             }
             , { new: true });
-        res.json('Teacher updated successfully');
+        res.status(200).json('Chỉnh sửa giáo viên thành công!');
 
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({message: 'Có lỗi khi cập nhật giáo viên ' + error});
     }
 }
 

@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ShowTeacher from "./teacher/ShowTeacher";
 import AddTeacher from "./teacher/AddTeacher";
-import ViewTeacher from "./teacher/ViewTeacher";
+import TeacherDetails from "./teacher/TeacherDetails";
 import AddNotice from "./notice/AddNotice";
 import ViewNotice from "./notice/ViewNotice";
 
@@ -37,6 +37,7 @@ import {
   MenuItem,
 } from "@material-tailwind/react";
 import { authLogout } from "../../redux/userRelated/userSlice";
+import UpdateTeacher from "./teacher/UpdateTeacher";
 
 function AdminLayout() {
   const dispatch = useDispatch();
@@ -81,7 +82,8 @@ function AdminLayout() {
             {/* Teacher route */}
             <Route path="/Admin/teachers/" element={<ShowTeacher />} />
             <Route path="admin/teachers/add" element={<AddTeacher />} />
-            <Route path="/admin/teachers/:id" element={<ViewTeacher />} />
+            <Route path="/admin/teachers/view/:id" element={<TeacherDetails />} />
+            <Route path="/admin/teachers/edit/:id" element={<UpdateTeacher/>}/>
             {/* Student route */}
             <Route path="/admin/students/" element={<ShowStudent />} />
             <Route path="/admin/students/add" element={<AddStudent />} />
