@@ -18,7 +18,7 @@ import ShowTeacher from "./teacher/ShowTeacher";
 import AddTeacher from "./teacher/AddTeacher";
 import TeacherDetails from "./teacher/TeacherDetails";
 import AddNotice from "./notice/AddNotice";
-import ViewNotice from "./notice/ViewNotice";
+import NoticeDetails from "./notice/NoticeDetails";
 
 import TimeTable from "./timetable/TimeTable";
 import AddClass from "./classes/AddClass";
@@ -38,6 +38,7 @@ import {
 } from "@material-tailwind/react";
 import { authLogout } from "../../redux/userRelated/userSlice";
 import UpdateTeacher from "./teacher/UpdateTeacher";
+import UpdateNotice from "./notice/UpdateNotice";
 
 function AdminLayout() {
   const dispatch = useDispatch();
@@ -108,7 +109,8 @@ function AdminLayout() {
             {/* Notice router */}
             <Route path="/admin/notices/" element={<ShowNotice />} />
             <Route path="admin/notices/add" element={<AddNotice />} />
-            <Route path="/admin/notices/view/:id" element={<ViewNotice />} />
+            <Route path="/admin/notices/view/:id" element={<NoticeDetails />} />
+            <Route path="/admin/notices/edit/:id" element={<UpdateNotice />} />
 
             {/* Timetable route */}
             <Route path="admin/timetable/" element={<TimeTable />} />

@@ -1,134 +1,128 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from "react-router-dom";
-import Modal from '../../component/Modal';
-import { getNoticeList, getDetailNotice, updateNotice, deleteNotice } from '../../../redux/noticeRelated/noticeHandle';
+import { toast } from "react-toastify";
+import Loading from "../../component/Loading";
+import { Link } from "react-router-dom";
 import {
-  Card,
-  CardBody,
-  CardFooter,
-  Input,
-
-  Button,
-  Typography,
-  Textarea
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
 } from "@material-tailwind/react";
-import { format } from 'date-fns';
 
-function ShowNotice() {
+import { useDeleteNoticeMutation, useGetNoticeListQuery } from "../../../redux/noticeRelated/noticeApiSlice";
+//Icon
+import { FaEye } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaSearch } from "react-icons/fa";
+import { useState } from "react";
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+const ShowNotice = () => {
+  const {
+    data: noticeList = [],
+    isLoading,
+  } = useGetNoticeListQuery();
+  const [deleteNotice] = useDeleteNoticeMutation();
+  const [search, setSearch] = useState("");
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [selectedNoticeId, setSelectedNoticeId] = useState('');
+  
 
-  const { noticeList, error, response, message } = useSelector((state) => state.notice);
+  const tableHead = ["STT", "Tiêu đề", "Hành động"];
 
+  const handleDeleteModal = (id) => {
+    setIsOpenDeleteModal(!isOpenDeleteModal);
+    setSelectedNoticeId(id);
+  };
 
-  const handleEditClick = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const id = form.id.value;
-    const title = form.title.value;
-    const content = form.content.value;
-
-    dispatch(updateNotice(id, { title, content }))
-    if (response || error)
-      alert(response.message)
-    else
-      alert("Sửa thành công");
+  const handleDelete = () => {
+    deleteNotice(selectedNoticeId).unwrap().then((response) => toast.success(response.message)).finally(handleDeleteModal(""));
   }
 
-  const handleAddNotice = () => {
-    return navigate("/admin/notices/add")
-  }
+  const handleSearch = (e) => {
+    setSearch(e.target.value.toLowerCase());
+  };
 
-  const handleDelete = (_id) => {
-    dispatch(deleteNotice(_id));
-    window.location.reload();
-  }
+  
+  return (
+    <>
+      {isLoading ? (
+        <Loading size={12} />
+      ) : (
+        <div className="p-10 flex flex-col gap-6">
+          <h1 className="text-2xl font-bold">
+            Thông báo <span>({noticeList.length})</span>
+          </h1>
+          <div className="flex flex-col md:flex-row justify-between ">
+            <Link to="/admin/notices/add">
+              <button className="bg-gray-600 text-white p-2 rounded hover:bg-gray-700">
+                Thêm thông báo
+              </button>
+            </Link>
+            <div className="relative">
+              <FaSearch className="absolute left-2 top-[10px]" />
+              <input
+                className="p-2 ps-8 text-sm text-gray-900 border border-gray-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="text"
+                placeholder="Tiêu đề..."
+                onChange={handleSearch}
+              />
+            </div>
+          </div>
 
-  useEffect(() => {
-    dispatch(getNoticeList())
-  }, [])
-  return <>
-    {message ? <p className='w-full p-2 bg-green-500'>{message}</p> : ''}
-
-
-
-    <div className='p-9 flex flex-col gap-y-5'>
-      <Button class="bg-light-blue-600 text-white p-2 rounded-lg" onClick={handleAddNotice}>Thêm thông báo</Button>
-
-      <table className='w-full min-w-full table-auto text-left'>
-        <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-          <tr>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">ID</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-              Tiêu đề
-            </th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-              Ngày tạo
-            </th>
-
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 "></th>
-          </tr>
-        </thead>
-        <tbody>
-          {noticeList.map((notice, index) =>
-            <tr key={index} className="even:bg-blue-gray-50/50">
-              <td className='p-4'>{index + 1}</td>
-              <td className='p-4'>{notice.title}</td>
-              <td className='p-4'>{new Date(notice.date).toLocaleDateString()}</td>
-
-              <td className="p-4 justify-evenly flex">
-                <Link to={`/admin/notices/view/${notice._id}`}>
-                  <Button className="bg-green-700">Chi tiết</Button>
-                </Link>
-                <Modal buttonData={"Chỉnh sửa"} buttonColor={"bg-orange-500 "}>
-                  <form onSubmit={handleEditClick}>
-                    <Card className="mx-auto w-full max-w-[24rem]">
-                      <CardBody className="flex flex-col gap-4">
-                        <Typography variant="h4" color="blue-gray">
-                          Nhập thông tin chỉnh sửa
-                        </Typography>
-
-                        <input type='text' name="id" readOnly hidden value={notice._id}></input>
-                        <Input required type='text' name="title" label="Tiêu đề" size="lg" defaultValue={notice.title} />
-
-                        <Textarea name="content" label='Nội dung' defaultValue={notice.content} />
-
-
-
-                      </CardBody>
-                      <CardFooter className="pt-0">
-                        <Button type='submit' variant="gradient" fullWidth>
-                          Chỉnh sửa
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </form>
-                </Modal>
-                <Modal buttonData={"Xóa"} buttonColor={"bg-red-500"}>
-                  <Card>
-
-                    <CardBody>
-                      <Typography>Xác nhận xóa?</Typography>
-                      <div className='flex gap-5'>
-                        <Button className='bg-red-400' onClick={() => handleDelete(notice._id)}>OK</Button>
-                        <Button onClick={() => window.location.reload()}>Hủy</Button>
-                      </div>
-
-                    </CardBody>
-                  </Card>
-                </Modal>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-
-  </>
+          <table className="w-full table-auto text-left">
+            <thead>
+              <tr>
+                {tableHead.map((head) => (
+                  <th
+                    key={head}
+                    className="py-4 px-2 border-b border-b-gray-400"
+                  >
+                    {head}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {noticeList
+                .filter(
+                  (notice) =>
+                    notice.title.toLowerCase().includes(search)
+                )
+                .map((notice, index) => (
+                  <tr key={notice._id} className="border-b border-b-gray-400">
+                    <td className="px-2 py-4">{index + 1}</td>
+                    <td className="px-2 py-4">{notice.title}</td>
+      
+                    <td className="px-2 py-4 flex gap-4 flex-wrap">
+                      <Link to={`/admin/notices/view/${notice._id}`}>
+                        <FaEye className="text-lg hover:text-red-800 cursor-pointer" />
+                      </Link>
+                      <Link to={`/admin/notices/edit/${notice._id}`}>
+                        <FaPencilAlt className="text-lg hover:text-red-800 cursor-pointer" />
+                      </Link>
+                      <RiDeleteBin6Line
+                        onClick={() => handleDeleteModal(notice._id)}
+                        className="text-lg hover:text-red-800 cursor-pointer"
+                      />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
 
 
-}
+          <Dialog open={isOpenDeleteModal} handler={handleDeleteModal}>
+            <DialogHeader>Xác nhận xoá chứ? 😢</DialogHeader>
+            <DialogBody>Một khi đã xoá thì không thể hoàn tác lại</DialogBody>
+            <DialogFooter>
+              <button onClick={() => handleDeleteModal("")} className=" text-black hover:bg-gray-400 px-4 py-1 rounded mr-4">Không</button>
+              <button onClick={handleDelete} className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded">OK</button>
+            </DialogFooter>
+          </Dialog>
+        </div>
+      )}
+    </>
+  );
+};
 
-export default ShowNotice
+export default ShowNotice;

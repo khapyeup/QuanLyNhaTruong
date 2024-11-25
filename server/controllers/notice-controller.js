@@ -3,28 +3,24 @@ import Notice from '../models/notice.js'
 const getNoticeList = async (req, res) => {
     try {
         let result = await Notice.find()
-        if (result.length > 0)
-            res.json(result)
-        else
-            res.json({message: "Không có thông báo nào"})
+        res.status(200).json(result)
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({message: 'Có lỗi khi lấy dữ liệu ' + error})
     }
 }
 
 const addNotice = async (req, res) => {
-    const { title, content, date } = req.body;
+    const { title, content } = req.body;
 
     const newNotice = new Notice({
         title: title,
         content: content,
-        date: date
     });
     try {
         await newNotice.save();
-        res.status(200).json(newNotice);
+        res.status(200).json({message: "Thêm thông báo thành công!"});
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({message: "Có lỗi khi thêm thông báo " + error})
     }
 }
 
@@ -33,9 +29,9 @@ const deleteNotice = async (req, res) => {
 
     try {
         await Notice.findByIdAndDelete(noticeId);
-        res.send('Notice deleted successfully');
+        res.status(200).json({message: 'Xoá thông báo thành công'});
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({message: 'Có lỗi khi xoá thông báo ' + error});
     }
 }
 
@@ -45,12 +41,12 @@ const getDetailNotice = async (req, res) => {
     try {
         const notice = await Notice.findById(noticeId)
         if (notice) {
-            res.json(notice);
+            res.status(200).json(notice);
         } else {
-            res.status(404).send('Notice not found');
+            res.status(404).send({message: "Không tìm thấy thông báo"});
         }
     } catch (error) {
-        res.status(500).send('Error retrieving notice details: ' + error.message);
+        res.status(500).json({message: 'Có lỗi khi lấy dữ liệu thông báo' + error});
     }
 }
 
@@ -64,12 +60,12 @@ const updateNotice = async (req, res) => {
         const updatedNotice = await Notice.findByIdAndUpdate(noticeId, updateData, { new: true });
         console.log(updateNotice)
         if (updatedNotice) {
-            res.send('Notice updated successfully');
+            res.status(200).json({message: 'Cập nhật thông báo thành công' });
         } else {
-            res.status(404).json({message: 'Notice not found'});
+            res.status(404).json({message: 'Không tìm thấy thông báo'});
         }
     } catch (error) {
-        res.status(500).send('Error updating Notice: ' + error.message);
+        res.status(500).json({message: 'Có lỗi khi lưu thông báo: ' + error.message});
     }
 
 }

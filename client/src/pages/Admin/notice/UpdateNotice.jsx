@@ -1,21 +1,31 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
-import { useAddNoticeMutation } from "../../../redux/noticeRelated/noticeApiSlice";
+import { useEditNoticeMutation, useGetNoticeDetailsQuery } from "../../../redux/noticeRelated/noticeApiSlice";
 import { toast } from "react-toastify";
 
-const AddNotice = () => {
+const UpdateNotice = () => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  const [addNotice, { isLoading }] = useAddNoticeMutation();
+  const {id} = useParams();
+  const {data: noticeDetails, isLoading: isLoadingNotice} = useGetNoticeDetailsQuery(id)
+  const [editNotice, { isLoading }] = useEditNoticeMutation();
+
+  if (!isLoadingNotice && noticeDetails)
+  {
+    setValue("title",noticeDetails.title)
+    setValue("content", noticeDetails.content)
+  }
 
   const saveNotice = async (data) => {
-    await addNotice(data)
+    data._id = id;
+    await editNotice(data)
       .unwrap()
       .then((response) => toast.success(response.message))
       .finally(navigate("/admin/notices"));
@@ -24,7 +34,7 @@ const AddNotice = () => {
   return (
     <>
       <div className="flex flex-col gap-6 p-10">
-        <h1 className="font-bold text-2xl">Thêm thông báo</h1>
+        <h1 className="font-bold text-2xl">Chỉnh sửa thông báo</h1>
         <form
           onSubmit={handleSubmit(saveNotice)}
           className="flex flex-col gap-4"
@@ -81,4 +91,4 @@ const AddNotice = () => {
   );
 };
 
-export default AddNotice;
+export default UpdateNotice;
