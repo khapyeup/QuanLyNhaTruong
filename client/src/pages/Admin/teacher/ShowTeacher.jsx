@@ -44,7 +44,7 @@ const ShowTeacher = () => {
     setSearch(e.target.value.toLowerCase());
   };
 
-  console.log(teacherList);
+ 
   return (
     <>
       {isLoading ? (

@@ -20,7 +20,7 @@ function TeacherDetails() {
             <CardHeader className="h-10 grid place-items-center" color='gray'>Thông tin giáo viên</CardHeader>
             <CardBody>
                 <div className=''>
-                    <img className='rounded-full border-2 border-black size-48' src={`/${teacherDetails.profile}`}/>
+                    <img alt='Ảnh đại diện' className='rounded-full border-2 border-black size-48' src={teacherDetails.profile}/>
                     <Card className='mt-5'>
                         <CardBody>
                         <Typography>Tài khoản: {teacherDetails.username}</Typography>

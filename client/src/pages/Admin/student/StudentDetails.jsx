@@ -52,7 +52,7 @@ const StudentDetails = () => {
 
                     {/* Ben trai */}
                     <div>
-                      <img className='size-48 rounded-full border-2 border-black' src={'/' + studentDetails.avatar} />
+                      <img alt="Ảnh đại diện" className='size-48 rounded-full border-2 border-black' src={studentDetails.avatar} />
                     </div>
                     
                     
