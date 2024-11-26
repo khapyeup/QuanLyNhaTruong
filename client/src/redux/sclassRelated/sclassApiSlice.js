@@ -4,6 +4,27 @@ export const sclassApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSclassList: builder.query({
       query: () => ({ url: "/classes" }),
+      providesTags: ['Sclass']
+    }),
+    addSclass: builder.mutation({
+      query: (data) => ({
+        url: "/classes/add",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ['Sclass']
+    }),
+    editSclass: builder.mutation({
+      query: (data) => ({
+        url: `/classes/edit/${data._id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ['Sclass']
+    }),
+    deleteSclass: builder.mutation({
+      query: (id) => ({ url: `/classes/delete/${id}`, method: "DELETE" }),
+      invalidatesTags: ['Sclass']
     }),
     updateSchedule: builder.mutation({
       query: (data) => ({
@@ -15,4 +36,10 @@ export const sclassApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetSclassListQuery, useUpdateScheduleMutation } = sclassApiSlice;
+export const {
+  useGetSclassListQuery,
+  useAddSclassMutation,
+  useEditSclassMutation,
+  useDeleteSclassMutation,
+  useUpdateScheduleMutation,
+} = sclassApiSlice;

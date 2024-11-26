@@ -1,91 +1,208 @@
-import React, { useEffect } from 'react'
-import { Button, Card, CardFooter, CardBody, Typography, Input } from '@material-tailwind/react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { getClassList, updateClass } from '../../../redux/sclassRelated/sclassHandle';
-import Modal from '../../component/Modal';
+import { useState } from "react";
+import {useForm} from 'react-hook-form'
+import { Link } from "react-router-dom";
+import Loading from "../../component/Loading";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 
+import {
+  useAddSclassMutation,
+  useDeleteSclassMutation,
+  useEditSclassMutation,
+  useGetSclassListQuery,
+} from "../../../redux/sclassRelated/sclassApiSlice";
+//Icon
+import { FaPencilAlt } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaSearch } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 function ShowClasses() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const {register, handleSubmit, setValue, formState: {errors}} = useForm();
 
-  const {classList} = useSelector(state => state.sclass);
+  const { data: classList, isLoading } = useGetSclassListQuery();
+  const [addSclass] = useAddSclassMutation();
+  const [editSclass] = useEditSclassMutation();
+  const [deleteSclass] = useDeleteSclassMutation();
 
-  const handleAddClass = () => {
-    navigate('/admin/classes/add')
-  }
+  const [search, setSearch] = useState("");
+  const [selectedSclassId, setSelectedSclassId] = useState("");
+  const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  const handleEditClick = (e) => {
-    e.preventDefault();
-    const name = e.target.name.value;
-    dispatch(updateClass(e.target.id.value, {name}));
-  }
+  // const handleEditClick = (e) => {
+  //   e.preventDefault();
+  //   const name = e.target.name.value;
+  //   dispatch(updateClass(e.target.id.value, {name}));
+  // }
+  const handleSearch = (e) => {
+    setSearch(e.target.value.toLowerCase());
+  };
+  const handleAddModal = () => {
+    setIsOpenAddModal(!isOpenAddModal);
+  };
+  const handleEditModal = (id) => {
+    setIsOpenEditModal(!isOpenEditModal);
+    setSelectedSclassId(id);
+    setValue("name", classList.find(sclass => sclass._id === id).name)
+  };
+  const handleDeleteModal = (id) => {
+    setIsOpenDeleteModal(!isOpenDeleteModal);
+    setSelectedSclassId(id);
+  };
 
-  useEffect(() => {
-    dispatch(getClassList());
-  },[])
+  const handleAdd = (data) => {
+    addSclass(data)
+      .unwrap()
+      .then((response) => toast.success(response.message))
+      .finally(setIsOpenAddModal(false));
+  };
+  const handleEdit = (data) => {
+    data._id = selectedSclassId;
+    editSclass(data)
+      .unwrap()
+      .then((response) => toast.success(response.message))
+      .finally(setIsOpenEditModal(false));
+  };
+  const handleDelete = () => {
+    deleteSclass(selectedSclassId)
+      .unwrap()
+      .then((response) => toast.success(response.message))
+      .finally(setIsOpenDeleteModal(false));
+  };
+
   return (
-    <div className='p-9 flex flex-col gap-y-5'>
-      <Button class="bg-light-blue-600 text-white p-2 rounded-lg" onClick={handleAddClass}>Thêm lớp</Button>
+    <>
+      {isLoading ? (
+        <Loading size={12} />
+      ) : (
+        <div className="p-10 flex flex-col gap-6">
+          <h1 className="font-bold text-2xl">
+            Lớp <span>({classList.length})</span>
+          </h1>
+          <div className="flex flex-col md:flex-row justify-between ">
+            <button
+              onClick={handleAddModal}
+              className="bg-gray-600 text-white p-2 rounded hover:bg-gray-700"
+            >
+              Thêm lớp
+            </button>
 
-      <table className='w-full min-w-full table-auto text-left'>
-        <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-          <tr>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">ID</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-              Tên lớp
-            </th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 "></th>
-          </tr>
-        </thead>
-        <tbody>
-          {classList.map((sclass, index) =>
-            <tr key={sclass._id}>
-              <td className='p-4'>{index + 1}</td>
-              <td className='p-4'>{sclass.name}</td>
-              <td className='p-4 gap-2 justify-end flex'>
-               
-                <Modal buttonData={"Chỉnh sửa"} buttonColor={"bg-orange-500 "}>
-                  <form onSubmit={handleEditClick}>
-                    <Card className="mx-auto w-full max-w-[24rem]">
-                      <CardBody className="flex flex-col gap-4">
-                        <Typography variant="h4" color="blue-gray">
-                          Nhập thông tin chỉnh sửa
-                        </Typography>
+            <div className="relative">
+              <FaSearch className="absolute left-2 top-[10px]" />
+              <input
+                className="p-2 ps-8 text-sm text-gray-900 border border-gray-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="text"
+                placeholder="Tên lớp..."
+                onChange={handleSearch}
+              />
+            </div>
+          </div>
 
-                        <input type='text' name="id" readOnly hidden value={sclass._id}></input>
-                        <Input required type='text' name="name" label="Tên" size="lg" defaultValue={sclass.name} />
+          <table className="w-full table-auto text-left">
+            <thead>
+              <tr>
+                <th className="py-4 px-2 border-b border-b-gray-400">STT</th>
+                <th className="py-4 px-2 border-b border-b-gray-400">
+                  Tên lớp
+                </th>
+                <th className="py-4 px-2 border-b border-b-gray-400">
+                  Hành động
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {classList
+                .filter((sclass) => sclass.name.toLowerCase().includes(search))
+                .map((sclass, index) => (
+                  <tr key={sclass._id} className="border-b border-b-gray-400">
+                    <td className="px-2 py-4">{index + 1}</td>
+                    <td className="px-2 py-4">{sclass.name}</td>
+                    <td className="px-2 py-4 flex gap-4 flex-wrap">
+                      <FaPencilAlt
+                        onClick={() => handleEditModal(sclass._id)}
+                        className="text-lg hover:text-red-800 cursor-pointer"
+                      />
 
-                      </CardBody>
-                      <CardFooter className="pt-0">
-                        <Button type='submit' variant="gradient" fullWidth>
-                          Chỉnh sửa
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </form>
-                </Modal>
-                
-                
-                {/* <Modal buttonData={"Xóa"} buttonColor={"bg-red-500"}>
-                  <Card>
-                    <CardBody>
-                      <Typography>Xác nhận xóa?</Typography>
-                      <div className='flex gap-5'>
-                        <Button className='bg-red-400' onClick={() => handleDelete(activity._id)}>OK</Button>
-                        <Button onClick={() => window.location.reload()}>Hủy</Button>
-                      </div>
-                    </CardBody>
-                  </Card>
-                </Modal> */}
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  )
+                      <RiDeleteBin6Line
+                        onClick={() => handleDeleteModal(sclass._id)}
+                        className="text-lg hover:text-red-800 cursor-pointer"
+                      />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+
+          <Dialog open={isOpenAddModal} handler={handleAddModal}>
+            <DialogHeader>Thêm lớp</DialogHeader>
+            <form onSubmit={handleSubmit(handleAdd)}>
+              <DialogBody className="flex flex-col gap-2">
+                <label htmlFor="name">Tên lớp</label>
+                <input
+                {...register("name", {required: true})}
+                  id="name"
+                  name="name"
+                  type="text"
+                  className="p-2 rounded-lg border border-gray-400"
+                />
+              </DialogBody>
+              <DialogFooter>
+                <button type="submit">Lưu</button>
+                <button type="button" onClick={() => handleDeleteModal("")}>
+                  Thôi
+                </button>
+              </DialogFooter>
+            </form>
+          </Dialog>
+          <Dialog open={isOpenEditModal} handler={handleEditModal}>
+            <DialogHeader>Chỉnh sửa lớp</DialogHeader>
+            <form onSubmit={handleSubmit(handleEdit)}>
+              <DialogBody className="flex flex-col gap-2">
+                <label htmlFor="name">Tên lớp</label>
+                <input
+                {...register("name", {required: true})}
+                  id="name"
+                  name="name"
+                  type="text"
+                  className="p-2 rounded-lg border border-gray-400"
+                />
+              </DialogBody>
+              <DialogFooter>
+                <button type="submit">Lưu</button>
+                <button type="button" onClick={() => handleDeleteModal("")}>
+                  Thôi
+                </button>
+              </DialogFooter>
+            </form>
+          </Dialog>
+          <Dialog open={isOpenDeleteModal} handler={handleDeleteModal}>
+            <DialogHeader>Xác nhận xoá chứ? 😢</DialogHeader>
+            <DialogBody>Một khi đã xoá thì không thể hoàn tác lại</DialogBody>
+            <DialogFooter>
+              <button
+                onClick={() => handleDeleteModal("")}
+                className=" text-black hover:bg-gray-400 px-4 py-1 rounded mr-4"
+              >
+                Không
+              </button>
+              <button
+                onClick={handleDelete}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
+              >
+                OK
+              </button>
+            </DialogFooter>
+          </Dialog>
+        </div>
+      )}
+    </>
+  );
 }
 
-export default ShowClasses
+export default ShowClasses;

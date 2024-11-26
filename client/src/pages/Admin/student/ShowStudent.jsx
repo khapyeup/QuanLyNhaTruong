@@ -1,5 +1,6 @@
-import { toast, ToastContainer } from "react-toastify";
-import Loading from "../../component/Loading";
+import { toast } from "react-toastify";
+import { useState } from "react";
+
 import { Link } from "react-router-dom";
 import {
   Dialog,
@@ -14,7 +15,8 @@ import { FaEye } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaSearch } from "react-icons/fa";
-import { useState } from "react";
+
+import Loading from "../../component/Loading";
 
 const ShowStudent = () => {
   const {

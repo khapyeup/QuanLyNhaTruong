@@ -52,9 +52,9 @@ const addClass = async (req, res) => {
   });
   try {
     await newClass.save();
-    res.status(200).json(newClass);
+    res.status(200).json({message: 'Thêm lớp thành công'});
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({message: 'Có lỗi khi thêm lớp' + error.message});
   }
 };
 
@@ -68,14 +68,24 @@ const updateClass = async (req, res) => {
     });
     console.log(updatedClass);
     if (updatedClass) {
-      res.send("Class updated successfully");
+      res.status(200).json({ message: "Chỉnh sửa lớp thành công!" });
     } else {
-      res.status(404).json({ message: "Class not found" });
+      res.status(404).json({ message: "Không tìm thấy lớp" });
     }
   } catch (error) {
-    res.status(500).send("Error updating class: " + error.message);
+    res.status(500).json({message: "Lỗi: " + error.message});
   }
 };
+
+const deleteClass = async (req, res) => {
+  const {id} = req.params;
+  try {
+    await Class.findByIdAndDelete(id);
+    res.status(200).json({message: 'Xoá thành công!'})
+  } catch (error) {
+    res.status(500).json({message: 'Có lỗi khi xoá: ' + error.message})
+  }
+}
 
 const addSchedule = async (req, res) => {
   try {
@@ -137,6 +147,7 @@ export {
   getClassList,
   addClass,
   updateClass,
+  deleteClass,
   addSchedule,
   getDetailClass,
   getSchedule,
