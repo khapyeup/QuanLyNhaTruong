@@ -8,6 +8,7 @@ import {getClassList, addSchedule, getDetailClass, updateClass, addClass, getSch
 import { addActivity, addGroupActivity, deleteActivity, deleteGroupActivity, getActivityList, getAllGroupActivity, updateActivity, updateGroupActivity } from "../controllers/activity-controller.js";
 import { addFinance, deleteFinance, getAllFinanceRecords, getFinanceByUserId, recordPayment, updateFinance } from "../controllers/finance-controller.js";
 import { getConversations, getMessages, newMessage } from "../controllers/chat-controller.js";
+import { addEvidence, addParentFeedback, createProgressRecord, getProgressRecord, updateProgressRecord, updateSeenProgress } from "../controllers/progress-record.js";
 // import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
 // import { createMessage, getMessage } from "../controllers/message-controller.js";
 
@@ -88,5 +89,13 @@ router.post('/payments', recordPayment);
 router.get('/conversations/:sender', getConversations)
 router.get('/messages/:sender&:receiver', getMessages)
 router.post('/messages', newMessage)
+
+//Progress Record
+router.get('/progress/:studentId', getProgressRecord)
+router.post('/progress/record', createProgressRecord)
+router.post('/progress/record/:id/evidence', addEvidence)
+router.post('/progress/record/:id/feedback', addParentFeedback)
+router.put('/progress/record/:id', updateProgressRecord)
+router.patch('/progress/record/:id/seen', updateSeenProgress)
 
 export default router;

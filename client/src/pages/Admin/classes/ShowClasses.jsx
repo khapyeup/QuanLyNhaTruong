@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useForm} from 'react-hook-form'
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Loading from "../../component/Loading";
 import {
@@ -22,7 +22,12 @@ import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 function ShowClasses() {
-  const {register, handleSubmit, setValue, formState: {errors}} = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   const { data: classList, isLoading } = useGetSclassListQuery();
   const [addSclass] = useAddSclassMutation();
@@ -35,11 +40,6 @@ function ShowClasses() {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  // const handleEditClick = (e) => {
-  //   e.preventDefault();
-  //   const name = e.target.name.value;
-  //   dispatch(updateClass(e.target.id.value, {name}));
-  // }
   const handleSearch = (e) => {
     setSearch(e.target.value.toLowerCase());
   };
@@ -49,7 +49,8 @@ function ShowClasses() {
   const handleEditModal = (id) => {
     setIsOpenEditModal(!isOpenEditModal);
     setSelectedSclassId(id);
-    setValue("name", classList.find(sclass => sclass._id === id).name)
+
+    setValue("name", classList.find((sclass) => sclass._id === id)?.name);
   };
   const handleDeleteModal = (id) => {
     setIsOpenDeleteModal(!isOpenDeleteModal);
@@ -139,13 +140,14 @@ function ShowClasses() {
             </tbody>
           </table>
 
+          {/* Modal add new class */}
           <Dialog open={isOpenAddModal} handler={handleAddModal}>
             <DialogHeader>Thêm lớp</DialogHeader>
             <form onSubmit={handleSubmit(handleAdd)}>
               <DialogBody className="flex flex-col gap-2">
                 <label htmlFor="name">Tên lớp</label>
                 <input
-                {...register("name", {required: true})}
+                  {...register("name", { required: true })}
                   id="name"
                   name="name"
                   type="text"
@@ -153,20 +155,30 @@ function ShowClasses() {
                 />
               </DialogBody>
               <DialogFooter>
-                <button type="submit">Lưu</button>
-                <button type="button" onClick={() => handleDeleteModal("")}>
+                <button
+                  className=" text-black hover:bg-gray-400 px-4 py-1 rounded mr-4"
+                  type="button"
+                  onClick={() => handleAddModal()}
+                >
                   Thôi
+                </button>
+                <button
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
+                  type="submit"
+                >
+                  Lưu
                 </button>
               </DialogFooter>
             </form>
           </Dialog>
+          {/* Modal edit existed class */}
           <Dialog open={isOpenEditModal} handler={handleEditModal}>
             <DialogHeader>Chỉnh sửa lớp</DialogHeader>
             <form onSubmit={handleSubmit(handleEdit)}>
               <DialogBody className="flex flex-col gap-2">
                 <label htmlFor="name">Tên lớp</label>
                 <input
-                {...register("name", {required: true})}
+                  {...register("name", { required: true })}
                   id="name"
                   name="name"
                   type="text"
@@ -174,13 +186,23 @@ function ShowClasses() {
                 />
               </DialogBody>
               <DialogFooter>
-                <button type="submit">Lưu</button>
-                <button type="button" onClick={() => handleDeleteModal("")}>
+                <button
+                  className=" text-black hover:bg-gray-400 px-4 py-1 rounded mr-4"
+                  type="button"
+                  onClick={handleEditModal}
+                >
                   Thôi
+                </button>
+                <button
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
+                  type="submit"
+                >
+                  Lưu
                 </button>
               </DialogFooter>
             </form>
           </Dialog>
+          {/* Modal delete class */}
           <Dialog open={isOpenDeleteModal} handler={handleDeleteModal}>
             <DialogHeader>Xác nhận xoá chứ? 😢</DialogHeader>
             <DialogBody>Một khi đã xoá thì không thể hoàn tác lại</DialogBody>

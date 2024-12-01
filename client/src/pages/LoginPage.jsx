@@ -35,6 +35,8 @@ function LoginPage({ role }) {
         navigate("/Admin/dashboard");
       } else if (currentRole === "parent") {
         navigate("/Parent/dashboard");
+      } else if ( currentRole === 'teacher') {
+        navigate('/teacher/dashboard')
       }
     }
   }, [currentRole, navigate, currentUser]);
