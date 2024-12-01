@@ -13,13 +13,14 @@ import { useParams } from 'react-router-dom';
 import Loading from '../../component/Loading';
 
 import { useGetStudentDetailsQuery } from '../../../redux/studentRelated/studentApiSlice';
+import ProgressRecords from "../../component/Progress/ProgressRecords";
 
 
 const StudentDetails = () => {
   
   const {id} = useParams()
   
-  const {data: studentDetails, isLoading} = useGetStudentDetailsQuery(id);
+  const {data: studentDetails, isLoading, isError} = useGetStudentDetailsQuery(id);
 
   const TABLE_HEAD_ATTENDANCE = ['Tình trạng', 'Ngày']
   const TABLE_ROWS_ATTENDANCE = studentDetails?.attendance;
@@ -27,7 +28,7 @@ const StudentDetails = () => {
 
   return (
     <>
-      {isLoading ? <Loading size={20}/> : <div>
+      {isLoading ? <Loading size={20}/> : isError ? <p>Có lỗi khi tải dữ liệu</p> : <div>
         
         <Tabs value="info">
           <TabsHeader>
@@ -35,6 +36,9 @@ const StudentDetails = () => {
               <p>Thông tin</p>
             </Tab>
 
+            <Tab key="progress" value="progress">
+              Theo dõi
+            </Tab>
             
             <Tab key="attendance" value="attendance">
               <p>Điểm danh</p>
@@ -138,7 +142,10 @@ const StudentDetails = () => {
                 </CardBody>
               </Card>
             </TabPanel>
+              <ProgressRecords/>
+            <TabPanel key="progress" value="progress">
 
+            </TabPanel>
 
             {/* Điểm danh */}
             <TabPanel key="attendance" value='attendance'>
