@@ -5,15 +5,14 @@ export const getProgressRecord = async (req, res) => {
   try {
     const { studentId } = req.params;
 
-    const progressRecords = await ProgressRecord.find({ studentId }).sort({
-      date: -1,
-    });
+    const progressRecords = await ProgressRecord.find({ studentId }).sort({date: -1});
 
     res.status(200).json(progressRecords);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 //Create new progress record
 export const createProgressRecord = async (req, res) => {
@@ -111,4 +110,20 @@ export const addEvidence = async (req, res) => {
   } catch (error) {
     res.status(500).json({message: "Lỗi khi thêm dẫn chứng " + error.message})
   }
+}
+
+//Delete record
+export const deleteRecord = async (req, res) => {
+  try {
+    const record = await ProgressRecord.findById(req.params.id)
+  if (!record) {
+    return res.status(500).json({message: "Không tìm thấy!"});
+  }
+
+  await ProgressRecord.findByIdAndDelete(req.params.id);
+  res.status(200).json({message: "Xoá thành công"})
+  } catch (error) {
+    res.status(500).json({message: "Có lỗi " + error.message})
+  }
+
 }
