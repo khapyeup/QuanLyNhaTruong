@@ -12,7 +12,7 @@ import { FaChalkboardTeacher, FaUser  } from "react-icons/fa";
 import { MdOutlineSubject } from "react-icons/md";
 import { BiSolidNotification } from "react-icons/bi";
 import { SiGoogleclassroom } from "react-icons/si";
-
+import { SiBuzzfeed } from "react-icons/si";
 import { useSelector, useDispatch } from 'react-redux';
 
 function AdminSidebar() {
@@ -56,6 +56,11 @@ function AdminSidebar() {
             label: 'Hoạt động',
             icon: <MdOutlineSubject className='text-xl'/>,
             href: '/admin/activities'
+        },
+        {
+            label: 'Phí',
+            icon: <SiBuzzfeed className='text-xl'/>,
+            href: '/admin/fees'
         }
     ];
 

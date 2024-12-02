@@ -4,12 +4,9 @@ import User from '../models/user.js'
 const getStudentList = async (req, res) => {
     try {
         let result = await Student.find().populate('class_id').populate('user_id')
-        if (result.length > 0)
-            res.send(result)
-        else
-            res.send({ message: "Không có học sinh nào" })
+        res.status(200).json(result)
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({message: error.message})
     }
 }
 

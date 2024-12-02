@@ -41,6 +41,7 @@ import UpdateTeacher from "./teacher/UpdateTeacher";
 import UpdateNotice from "./notice/UpdateNotice";
 import AddProgressRecord from "../component/Progress/AddProgressRecord";
 import UpdateProgressRecord from "../component/Progress/updateProgressRecord";
+import FeeList from "./fee/FeeList";
 
 function AdminLayout() {
   const dispatch = useDispatch();
@@ -100,9 +101,8 @@ function AdminLayout() {
               path="/admin/students/edit/:id"
               element={<UpdateStudent />}
             />
-            {/* <Route path="/admin/students/marks/:id" element={<StudentExamMarks/>} />
-            <Route path="/Admin/students/attendance/:id" element={<StudentAttendance situation="Student" />} /> */}
-
+            {/* FeeStruture route */}
+            <Route path="/admin/fees" element={<FeeList/>}/>
             {/* Activity route */}
             <Route path="/admin/activities/" element={<ShowGroupActivity />} />
 
