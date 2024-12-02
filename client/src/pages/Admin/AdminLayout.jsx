@@ -39,6 +39,8 @@ import {
 import { authLogout } from "../../redux/userRelated/userSlice";
 import UpdateTeacher from "./teacher/UpdateTeacher";
 import UpdateNotice from "./notice/UpdateNotice";
+import AddProgressRecord from "../component/Progress/AddProgressRecord";
+import UpdateProgressRecord from "../component/Progress/updateProgressRecord";
 
 function AdminLayout() {
   const dispatch = useDispatch();
@@ -92,6 +94,8 @@ function AdminLayout() {
               path="/admin/students/view/:id"
               element={<StudentDetails />}
             />
+            <Route path="/admin/students/view/:id/record/add" element={<AddProgressRecord/>}/>
+            <Route path="/admin/students/view/:id/record/:recordId/update" element={<UpdateProgressRecord/>}/>
             <Route
               path="/admin/students/edit/:id"
               element={<UpdateStudent />}

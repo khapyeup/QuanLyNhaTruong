@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   useAddFeedbackMutation,
   useDeleteRecordMutation,
@@ -157,15 +157,17 @@ const ProgressRecords = () => {
                       />
                     </div>
                   </div>
-
+                      
                   <button
                     onClick={() => updateSeen(record._id)}
                     disabled={record.seen}
-                    className="disabled:bg-gray-400 disabled:border-0 disabled:text-white p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white"
+                    className="disabled:bg-gray-400 disabled:border-0 disabled:text-white p-2 border mr-4 border-red-600 rounded-md hover:bg-red-600 hover:text-white"
                   >
                     Đánh dấu đã xem
                   </button>
-                  {currentRole === "admin" && <button onClick={() => handleDeleteRecord(record._id)} className="ml-4 p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white">Xoá</button>}
+                  {currentRole === "admin" && <Link to={`/admin/students/view/${id}/record/${record._id}/update`}><button  className="mr-4 p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white">Chỉnh sửa</button></Link>}
+                  {currentRole === "admin" && <button onClick={() => handleDeleteRecord(record._id)} className="p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white">Xoá</button>}
+                  
                 </div>
               ))
             )}

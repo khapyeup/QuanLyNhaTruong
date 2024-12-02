@@ -9,7 +9,7 @@ import {
   CardBody,
   Typography,
 } from "@material-tailwind/react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Loading from "../../component/Loading";
 
 import { useGetStudentDetailsQuery } from "../../../redux/studentRelated/studentApiSlice";
@@ -200,7 +200,7 @@ const StudentDetails = () => {
               </TabPanel>
 
               <TabPanel className="flex flex-col gap-6" key="progress" value="progress">
-                <AddProgressRecord/>
+                <Link to={`/admin/students/view/${id}/record/add`} className="border border-red-600 hover:bg-red-600 hover:text-white p-2 text-center rounded-md">Thêm bản ghi mới</Link>
                 <ProgressRecords />
               </TabPanel>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { uploadFile } from "../../../helpers/uploadFile";
 import {useAddProgressRecordMutation} from "../../../redux/progressRelated/progressApiSlice"
@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 const AddProgressRecord = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -44,7 +45,7 @@ const AddProgressRecord = () => {
   const addProgress = (data) => {
     data.studentId = id;
     data.evidence = evidence;
-    addProgressRecord(data).unwrap().then(response => toast.success(response.message));
+    addProgressRecord(data).unwrap().then(response => toast.success(response.message)).finally(() => navigate(`/admin/student/view/${id}`));
   };
   console.log(evidence);
   return (
@@ -107,6 +108,7 @@ const AddProgressRecord = () => {
       <button className="border border-red-600 rounded-md p-2 hover:bg-red-600 hover:text-white">
         Lưu
       </button>
+      <Link to={`/admin/students/view/${id}`} type="button" className="border text-center rounded-md p-2 bg-gray-400 hover:bg-gray-600 hover:text-white">Quay lại</Link>
     </form>
   );
 };

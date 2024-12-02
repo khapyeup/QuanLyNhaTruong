@@ -8,10 +8,24 @@ export const progressApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Progress"],
     }),
+    getProgressRecordDetail: builder.query({
+      query: (id) => ({
+        url: `/progress/record/${id}`,
+      })
+      
+    }),
     addProgressRecord: builder.mutation({
       query: (data) => ({
         url: `/progress/record`,
         method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Progress"],
+    }),
+    updateProgressRecord: builder.mutation({
+      query: (data) => ({
+        url: `/progress/record/${data.id}`,
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: ["Progress"],
@@ -43,7 +57,9 @@ export const progressApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetProgressRecordsQuery,
+  useGetProgressRecordDetailQuery,
   useAddProgressRecordMutation,
+  useUpdateProgressRecordMutation,
   useAddFeedbackMutation,
   useDeleteRecordMutation,
   useUpdateSeenStatusMutation,
