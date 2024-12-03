@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { authLogout } from '../../redux/userRelated/userSlice';
 
 
 function NavTeacher() {
@@ -10,7 +11,7 @@ function NavTeacher() {
     const { currentUser } = useSelector(state => state.user);
 
     const logout = () => {
-        dispatch(logoutUser());
+        dispatch(authLogout());
     }
     return (
         <div className='flex items-center justify-end px-2 bg-white'>

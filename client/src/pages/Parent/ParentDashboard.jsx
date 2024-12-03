@@ -14,6 +14,7 @@ import ParentNofication from './ParentNofication';
 import StudentDetail from './StudentDetail';
 import { io } from 'socket.io-client';
 import MessagePanel from '../component/MessagePanel';
+import { authLogout, setOnlineUsers, setSocket } from '../../redux/userRelated/userSlice';
 
 
 function ParentDashboard() {
@@ -34,10 +35,10 @@ function ParentDashboard() {
         userId: currentUser._id
       }
     });
-    dispatch(SocketConnection(socket));
+    dispatch(setSocket(socket));
     
     socket.on('onlineUsers', (data) => {
-      dispatch(OnlineUsers(data));
+      dispatch(setOnlineUsers(data));
     })
 
      return () => {
@@ -62,7 +63,7 @@ function ParentDashboard() {
 
             <div className='flex items-center gap-2 sm:gap-7'>
               <HiOutlineBell className='size-6  cursor-pointer' onClick={handleNoficationMenu} />
-              <Button onClick={() => dispatch(logoutUser())}>Đăng xuất</Button>
+              <Button onClick={() => dispatch(authLogout())}>Đăng xuất</Button>
               {isNoficationMenuOpen ?
                 <div className='p-2 max-w-72 w-72 overflow-y-auto absolute top-12 right-36 border-black border-2 rounded-lg bg-white'>
                   <ParentNofication />

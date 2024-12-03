@@ -12,6 +12,7 @@ import TeacherMessage from './TeacherMessage';
 import TeacherAttendance from './TeacherAttendance';
 import DetailStudent from './DetailStudent';
 import TeacherTimetable from './TeacherTimetable';
+import { setOnlineUsers, setSocket } from '../../redux/userRelated/userSlice';
 
 
 
@@ -26,9 +27,9 @@ function TeacherLayout() {
             }
         });
 
-        dispatch(SocketConnection(socket));
+        dispatch(setSocket(socket));
         socket.on('onlineUsers', (data) => {
-            dispatch(OnlineUsers(data))
+            dispatch(setOnlineUsers(data))
         })
 
         return () => {
