@@ -42,6 +42,8 @@ import UpdateNotice from "./notice/UpdateNotice";
 import AddProgressRecord from "../component/Progress/AddProgressRecord";
 import UpdateProgressRecord from "../component/Progress/updateProgressRecord";
 import FeeList from "./fee/FeeList";
+import PaymentList from "./payment/PaymentList";
+import PaymentAssign from "./payment/PaymentAssign";
 
 function AdminLayout() {
   const dispatch = useDispatch();
@@ -103,6 +105,10 @@ function AdminLayout() {
             />
             {/* FeeStruture route */}
             <Route path="/admin/fees" element={<FeeList/>}/>
+            {/* Payment route */}
+            <Route path="/admin/payments" element={<PaymentList/>}/>
+            <Route path="/admin/payments/assigntostudent" element={<PaymentAssign/>}/>
+            
             {/* Activity route */}
             <Route path="/admin/activities/" element={<ShowGroupActivity />} />
 

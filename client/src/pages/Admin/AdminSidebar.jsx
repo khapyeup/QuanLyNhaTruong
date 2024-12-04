@@ -61,6 +61,11 @@ function AdminSidebar() {
             label: 'Phí',
             icon: <SiBuzzfeed className='text-xl'/>,
             href: '/admin/fees'
+        },
+        {
+            label: 'Giao dịch',
+            icon: <SiBuzzfeed className='text-xl'/>,
+            href: '/admin/payments'
         }
     ];
 

@@ -89,6 +89,7 @@ import {
   getFeeList,
   updateFee,
 } from "../controllers/fee-controller.js";
+import { assignPaymentToClass } from "../controllers/payment-controller.js";
 // import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
 // import { createMessage, getMessage } from "../controllers/message-controller.js";
 
@@ -160,6 +161,9 @@ router.get("/fees", getFeeList);
 router.post("/fees", addFee);
 router.put("/fees/:id", updateFee)
 router.delete("/fees/:id", deleteFee);
+//Payment
+router.post("/payments/assigntoclass", assignPaymentToClass)
+
 //Finance
 router.get("/finances", getAllFinanceRecords);
 router.get("/finances/user/:userId", getFinanceByUserId);
