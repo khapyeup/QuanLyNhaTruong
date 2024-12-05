@@ -89,7 +89,7 @@ import {
   getFeeList,
   updateFee,
 } from "../controllers/fee-controller.js";
-import { assignPaymentToClass } from "../controllers/payment-controller.js";
+import { addSubPayment, assignPaymentToClass, getPaymentDetail } from "../controllers/payment-controller.js";
 // import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
 // import { createMessage, getMessage } from "../controllers/message-controller.js";
 
@@ -162,15 +162,16 @@ router.post("/fees", addFee);
 router.put("/fees/:id", updateFee)
 router.delete("/fees/:id", deleteFee);
 //Payment
+router.get("/payments/:studentId", getPaymentDetail)
 router.post("/payments/assigntoclass", assignPaymentToClass)
-
+router.post("/payments/:paymentId", addSubPayment)
 //Finance
-router.get("/finances", getAllFinanceRecords);
-router.get("/finances/user/:userId", getFinanceByUserId);
-router.post("/finances", addFinance);
-router.put("/finances/:id", updateFinance);
-router.delete("/finances/:id", deleteFinance);
-router.post("/payments", recordPayment);
+// router.get("/finances", getAllFinanceRecords);
+// router.get("/finances/user/:userId", getFinanceByUserId);
+// router.post("/finances", addFinance);
+// router.put("/finances/:id", updateFinance);
+// router.delete("/finances/:id", deleteFinance);
+// router.post("/payments", recordPayment);
 
 //Chat
 router.get("/conversations/:sender", getConversations);

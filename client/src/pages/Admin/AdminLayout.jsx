@@ -44,6 +44,7 @@ import UpdateProgressRecord from "../component/Progress/updateProgressRecord";
 import FeeList from "./fee/FeeList";
 import PaymentList from "./payment/PaymentList";
 import PaymentAssign from "./payment/PaymentAssign";
+import PaymentDetail from "./payment/PaymentDetail";
 
 function AdminLayout() {
   const dispatch = useDispatch();
@@ -54,7 +55,6 @@ function AdminLayout() {
 
   return (
     <>
-      
       <div className="h-screen flex">
         {/* Sidebar */}
         <div className=" md:w-[8%] lg:w-[14%] p-4">
@@ -88,8 +88,14 @@ function AdminLayout() {
             {/* Teacher route */}
             <Route path="/Admin/teachers/" element={<ShowTeacher />} />
             <Route path="admin/teachers/add" element={<AddTeacher />} />
-            <Route path="/admin/teachers/view/:id" element={<TeacherDetails />} />
-            <Route path="/admin/teachers/edit/:id" element={<UpdateTeacher/>}/>
+            <Route
+              path="/admin/teachers/view/:id"
+              element={<TeacherDetails />}
+            />
+            <Route
+              path="/admin/teachers/edit/:id"
+              element={<UpdateTeacher />}
+            />
             {/* Student route */}
             <Route path="/admin/students/" element={<ShowStudent />} />
             <Route path="/admin/students/add" element={<AddStudent />} />
@@ -97,18 +103,31 @@ function AdminLayout() {
               path="/admin/students/view/:id"
               element={<StudentDetails />}
             />
-            <Route path="/admin/students/view/:id/record/add" element={<AddProgressRecord/>}/>
-            <Route path="/admin/students/view/:id/record/:recordId/update" element={<UpdateProgressRecord/>}/>
+            <Route
+              path="/admin/students/view/:id/record/add"
+              element={<AddProgressRecord />}
+            />
+            <Route
+              path="/admin/students/view/:id/record/:recordId/update"
+              element={<UpdateProgressRecord />}
+            />
             <Route
               path="/admin/students/edit/:id"
               element={<UpdateStudent />}
             />
             {/* FeeStruture route */}
-            <Route path="/admin/fees" element={<FeeList/>}/>
+            <Route path="/admin/fees" element={<FeeList />} />
             {/* Payment route */}
-            <Route path="/admin/payments" element={<PaymentList/>}/>
-            <Route path="/admin/payments/assigntostudent" element={<PaymentAssign/>}/>
-            
+            <Route path="/admin/payments" element={<PaymentList />} />
+            <Route
+              path="/admin/payments/:studentId"
+              element={<PaymentDetail />}
+            />
+            <Route
+              path="/admin/payments/assigntostudent"
+              element={<PaymentAssign />}
+            />
+
             {/* Activity route */}
             <Route path="/admin/activities/" element={<ShowGroupActivity />} />
 

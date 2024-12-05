@@ -1,4 +1,5 @@
 import Fee from "../models/fee.js";
+import Payment from "../models/payment.js";
 
 export const getFeeList = async (req, res) => {
     try {
@@ -43,6 +44,8 @@ export const deleteFee = async (req, res) => {
             return res.status(500).json({message: "Không tìm thấy!"})
         }
         await Fee.findByIdAndDelete(id)
+        //Delete all payment relate to this fee
+        await Payment.deleteMany({fee: id})
         res.json({message: "Xoá thành công"})
     } catch (error) {
         res.status(500).json({message: error.message})

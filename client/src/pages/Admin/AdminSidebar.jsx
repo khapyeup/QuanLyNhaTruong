@@ -13,6 +13,7 @@ import { MdOutlineSubject } from "react-icons/md";
 import { BiSolidNotification } from "react-icons/bi";
 import { SiGoogleclassroom } from "react-icons/si";
 import { SiBuzzfeed } from "react-icons/si";
+import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { useSelector, useDispatch } from 'react-redux';
 
 function AdminSidebar() {
@@ -64,7 +65,7 @@ function AdminSidebar() {
         },
         {
             label: 'Giao dịch',
-            icon: <SiBuzzfeed className='text-xl'/>,
+            icon: <FaMoneyCheckDollar className='text-xl'/>,
             href: '/admin/payments'
         }
     ];
