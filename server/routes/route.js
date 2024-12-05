@@ -89,7 +89,8 @@ import {
   getFeeList,
   updateFee,
 } from "../controllers/fee-controller.js";
-import { addSubPayment, assignPaymentToClass, getPaymentDetail } from "../controllers/payment-controller.js";
+import { addSubPayment, assignPaymentToClass, getNofiticationPayment, getPaymentDetail } from "../controllers/payment-controller.js";
+import {  editRemind, getRemind } from "../controllers/remind-controller.js";
 // import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
 // import { createMessage, getMessage } from "../controllers/message-controller.js";
 
@@ -165,6 +166,11 @@ router.delete("/fees/:id", deleteFee);
 router.get("/payments/:studentId", getPaymentDetail)
 router.post("/payments/assigntoclass", assignPaymentToClass)
 router.post("/payments/:paymentId", addSubPayment)
+router.get("/payments/nofitication/:userId", getNofiticationPayment)
+
+//RemindFeeSetting
+router.get("/remind", getRemind)
+router.post("/remind", editRemind)
 //Finance
 // router.get("/finances", getAllFinanceRecords);
 // router.get("/finances/user/:userId", getFinanceByUserId);

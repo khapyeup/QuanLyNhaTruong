@@ -1,5 +1,7 @@
 import Fee from "../models/fee.js";
 import Payment from "../models/payment.js";
+import Remind from "../models/remind.js";
+import User from "../models/user.js";
 import { addTeacher } from "./teacher-controller.js";
 
 const assignPaymentToClass = async (req, res) => {
@@ -50,10 +52,10 @@ const getPaymentDetail = async (req, res) => {
   try {
     const { studentId } = req.params;
 
-    const payments = await Payment.find({ studentId}).populate({
+    const payments = await Payment.find({ studentId }).populate({
       path: "studentId",
-      select: ['class_id','name', 'dob', "avatar"],
-      populate: { path: "class_id", select: "name"}
+      select: ['class_id', 'name', 'dob', "avatar"],
+      populate: { path: "class_id", select: "name" }
     }).populate("fee");
     res.json(payments);
   } catch (error) {
@@ -67,20 +69,20 @@ const addSubPayment = async (req, res) => {
     const data = req.body;
     const payment = await Payment.findById(data._id);
     if (!payment) {
-      return res.status(500).json({message: "Không tìm thấy dữ liệu"})
+      return res.status(500).json({ message: "Không tìm thấy dữ liệu" })
     }
-    
-     // Convert strings to numbers and store them
-     const amount = Number(data.amount) || 0;  // || 0 handles null/undefined cases
-     const discount = Number(data.discount) || 0;
-    
+
+    // Convert strings to numbers and store them
+    const amount = Number(data.amount) || 0;  // || 0 handles null/undefined cases
+    const discount = Number(data.discount) || 0;
+
     if (amount > payment.balance || amount + discount > payment.balance)
-      return res.status(500).json({message: "Số tiền thanh toán không được lớn hơn số tiền chưa thanh toán"})
-    else if (amount <= 0 || discount <0)
-      return res.status(500).json({message: "Dữ liệu nhập vào không hợp lệ"})
+      return res.status(500).json({ message: "Số tiền thanh toán không được lớn hơn số tiền chưa thanh toán" })
+    else if (amount <= 0 || discount < 0)
+      return res.status(500).json({ message: "Dữ liệu nhập vào không hợp lệ" })
     if (discount > payment.balance)
-      return res.status(500).json({message: "Số tiền giảm giá nhập vào không được lớn hơn số tiền chưa thanh toán"})
-    
+      return res.status(500).json({ message: "Số tiền giảm giá nhập vào không được lớn hơn số tiền chưa thanh toán" })
+
     payment.balance -= amount + discount
     if (payment.balance === 0) {
       payment.status = "Đã trả"
@@ -91,13 +93,63 @@ const addSubPayment = async (req, res) => {
       data
     )
     await payment.save();
-    res.json({message: "Đã thêm giao dịch thành công!"})
-   
+    res.json({ message: "Đã thêm giao dịch thành công!" })
+
 
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({message: "Có lỗi ở phía máy chủ"})
+    res.status(500).json({ message: "Có lỗi ở phía máy chủ" })
   }
 }
 
-export { getPaymentDetail, assignPaymentToClass, addSubPayment };
+const getNofiticationPayment = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Fetch reminder settings
+    const remindSetting = await Remind.findOne();
+    const alertDays = remindSetting ? remindSetting.alertDays : 2;
+
+    const today = new Date();
+    const alertDate = new Date(today);
+    alertDate.setDate(today.getDate() + alertDays);
+    
+    
+
+    // Find user by userId
+    const user = await User.findById(userId).populate({
+      path: "parentInfo.student_id",
+      select: "name",
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Không tìm thấy user!" });
+    }
+
+    const studentIds = user.parentInfo.student_id.map((student) => student._id);
+
+    // Find all payments related to the user’s students
+    const payments = await Payment.find({
+      studentId: { $in: studentIds },
+      status: { $in: ["Đang trả", "Chưa trả"] },
+    })
+      .populate("studentId", "name")
+      .populate("fee", "name dueDate");
+    
+    // Generate notifications for payments
+    const notifications = payments
+      .filter((payment) => new Date(payment.fee.dueDate) <= alertDate) // Check if due date is within alert days
+      .map(
+        (payment) =>
+          `Hạn nộp ${payment.fee.name} của bé ${payment.studentId.name} ngày ${payment.fee.dueDate.getDate()} gần tới.`
+      );
+
+    res.json(notifications);
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    res.status(500).json({ message: "Đã xảy ra lỗi khi lấy thông báo!" });
+  }
+};
+
+
+export { getPaymentDetail, assignPaymentToClass, addSubPayment, getNofiticationPayment };
