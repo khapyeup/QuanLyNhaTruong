@@ -1,4 +1,6 @@
 import Class from "../models/class.js";
+import Student from "../models/student.js"
+import User from "../models/user.js";
 
 const getClassList = async (req, res) => {
   try {
@@ -80,7 +82,17 @@ const updateClass = async (req, res) => {
 const deleteClass = async (req, res) => {
   const {id} = req.params;
   try {
+    //Check is the class used by any student
+    const sclassStudent = await Student.findOne({class_id: id})
+    if (sclassStudent) {
+      return res.status(500).json({message: "Không thể xoá lớp đã có học sinh"})
+    }
+    const sclassTeacher = await User.findOne({"teacherInfo.class": id})
+    if (sclassTeacher) {
+      return res.status(500).json({message: "Không thể xoá lớp đã có giáo viên"})
+    }
     await Class.findByIdAndDelete(id);
+    
     res.status(200).json({message: 'Xoá thành công!'})
   } catch (error) {
     res.status(500).json({message: 'Có lỗi khi xoá: ' + error.message})
