@@ -15,6 +15,7 @@ import {
 } from "@material-tailwind/react";
 import BigCallendar from "../component/BigCalendar";
 import { format, startOfWeek } from "date-fns";
+import ProgressRecords from "../component/Progress/ProgressRecords";
 
 function StudentDetail() {
   const dispatch = useDispatch();
@@ -57,8 +58,8 @@ function StudentDetail() {
             <p>Thông tin</p>
           </Tab>
 
-          <Tab key="behaviour" value="behaviour">
-            <p>Thành tích</p>
+          <Tab key="progress" value="progress">
+            <p>Theo dõi</p>
           </Tab>
           <Tab key="attendance" value="attendance">
             <p>Điểm danh</p>
@@ -187,37 +188,8 @@ function StudentDetail() {
             </Card>
           </TabPanel>
 
-          <TabPanel key="behaviour" value="behaviour">
-            <table class="w-full text-left table-auto min-w-max">
-              <thead>
-                <tr>
-                  {TABLE_HEAD_BEHAVIOUR.map((head) => (
-                    <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                      <p class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                        {head}
-                      </p>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {TABLE_ROWS_BEHAVIOUR &&
-                  TABLE_ROWS_BEHAVIOUR.map((row) => (
-                    <tr>
-                      <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                          {row.title}
-                        </p>
-                      </td>
-                      <td class="p-4 border-b border-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                          {row.date}
-                        </p>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+          <TabPanel key="progress" value="progress">
+            <ProgressRecords/>
           </TabPanel>
 
           {/* Điểm danh */}

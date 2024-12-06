@@ -76,7 +76,7 @@ const ProgressRecords = () => {
                 } border border-red-600 p-2 rounded-md  `}
               >
                 {category} (
-                {data.filter((record) => category==="Tất cả" || record.category === category).length})
+                {data?.filter((record) => category==="Tất cả" || record.category === category).length})
               </button>
             ))}
           </div>

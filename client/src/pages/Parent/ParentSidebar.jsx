@@ -15,40 +15,45 @@ import { BiSolidNotification } from "react-icons/bi";
 
 function ParentSidebar() {
     const dispatch = useDispatch()
-
-    const { isOpen } = useSelector(state => state.user);
+    const navItem = [
+        {
+            label: 'Trang chủ',
+            icon: <TfiDashboard className='text-xl'/>,
+            href: '/'
+        },
+        {
+            label: 'Học sinh',
+            icon: <PiStudent  className='text-xl'/>,
+            href: '/parent/student'
+        },
+        {
+            label: 'Thông báo',
+            icon: <VscBellDot  className='text-xl'/>,
+            href: '/parent/notice'
+        },
+        {
+            label: 'Nhắn tin',
+            icon: <FaChalkboardTeacher  className='text-xl'/>,
+            href: '/parent/messages'
+        },
+        {
+            label: 'Học phí',
+            icon: <BiSolidNotification  className='text-xl'/>,
+            href: '/parent/finance'
+        }
+    ];
+    
     return (
-        <Card className={isOpen ? "h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5" : 'hidden'}>
-            <div className="mb-2 p-4 flex justify-between items-center gap-2">
-                <Typography variant="h5" >
-                    Nhà trường ABC
-                </Typography>
-                <Button className='' onClick={() => dispatch(showSideBar())}>X</Button>
-            </div>
-
-            <List className=''>
-                <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/"}>
-                    <TfiDashboard className='size-6' />
-                    Trang chủ
-                </NavLink>
-                <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/student/"}>
-                    <PiStudent className='size-6' />
-                    Học sinh
-                </NavLink>
-                <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/notice/"}>
-                    <VscBellDot />
-                    Thông báo
-                </NavLink>
-                <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/messages/"}>
-                    <FaChalkboardTeacher />
-                    Nhắn tin
-                </NavLink>
-                <NavLink className="w-full flex gap-2 px-3 py-2 rounded-lg items-center hover:bg-gray-500" to={"/parent/finance/"}>
-                    <BiSolidNotification />
-                    Học phí
-                </NavLink>
-            </List>
-        </Card>
+        <div className='flex flex-col gap-4'>
+            {navItem.map((item) => (
+                <div className='' key={item.label}>
+                    <NavLink className=' flex items-center gap-2 text-[14px] justify-center lg:justify-start text-gray-700 hover:scale-105 transition hover:text-black' to={item.href}>
+                    {item.icon}
+                    <p className='hidden lg:block'>{item.label}</p>
+                    </NavLink>
+                </div>
+            ))}
+        </div>
     )
 }
 

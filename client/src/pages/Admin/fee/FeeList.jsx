@@ -3,6 +3,8 @@ import {
   useDeleteFeeMutation,
   useEditFeeMutation,
   useGetFeeListQuery,
+  useGetFeeRemindSettingQuery,
+  useUpdateFeeRemindSettingMutation,
 } from "../../../redux/feeRelated/feeApiSlice";
 import { format } from "date-fns";
 import Loading from "../../component/Loading";
@@ -28,6 +30,8 @@ export default function FeeList() {
     formState: { errors },
   } = useForm();
   const { data: feeList, isLoading, isError } = useGetFeeListQuery();
+  const { data: remindFeeSetting, isLoading: isRemindFeeLoading } = useGetFeeRemindSettingQuery();
+  const [updateRemindFeeSetting] = useUpdateFeeRemindSettingMutation();
   const [addFee] = useAddFeeMutation();
   const [updateFee] = useEditFeeMutation();
   const [deleteFee] = useDeleteFeeMutation();
@@ -46,7 +50,14 @@ export default function FeeList() {
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenUpdate, setIsOpenUpdate] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [isOpenFeeSetting, setIsOpenFeeSetting] = useState(false)
 
+
+  const handleOpenFeeSetting = () => {
+    setIsOpenFeeSetting(!isOpenFeeSetting);
+    setValue("alertDays", remindFeeSetting?.alertDays)
+    setValue("isActive", remindFeeSetting?.isActive)
+  }
   const handleOpenAdd = () => {
     setIsOpenAdd(!isOpenAdd);
   };
@@ -55,16 +66,20 @@ export default function FeeList() {
     setSelectedFee(id);
     const fee = feeList.find(fees => fees._id === id)
     console.log(fee)
-   setValue("name", fee?.name)
-   setValue("baseFee", fee?.baseFee)
-   setValue("mealFee", fee?.mealFee)
-   setValue("transportFee", fee?.transportFee)
-   setValue("dueDate", format(fee?.dueDate, 'yyyy-MM-dd'))
+    setValue("name", fee?.name)
+    setValue("baseFee", fee?.baseFee)
+    setValue("mealFee", fee?.mealFee)
+    setValue("transportFee", fee?.transportFee)
+    setValue("dueDate", format(fee?.dueDate, 'yyyy-MM-dd'))
   };
   const handleOpenDelete = (id) => {
     setIsOpenDelete(!isOpenDelete);
     setSelectedFee(id);
   };
+
+  const handleUpdateFeeRemind = (data) => {
+    updateRemindFeeSetting(data).unwrap().then(res => toast.success(res.message)).finally(handleOpenFeeSetting())
+  }
 
   const handleAdd = (data) => {
     addFee(data)
@@ -105,12 +120,16 @@ export default function FeeList() {
               Phí (<span>{feeList.length}</span>)
             </h1>
             <div className="flex flex-col md:flex-row justify-between ">
-              <button
-                onClick={handleOpenAdd}
-                className="bg-gray-600 text-white p-2 rounded hover:bg-gray-700"
-              >
-                Thêm phí mới
-              </button>
+              <div>
+                <button
+                  onClick={handleOpenAdd}
+                  className="bg-gray-600 text-white p-2 rounded hover:bg-gray-700"
+                >
+                  Thêm phí mới
+                </button>
+                <button onClick={handleOpenFeeSetting} className="ml-4 bg-gray-600 text-white p-2 rounded hover:bg-gray-700">Cài đặt nhắc nhở học phí</button>
+              </div>
+
 
               <div className="relative">
                 <FaSearch className="absolute left-2 top-[10px]" />
@@ -305,6 +324,23 @@ export default function FeeList() {
             OK
           </button>
         </DialogFooter>
+      </Dialog>
+      {/* Fee Setting Modal */}
+      <Dialog open={isOpenFeeSetting} handler={handleOpenFeeSetting}>
+        <DialogHeader>Nhắc nhở học phí</DialogHeader>
+        <DialogBody>
+          {isRemindFeeLoading ? <Loading /> : <form onSubmit={handleSubmit(handleUpdateFeeRemind)} className="flex flex-col gap-2">
+            <label>Trạng thái</label>
+            <select className="p-2 border border-gray-300 rounded-lg" name="isActive" {...register("isActive")}>
+              <option value={true}>Bật</option>
+              <option value={false}>Tắt</option>
+            </select>
+            <label>Số ngày gửi thông báo trước khi hết hạn</label>
+            <input className="p-2 border border-gray-300 rounded-lg" {...register("alertDays")} type="number" name="alertDays"/>
+            <button className="rounded-lg bg-black text-white p-2 mt-4">Cập nhật</button>
+          </form>}
+        </DialogBody>
+
       </Dialog>
     </>
   );

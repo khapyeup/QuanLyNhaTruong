@@ -14,14 +14,15 @@ export default function PaymentList() {
 
   return (
     <>
-      <Link
-        className="bg-black text-white p-2 rounded-md"
-        to={"/admin/payments/assigntostudent"}
-      >
-        Gán học phí
-      </Link>
-      <div className="mt-6 flex flex-col gap-2">
-        <p className="font-bold text-xl">Danh sách học sinh</p>
+
+      <div className="p-6">
+        <Link
+          className="bg-black text-white p-2 rounded-md"
+          to={"/admin/payments/assigntostudent"}
+        >
+          Gán học phí
+        </Link>
+        <p className="mt-6 mb-2 font-bold text-xl">Danh sách học sinh</p>
         <div className="shadow border border-gray-300 rounded-lg">
           <table className="w-full table-auto text-left">
             <thead>

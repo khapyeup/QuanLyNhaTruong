@@ -1,3 +1,4 @@
+import ProgressRecord from '../models/progress-record.js'
 import Student from "../models/student.js";
 import User from "../models/user.js";
 
@@ -42,6 +43,8 @@ const deleteStudent = async (req, res) => {
       console.log("Student not found.");
       return res.status(500).json({ message: "Không tìm thấy học sinh!" });
     }
+    //Delete progress record
+    await ProgressRecord.deleteMany({studentId})
 
     await Student.findOneAndDelete({ _id: studentId });
     return res.status(200).json({ message: "Xoá học sinh thành công!" });

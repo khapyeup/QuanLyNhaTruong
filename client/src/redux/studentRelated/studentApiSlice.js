@@ -15,6 +15,9 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    getStudentByParent: builder.query({
+      query: (userId) => `/user/${userId}/students`
+    }),
     addStudent: builder.mutation({
       query: (data) => ({
         url: "/students/add",
@@ -44,6 +47,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetStudentListQuery,
+  useGetStudentByParentQuery,
   useGetStudentDetailsQuery,
   useAddStudentMutation,
   useEditStudentMutation,

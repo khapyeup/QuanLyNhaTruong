@@ -38,7 +38,7 @@ const getConversations = async (sender) => {
       totalUnSeen: conversation.messages.filter(
         (message) =>
           message?.sender.toString() ===
-            conversation.participants[index]._id.toString() && !message?.seen
+          conversation.participants[index]?._id.toString() && !message?.seen
       )?.length,
     };
   });
@@ -75,7 +75,7 @@ io.on("connection", async (socket) => {
       name: user?.teacherInfo.name || user?.parentInfo.fatherName,
       profile: user?.profile,
       online: onlineUsers.has(data.receiver),
-    };
+    } || null;
 
     socket.emit("receiverInfo", payload);
 

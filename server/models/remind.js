@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const remind = new mongoose.Schema({
+    isActive: {type: Boolean, default: true},
     alertDays: {type: Number, default: 1}
 })
 

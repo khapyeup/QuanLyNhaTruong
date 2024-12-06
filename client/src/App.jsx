@@ -9,8 +9,8 @@ import { useSelector } from "react-redux";
 import ChoosePage from "./pages/ChoosePage";
 import LoginPage from "./pages/LoginPage";
 import AdminLayout from "./pages/Admin/AdminLayout";
-import ParentDashboard from "./pages/Parent/ParentDashboard";
 import TeacherLayout from "./pages/Teacher/TeacherLayout";
+import ParentLayout from "./pages/Parent/ParentLayout";
 
 function App() {
   const { currentRole } = useSelector((state) => state.user);
@@ -41,7 +41,7 @@ function App() {
         )}
         {currentRole === "parent" && (
           <>
-            <ParentDashboard />
+            <ParentLayout />
           </>
         )}
         {currentRole === "teacher" && (

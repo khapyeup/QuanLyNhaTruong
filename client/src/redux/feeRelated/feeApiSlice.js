@@ -32,6 +32,18 @@ export const feeApiSlice = apiSlice.injectEndpoints({
        
       }),
       invalidatesTags: ["Fee"]
+    }),
+    getFeeRemindSetting: builder.query({
+      query: () => '/remind',
+      providesTags: ['FeeRemindSetting']
+    }),
+    updateFeeRemindSetting: builder.mutation({
+      query: (data) => ({
+        url: '/remind',
+        method: 'POST',
+        body: data
+      }),
+      invalidatesTags: ['FeeRemindSetting']
     })
   }),
 });
@@ -40,5 +52,7 @@ export const {
   useGetFeeListQuery,
   useAddFeeMutation,
   useEditFeeMutation,
-  useDeleteFeeMutation
+  useDeleteFeeMutation,
+  useGetFeeRemindSettingQuery,
+  useUpdateFeeRemindSettingMutation
 } = feeApiSlice;
