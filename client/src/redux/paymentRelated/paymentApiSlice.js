@@ -1,4 +1,5 @@
 import { apiSlice } from "../apiSlice";
+import { io } from "socket.io-client";
 
 const paymentApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,6 +14,9 @@ const paymentApiSlice = apiSlice.injectEndpoints({
       query: (studentId) => `/payments/${studentId}`,
       providesTags: ['Payment']
     }),
+    getPaymentNofitication: builder.query({
+      query: (userId) => `/payments/nofitication/${userId}`,
+    }),
     addSubPayment: builder.mutation({
       query: (data) => ({
         url: `/payments/${data._id}`,
@@ -24,5 +28,5 @@ const paymentApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useAssignPaymentToClassMutation, useGetPaymentDetailQuery, useAddSubPaymentMutation } =
+export const { useAssignPaymentToClassMutation, useGetPaymentDetailQuery, useAddSubPaymentMutation, useGetPaymentNofiticationQuery } =
   paymentApiSlice;

@@ -18,7 +18,7 @@ function ParentStudent() {
 
 
   return (
-    <div className='flex flex-col gap-6'>
+    <div className='flex flex-col gap-6 p-10'>
       <h1 className='font-bold text-2xl'>Danh sách học sinh </h1>
       <input className='rounded-lg p-2 border border-gray-400' placeholder='Tìm kiếm học sinh theo tên, lớp...' onChange={handleSearch}/>
       {isLoading ? <Loading /> : !isError && <table className='table-auto w-full text-left shadow-md border text-gray-700'>

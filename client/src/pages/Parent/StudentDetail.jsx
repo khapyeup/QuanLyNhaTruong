@@ -212,12 +212,12 @@ function StudentDetail() {
                   </Typography>
                 </CardBody>
               </Card>
-              <table class="w-full text-left table-auto min-w-max">
+              <table className="w-full text-left table-auto min-w-max">
                 <thead>
                   <tr>
-                    {TABLE_HEAD_ATTENDANCE.map((head) => (
-                      <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                        <p class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+                    {TABLE_HEAD_ATTENDANCE.map((head, idx) => (
+                      <th key={idx} className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                        <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
                           {head}
                         </p>
                       </th>
@@ -226,15 +226,15 @@ function StudentDetail() {
                 </thead>
                 <tbody>
                   {TABLE_ROWS_ATTENDANCE &&
-                    TABLE_ROWS_ATTENDANCE.map((row) => (
-                      <tr>
-                        <td class="p-4 border-b border-blue-gray-50">
-                          <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    TABLE_ROWS_ATTENDANCE.map((row, idx) => (
+                      <tr key={idx}>
+                        <td className="p-4 border-b border-blue-gray-50">
+                          <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
                             {row.status}
                           </p>
                         </td>
-                        <td class="p-4 border-b border-blue-gray-50">
-                          <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                        <td className="p-4 border-b border-blue-gray-50">
+                          <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
                             {row.date?.slice(0, 10)}
                           </p>
                         </td>

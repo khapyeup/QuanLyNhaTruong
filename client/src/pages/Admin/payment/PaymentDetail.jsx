@@ -37,8 +37,7 @@ export default function PaymentDetail() {
       .then((response) => toast.success(response.message))
       .finally(setIsOpen(false));
   };
-  console.log(data);
-  console.log(paymentId);
+  
   return (
     <>
       <h1 className="font-bold text-2xl">Chi tiết giao dịch</h1>
@@ -79,7 +78,7 @@ export default function PaymentDetail() {
           </div>
           {/* Payment Detail */}
           <div className="p-4 rounded-xl bg-gray-200">
-            <h2 className="font-bold text-xl mb-4">Giao dịch</h2>
+            <h2 className="font-bold text-xl mb-4">Lịch sử giao dịch</h2>
             <div className="flex flex-col gap-4">
               {data.map((item) => (
                 <div key={item._id}>
@@ -88,7 +87,7 @@ export default function PaymentDetail() {
                       item.status === "Chưa trả"
                         ? `bg-red-400`
                         : item.status === "Đã trả" ? `bg-green-400` : item.status ==="Đang trả" && `bg-orange-400`
-                    } text-white p-4 rounded-lg`}
+                    } text-white p-2 rounded-lg`}
                   >
                     <p>{item.fee.name}</p>
 
@@ -109,10 +108,10 @@ export default function PaymentDetail() {
                         <table className="w-full table-auto text-left">
                           <thead>
                             <tr>
-                              <th className="p-4 border border-gray-400">Ngày thanh toán</th>
-                              <th className="p-4 border border-gray-400">Tiền thanh toán</th>
-                              <th className="p-4 border border-gray-400">Giảm giá</th>
-                              <th className="p-4 border border-gray-400">Phương thức thanh toán</th>
+                              <th className="p-4 border-b border-gray-400">Ngày thanh toán</th>
+                              <th className="p-4 border-b border-gray-400">Tiền thanh toán</th>
+                              <th className="p-4 border-b border-gray-400">Giảm giá</th>
+                              <th className="p-4 border-b border-gray-400">Phương thức thanh toán</th>
                             </tr>
                           </thead>
                           <tbody>

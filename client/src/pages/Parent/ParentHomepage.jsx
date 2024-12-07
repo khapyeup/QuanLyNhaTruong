@@ -19,7 +19,7 @@ const ParentHomepage = () => {
 
   return (
 
-    <div className='flex flex-col gap-10'>
+    <div className='flex flex-col gap-10 p-10'>
       <h1 className='font-bold text-xl'>Xin chào, {currentUser.username}</h1>
       <div className='grid md:grid-cols-2 gap-4'>
         <div className="text-white rounded-lg  bg-red-400 flex flex-col items-center justify-center gap-2 shadow-lg border p-2 min-w-56 min-h-40   ">

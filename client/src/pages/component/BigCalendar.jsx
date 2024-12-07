@@ -23,10 +23,10 @@ function BigCalendar({ timetable }) {
             </thead>
             <tbody>
               <tr>
-                {timetable.content.map((item) => (
-                  <td className="align-text-top">
+                {timetable.content.map((item,i) => (
+                  <td key={i} className="align-text-top">
                     {item.periods?.map((period) => (
-                      <div className="shadow-lg text-sm border-2 odd:bg-[#C6E7FF] rounded-lg p-1 even:bg-[#FFDDAE] mb-3">
+                      <div key={period._id} className="shadow-lg text-sm border-2 odd:bg-[#C6E7FF] rounded-lg p-1 even:bg-[#FFDDAE] mb-3">
                         <div className="flex items-center gap-1 justify-center">
                           <CiClock2 className="text-lg"/>
                           <p>

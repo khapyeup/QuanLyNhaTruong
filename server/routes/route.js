@@ -91,8 +91,7 @@ import {
 } from "../controllers/fee-controller.js";
 import { addSubPayment, assignPaymentToClass, getNofiticationPayment, getPaymentDetail } from "../controllers/payment-controller.js";
 import {  editRemind, getRemind } from "../controllers/remind-controller.js";
-// import { createChat, findChat, findUserChat } from "../controllers/chat-controller.js";
-// import { createMessage, getMessage } from "../controllers/message-controller.js";
+
 
 const router = express.Router();
 
@@ -179,10 +178,10 @@ router.post("/remind", editRemind)
 // router.delete("/finances/:id", deleteFinance);
 // router.post("/payments", recordPayment);
 
-//Chat
-router.get("/conversations/:sender", getConversations);
-router.get("/messages/:sender&:receiver", getMessages);
-router.post("/messages", newMessage);
+// //Chat
+// router.get("/conversations/:sender", getConversations);
+// router.get("/messages/:sender&:receiver", getMessages);
+// router.post("/messages", newMessage);
 
 //Progress Record
 router.get("/progress/:studentId", getProgressRecord);

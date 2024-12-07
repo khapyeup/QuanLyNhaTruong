@@ -108,6 +108,9 @@ const getNofiticationPayment = async (req, res) => {
 
     // Fetch reminder settings
     const remindSetting = await Remind.findOne();
+    if (!remindSetting.isActive)
+      return res.status(200).json([]);
+
     const alertDays = remindSetting ? remindSetting.alertDays : 2;
 
     const today = new Date();
@@ -141,7 +144,7 @@ const getNofiticationPayment = async (req, res) => {
       .filter((payment) => new Date(payment.fee.dueDate) <= alertDate) // Check if due date is within alert days
       .map(
         (payment) =>
-          `Hạn nộp ${payment.fee.name} của bé ${payment.studentId.name} ngày ${payment.fee.dueDate.getDate()} gần tới.`
+          `Hạn nộp ${payment.fee.name} của bé ${payment.studentId.name} gần tới.`
       );
 
     res.json(notifications);

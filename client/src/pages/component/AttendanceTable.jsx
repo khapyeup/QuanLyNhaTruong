@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AttendanceTable = ({ day, classId }) => {
@@ -51,7 +51,7 @@ const AttendanceTable = ({ day, classId }) => {
     
     return (
         <>
-            <ToastContainer position='bottom-right' />
+           
             {students.length > 0 ? (
                 <form onSubmit={handleSave}>
 

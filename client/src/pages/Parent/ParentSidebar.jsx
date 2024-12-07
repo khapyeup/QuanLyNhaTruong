@@ -39,7 +39,7 @@ function ParentSidebar() {
         {
             label: 'Học phí',
             icon: <BiSolidNotification  className='text-xl'/>,
-            href: '/parent/finance'
+            href: '/parent/payments'
         }
     ];
     
