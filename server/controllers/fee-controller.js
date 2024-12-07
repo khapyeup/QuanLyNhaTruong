@@ -29,7 +29,10 @@ export const updateFee = async (req, res) => {
     try {
         const {name, baseFee,mealFee, transportFee, dueDate} = req.body;
 
-        const fee = await Fee.findByIdAndUpdate(req.params.id, {name, baseFee,mealFee, transportFee, dueDate})
+        const fee = await Fee.findOneAndUpdate({_id: req.params.id}, {name, baseFee,mealFee, transportFee, dueDate},{new: true})
+       
+
+
         res.json({message: "Chỉnh sửa thành công 😍"})
     } catch (error) {
         res.status(500).json({message: error.message})

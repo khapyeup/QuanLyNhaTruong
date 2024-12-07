@@ -94,6 +94,7 @@ export default function PaymentDetail() {
                     <p>
                       Ngày hết hạn: {format(item.fee.dueDate, "dd/MM/yyyy")}
                     </p>
+                    <p>Tổng học phí: {item.amount.toLocaleString()}</p>
                     <p>Tiền cần trả: {item.balance.toLocaleString()}</p>
                   </div>
 

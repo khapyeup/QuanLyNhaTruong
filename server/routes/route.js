@@ -91,6 +91,7 @@ import {
 } from "../controllers/fee-controller.js";
 import { addSubPayment, assignPaymentToClass, getNofiticationPayment, getPaymentDetail } from "../controllers/payment-controller.js";
 import {  editRemind, getRemind } from "../controllers/remind-controller.js";
+import { addComplaint, getAllComplaints, getComplaintsByUser, updateComplaints } from "../controllers/complaint-controller.js";
 
 
 const router = express.Router();
@@ -192,4 +193,11 @@ router.post("/progress/record/:id/feedback", addParentFeedback);
 router.put("/progress/record/:id", updateProgressRecord);
 router.patch("/progress/record/:id/seen", updateSeenProgress);
 router.delete("/progress/record/:id", deleteRecord);
+
+//Complaint 
+router.get("/complaints", getAllComplaints)
+router.post("/complaints", addComplaint)
+router.put("/complaints/:id", updateComplaints)
+router.get("/complaints/user/:userId", getComplaintsByUser)
+
 export default router;

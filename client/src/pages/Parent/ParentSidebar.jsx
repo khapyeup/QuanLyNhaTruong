@@ -9,7 +9,7 @@ import { PiStudent } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { VscBellDot } from "react-icons/vsc";
 import { BiSolidNotification } from "react-icons/bi";
-
+import { MdOutlineRateReview } from "react-icons/md";
 
 
 
@@ -40,6 +40,11 @@ function ParentSidebar() {
             label: 'Học phí',
             icon: <BiSolidNotification  className='text-xl'/>,
             href: '/parent/payments'
+        },
+        {
+            label: 'Đánh giá',
+            icon: <MdOutlineRateReview   className='text-xl'/>,
+            href: '/parent/complaints'
         }
     ];
     

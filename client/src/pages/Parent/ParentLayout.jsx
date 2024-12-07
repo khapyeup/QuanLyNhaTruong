@@ -14,6 +14,7 @@ import { io } from 'socket.io-client';
 import { authLogout, setOnlineUsers, setSocket } from '../../redux/userRelated/userSlice';
 import PaymentDetail from './PaymentDetail';
 import ParentPayment from './ParentPayment';
+import ParentComplaint from './ParentComplaint';
 
 
 
@@ -88,7 +89,7 @@ function ParentLayout() {
               <Route path='/parent/payments' element={<ParentPayment />} />
               <Route path='/parent/payments/:studentId' element={<PaymentDetail/>}/>
               <Route path='/parent/messages/*' element={<ParentMessage />} />
-
+              <Route path='/parent/complaints' element={<ParentComplaint userId={currentUser._id} />} />
             </Routes>
           
 
