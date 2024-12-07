@@ -1,4 +1,6 @@
 import User from "../models/user.js";
+import Conversation from "../models/conversation.js"
+import Message from "../models/message.js"
 
 const teacherLogin = async (req, res) => {
   if (req.body.username && req.body.password) {
@@ -134,6 +136,10 @@ const deleteTeacher = async (req, res) => {
 
   try {
     await User.findByIdAndDelete(teacherId);
+    //Xoa message
+    await Conversation.deleteMany({participants: {$in: [teacherId]}});
+    await Message.deleteMany({$or: [{sender: teacherId},{receiver: teacherId}]})
+
     res.status(200).json({ message: "Xoá giáo viên thành công" });
   } catch (error) {
     res.status(500).json({ message: "Có lỗi khi xoá giáo viên " + error });

@@ -47,6 +47,7 @@ const deleteStudent = async (req, res) => {
     await ProgressRecord.deleteMany({studentId})
 
     await Student.findOneAndDelete({ _id: studentId });
+    
     return res.status(200).json({ message: "Xoá học sinh thành công!" });
   } catch (error) {
     console.log("Có lỗi khi xoá học sinh", error);

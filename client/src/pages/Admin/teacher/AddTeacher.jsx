@@ -19,7 +19,7 @@ const AddTeacher = () => {
   } = useForm();
 
   const { data: sclassList } = useGetSclassListQuery();
-  const {data: groupActivity} = useGetGroupActivityQuery();
+  const { data: groupActivity } = useGetGroupActivityQuery();
   const [addTeacher, { isLoading }] = useAddTeacherMutation();
 
 
@@ -151,7 +151,7 @@ const AddTeacher = () => {
               <p className="text-sm text-red-700">{errors.email.message}</p>
             )}
           </div>
-         
+
           <div className="flex flex-col gap-2">
             <label htmlFor="class_id">Chọn lớp chủ nhiệm</label>
             <select
@@ -175,7 +175,8 @@ const AddTeacher = () => {
               {...register("activityAssign")}
               className="p-2 rounded-lg border border-gray-400"
             >
-            {groupActivity?.map(groupAct =><option key={groupAct._id} value={groupAct._id}>{groupAct.group_activity}</option>)}
+              <option value=""></option>
+              {groupActivity?.map(groupAct => <option key={groupAct._id} value={groupAct._id}>{groupAct.group_activity}</option>)}
             </select>
           </div>
           <div>
@@ -213,7 +214,7 @@ const AddTeacher = () => {
           </div>
         </form>
       </div>
-      
+
     </>
   );
 };

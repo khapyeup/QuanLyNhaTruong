@@ -91,6 +91,10 @@ const deleteClass = async (req, res) => {
     if (sclassTeacher) {
       return res.status(500).json({message: "Không thể xoá lớp đã có giáo viên"})
     }
+    const sclassUser = await User.findOne({"parentInfo.sclass": {$in: [id]}})
+    if (sclassUser) {
+      return res.status(500).json({message: "Không thể xoá lớp đã có phụ huynh"})
+    }
     await Class.findByIdAndDelete(id);
     
     res.status(200).json({message: 'Xoá thành công!'})

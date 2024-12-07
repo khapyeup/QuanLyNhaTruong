@@ -126,15 +126,19 @@ const AddStudent = () => {
             <select
               id="user_id"
               name="user_id"
-              {...register("user_id")}
+              {...register("user_id", {required: "Chưa nhập mục này"})}
               className="p-2 rounded-lg border border-gray-400"
             >
+              <option value=""></option>
               {parentList?.map((parent) => (
                 <option key={parent._id} value={parent._id}>
                   {parent.username}
                 </option>
               ))}
             </select>
+            {errors.user_id && (
+              <p className="text-sm text-red-700">{errors.user_id.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="class_id">Chọn lớp</label>
