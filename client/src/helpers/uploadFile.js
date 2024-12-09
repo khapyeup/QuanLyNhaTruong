@@ -12,7 +12,7 @@ const uploadFile = async (file) => {
   //     body: formData,
   //   }).then((response) => response.json());
   const response = await toast.promise(
-    fetch(url, {
+    await fetch(url, {
       method: "POST",
       body: formData,
     }),
