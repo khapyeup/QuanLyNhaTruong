@@ -1,72 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getStudentByClass } from "../../redux/studentRelated/studentHandle";
-import { ToastContainer, toast } from "react-toastify";
+import { useState } from "react";
+
 import "react-toastify/dist/ReactToastify.css";
 import Loading from "../component/Loading";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useGetStudentListQuery } from "../../redux/studentRelated/studentApiSlice";
 
 function TeacherStudent() {
-  const dispatch = useDispatch();
-  const { studentList, error, loading } = useSelector((state) => state.student);
-  const [q, setQ] = useState("");
+  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    dispatch(getStudentByClass("67189ee0f51b43da8d11ca31"));
-  }, [dispatch]);
+  const { data: studentList, isLoading, isError } = useGetStudentListQuery();
 
-  useEffect(() => {
-    toast.error(error);
-  }, [error]);
+  if (isError) return <p>Có lỗi khi load dữ liệu</p>;
+  if (isLoading) return <Loading size={12} />;
 
-  console.log(q);
+  const tableHead = ["STT", "Tên học sinh", "Lớp", "Hành động"];
+
   return (
-    <>
-      {loading ? (
-        <Loading size={12} />
-      ) : (
-        <div className="p-5">
-          <input
-            className="p-2 bg-gray-200 rounded-lg mb-5 w-56"
-            onChange={(e) => setQ(e.target.value.toLowerCase())}
-            placeholder="Tìm kiếm theo tên và lớp..."
-          />
+    <div className="p-5">
+      <input
+        className="p-2 bg-gray-200 rounded-lg mb-5 w-56"
+        onChange={(e) => setQ(e.target.value.toLowerCase())}
+        placeholder="Tìm kiếm theo tên và lớp..."
+      />
 
-          <table className="w-full text-left table-auto text-gray-800">
-            <thead>
-              <tr className="text-gray-500 border-b border-gray-300 bg-gray-300 font-normal text-sm">
-                <th className="p-4">ID</th>
-                <th className="p-4">Họ và tên</th>
-                <th className="p-4">Lớp</th>
-                <th className="p-4">Năm sinh</th>
-                <th className="p-4">Giới tính</th>
-                <th className="p-4"></th>
+      <table className="w-full table-auto text-left">
+        <thead>
+          <tr>
+            {tableHead.map((head) => (
+              <th key={head} className="py-4 px-2 border-b border-b-gray-400">
+                {head}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {studentList
+            .filter(
+              (student) =>
+                student.name.toLowerCase().includes(search) ||
+                student.class_id.name.toLowerCase().includes(search)
+            )
+            .map((student, index) => (
+              <tr key={student._id} className="border-b border-b-gray-400">
+                <td className="px-2 py-4">{index + 1}</td>
+                <td className="px-2 py-4">{student.name}</td>
+                <td className="px-2 py-4">{student.class_id.name}</td>
+                <td className="px-2 py-4 flex gap-4 flex-wrap">
+                  <Link to={`/students/${student._id}`}>
+                    <FaEye className="text-lg hover:text-red-800 cursor-pointer" />
+                  </Link>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {studentList
-                .filter((student) => student.name.toLowerCase().includes(q) || student.class_id.name.toLowerCase().includes(q))
-                .map((student, index) => (
-                  <tr className="hover:bg-gray-200" key={student._id}>
-                    <td className="p-4 text-sm">{index + 1}</td>
-                    <td className="p-4 text-sm font-bold">{student?.name}</td>
-                    <td className="p-4 text-sm">{student?.class_id.name}</td>
-                    <td className="p-4 text-sm">{student?.dob}</td>
-                    <td className="p-4 text-sm">{student?.gender}</td>
-                    <td className="p-4">
-                      <Link to={`${student._id}`}>
-                        <FaEye className="cursor-pointer hover:text-red-400 transition-colors" />
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-      <ToastContainer />
-    </>
+            ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

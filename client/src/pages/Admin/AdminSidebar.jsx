@@ -9,7 +9,7 @@ import { TfiDashboard } from "react-icons/tfi";
 import { AiTwotoneSchedule } from "react-icons/ai";
 import { PiStudent } from "react-icons/pi";
 import { FaChalkboardTeacher, FaUser  } from "react-icons/fa";
-import { MdOutlineSubject } from "react-icons/md";
+import { MdOutlineRateReview, MdOutlineSubject } from "react-icons/md";
 import { BiSolidNotification } from "react-icons/bi";
 import { SiGoogleclassroom } from "react-icons/si";
 import { SiBuzzfeed } from "react-icons/si";
@@ -67,6 +67,12 @@ function AdminSidebar() {
             label: 'Giao dịch',
             icon: <FaMoneyCheckDollar className='text-xl'/>,
             href: '/admin/payments'
+        },
+        ,
+        {
+            label: 'Ý kiến',
+            icon: <MdOutlineRateReview className='text-xl'/>,
+            href: '/admin/complaints'
         }
     ];
 

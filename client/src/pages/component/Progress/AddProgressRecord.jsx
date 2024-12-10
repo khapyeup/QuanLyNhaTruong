@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { uploadFile } from "../../../helpers/uploadFile";
-import {useAddProgressRecordMutation} from "../../../redux/progressRelated/progressApiSlice"
+import { useAddProgressRecordMutation } from "../../../redux/progressRelated/progressApiSlice";
 //Icon
 import { AiFillCloseCircle } from "react-icons/ai";
 import { toast } from "react-toastify";
@@ -31,9 +31,9 @@ const AddProgressRecord = () => {
     console.log(temp);
   };
   const uploadImage = (e) => {
-    uploadFile(e.target.files[0]).then((response) =>
-      setEvidence([...evidence, { url: response.url }])
-    );
+    uploadFile(e.target.files[0]).then((response) => {
+      if (response.ok) setEvidence([...evidence, { url: response.url }]);
+    });
   };
 
   const updateDescription = (index, e) => {
@@ -45,9 +45,12 @@ const AddProgressRecord = () => {
   const addProgress = (data) => {
     data.studentId = id;
     data.evidence = evidence;
-    addProgressRecord(data).unwrap().then(response => toast.success(response.message)).finally(() => navigate(`/admin/student/view/${id}`));
+    addProgressRecord(data)
+      .unwrap()
+      .then((response) => toast.success(response.message))
+      .finally(() => navigate(`/admin/student/view/${id}`));
   };
-  console.log(evidence);
+
   return (
     <form
       onSubmit={handleSubmit(addProgress)}
@@ -108,7 +111,13 @@ const AddProgressRecord = () => {
       <button className="border border-red-600 rounded-md p-2 hover:bg-red-600 hover:text-white">
         Lưu
       </button>
-      <Link to={`/admin/students/view/${id}`} type="button" className="border text-center rounded-md p-2 bg-gray-400 hover:bg-gray-600 hover:text-white">Quay lại</Link>
+      <Link
+        to={`/admin/students/view/${id}`}
+        type="button"
+        className="border text-center rounded-md p-2 bg-gray-400 hover:bg-gray-600 hover:text-white"
+      >
+        Quay lại
+      </Link>
     </form>
   );
 };

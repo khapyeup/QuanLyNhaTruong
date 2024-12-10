@@ -22,7 +22,7 @@ const ProgressRecords = () => {
   const [selectedRecordId, setSelectedRecordId] = useState("");
   const [feedback, setFeedback] = useState("");
 
-  const {currentRole} = useSelector(state => state.user)
+  const { currentRole } = useSelector((state) => state.user);
 
   const { data, isLoading } = useGetProgressRecordsQuery(id);
   const [postFeedback] = useAddFeedbackMutation();
@@ -53,8 +53,10 @@ const ProgressRecords = () => {
 
   const handleDeleteRecord = (id) => {
     setSelectedRecordId("");
-    deleteRecord(id).unwrap().then(response => toast.success(response.message))
-  }
+    deleteRecord(id)
+      .unwrap()
+      .then((response) => toast.success(response.message));
+  };
 
   const updateSeen = (data) => {
     updateSeenStatus(data);
@@ -62,7 +64,7 @@ const ProgressRecords = () => {
   return (
     <>
       {isLoading ? (
-        <Loading size={16}/>
+        <Loading size={16} />
       ) : (
         <div className="flex">
           {/* Hien thi categories */}
@@ -76,7 +78,13 @@ const ProgressRecords = () => {
                 } border border-red-600 p-2 rounded-md  `}
               >
                 {category} (
-                {data?.filter((record) => category==="Tất cả" || record.category === category).length})
+                {
+                  data?.filter(
+                    (record) =>
+                      category === "Tất cả" || record.category === category
+                  ).length
+                }
+                )
               </button>
             ))}
           </div>
@@ -93,7 +101,7 @@ const ProgressRecords = () => {
                   key={record._id}
                   className="border border-gray-300 shadow-md rounded-md p-4 relative mb-10"
                 >
-                  {!record.seen && (
+                  {!record.seen && currentRole === "parent" && (
                     <FaExclamation className="animate-ping text-red-700 text-2xl right-2 -top-3 absolute " />
                   )}
                   <h1 className="text-center font-bold text-2xl text-red-400">
@@ -130,17 +138,20 @@ const ProgressRecords = () => {
                   <p>{record.parentFeedback}</p>
 
                   <div className="flex flex-col gap-2 mb-6">
-                    <button
-                      onClick={() => setSelectedRecordId(record._id)}
-                      type="submit"
-                      className={
-                        selectedRecordId == record._id
-                          ? "hidden"
-                          : " p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white"
-                      }
-                    >
-                      Thêm ý kiến phụ huynh
-                    </button>
+                    {currentRole === "parent" && (
+                      <button
+                        onClick={() => setSelectedRecordId(record._id)}
+                        type="submit"
+                        className={
+                          selectedRecordId == record._id
+                            ? "hidden"
+                            : " p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white"
+                        }
+                      >
+                        Thêm ý kiến phụ huynh
+                      </button>
+                    )}
+
                     <div
                       className={`${
                         selectedRecordId === record._id ? `block` : `hidden`
@@ -157,17 +168,33 @@ const ProgressRecords = () => {
                       />
                     </div>
                   </div>
-                      
-                  <button
-                    onClick={() => updateSeen(record._id)}
-                    disabled={record.seen}
-                    className="disabled:bg-gray-400 disabled:border-0 disabled:text-white p-2 border mr-4 border-red-600 rounded-md hover:bg-red-600 hover:text-white"
-                  >
-                    Đánh dấu đã xem
-                  </button>
-                  {currentRole === "admin" && <Link to={`/admin/students/view/${id}/record/${record._id}/update`}><button  className="mr-4 p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white">Chỉnh sửa</button></Link>}
-                  {currentRole === "admin" && <button onClick={() => handleDeleteRecord(record._id)} className="p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white">Xoá</button>}
-                  
+                  {currentRole === "parent" && (
+                    <button
+                      onClick={() => updateSeen(record._id)}
+                      disabled={record.seen}
+                      className="disabled:bg-gray-400 disabled:border-0 disabled:text-white p-2 border mr-4 border-red-600 rounded-md hover:bg-red-600 hover:text-white"
+                    >
+                      Đánh dấu đã xem
+                    </button>
+                  )}
+
+                  {currentRole === "admin" && (
+                    <Link
+                      to={`/admin/students/view/${id}/record/${record._id}/update`}
+                    >
+                      <button className="mr-4 p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white">
+                        Chỉnh sửa
+                      </button>
+                    </Link>
+                  )}
+                  {currentRole === "admin" && (
+                    <button
+                      onClick={() => handleDeleteRecord(record._id)}
+                      className="p-2 border border-red-600 rounded-md hover:bg-red-600 hover:text-white"
+                    >
+                      Xoá
+                    </button>
+                  )}
                 </div>
               ))
             )}

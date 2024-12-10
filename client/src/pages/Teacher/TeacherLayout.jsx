@@ -13,6 +13,7 @@ import TeacherAttendance from './TeacherAttendance';
 import DetailStudent from './DetailStudent';
 import TeacherTimetable from './TeacherTimetable';
 import { setOnlineUsers, setSocket } from '../../redux/userRelated/userSlice';
+import AddProgressRecord from '../component/Progress/AddProgressRecord';
 
 
 
@@ -56,6 +57,7 @@ function TeacherLayout() {
                     <Route path='dashboard' element={<TeacherDashboard />} />
                     <Route path='students' element={<TeacherStudent />} />
                     <Route path='students/:id' element={<DetailStudent/> }/>
+                    <Route path='/students/:id/record/add' element={<AddProgressRecord/>}/>
                     <Route path='messages/*' element={<TeacherMessage />} />
                     <Route path='attendance' element={<TeacherAttendance />} />
                     <Route path='timetable' element={<TeacherTimetable/>} />

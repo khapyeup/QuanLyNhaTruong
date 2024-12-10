@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
-
-
-
 import { CiCircleInfo } from "react-icons/ci";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
@@ -73,10 +70,10 @@ const UserList = () => {
                 <Link to={`/admin/user/${item._id}`}>
                   <MdOutlineModeEditOutline className='text-orange-600 text-2xl' />
                 </Link>
-                {/* Button xoá */}
+                {/* Button xoá
                 <Link onClick={() => alert('Chức năng xóa đang tạm khóa')}>
                   <MdDelete className='text-red-500 text-2xl' />
-                </Link>
+                </Link> */}
               </div>
             </div>
           ))}

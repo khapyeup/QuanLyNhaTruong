@@ -45,6 +45,7 @@ import FeeList from "./fee/FeeList";
 import PaymentList from "./payment/PaymentList";
 import PaymentAssign from "./payment/PaymentAssign";
 import PaymentDetail from "./payment/PaymentDetail";
+import ComplaintList from "./complaint/ComplaintList";
 
 function AdminLayout() {
   const dispatch = useDispatch();
@@ -149,6 +150,9 @@ function AdminLayout() {
             <Route path="admin/user/view/:id" element={<DetailUser />} />
             <Route path="admin/user/add" element={<AddUser />} />
             <Route path="admin/user/:id" element={<EditUser />} />
+
+            {/* Complaint route */}
+            <Route path="admin/complaints" element={<ComplaintList/>}/>
           </Routes>
         </div>
       </div>

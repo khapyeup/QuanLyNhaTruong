@@ -7,23 +7,33 @@ const uploadFile = async (file) => {
   formData.append("file", file);
   formData.append("upload_preset", "chat-app-file");
 
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     body: formData,
-  //   }).then((response) => response.json());
-  const response = await toast.promise(
-    await fetch(url, {
-      method: "POST",
-      body: formData,
-    }),
-    {
-      pending: "Đang tải ảnh",
-      success: "Tải ảnh thành công 👌",
-      error: "Có lỗi khi tải ảnh 🤯",
-    }
-  );
+  const id = toast.loading("Đang up ảnh");
 
-  return response.json();
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData,
+  }).then((response) => {
+    if (!response.ok)
+      toast.update(id, {render: "Up ảnh thất bại", type: "error", isLoading: false})
+    else
+      toast.update(id, {render: "Up ảnh thành công", type: "success", isLoading: false})
+    return response.json()
+  });
+
+  
+    // const response = await toast.promise(
+    //   fetch(url, {
+    //     method: "POST",
+    //     body: formData,
+    //   }),
+    //   {
+    //     pending: "Đang tải ảnh",
+    //     success: "Tải ảnh thành công 👌",
+    //     error: "Có lỗi khi tải ảnh 🤯",
+    //   }
+    // );
+
+    return response;
 };
 
 export { uploadFile };
