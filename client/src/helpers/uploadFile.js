@@ -14,9 +14,9 @@ const uploadFile = async (file) => {
     body: formData,
   }).then((response) => {
     if (!response.ok)
-      toast.update(id, {render: "Up ảnh thất bại", type: "error", isLoading: false})
+      toast.update(id, {render: "Up ảnh thất bại", type: "error", isLoading: false, autoClose: 5000})
     else
-      toast.update(id, {render: "Up ảnh thành công", type: "success", isLoading: false})
+      toast.update(id, {render: "Up ảnh thành công", type: "success", isLoading: false, autoClose: 5000})
     return response.json()
   });
 
