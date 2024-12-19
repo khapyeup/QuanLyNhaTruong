@@ -2,16 +2,16 @@ import { Input, Button } from '@material-tailwind/react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom';
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { addParent } from '../../../redux/parentRelated/parenHandle';
-function AddUser() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+import { useAddParentMutation } from '../../../redux/userRelated/userApiSlice';
+import { toast } from 'react-toastify';
 
-    const dispatch = useDispatch();
+export default function AddUser() {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [addParent, {isLoading}] = useAddParentMutation();
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        console.log(data)
+        
         const user = {
             username: data.username,
             password: data.password,
@@ -32,7 +32,7 @@ function AddUser() {
             class_id: []
         }
 
-        dispatch(addParent(user));
+        addParent(user).unwrap().then(res => toast.success(res.message))
         navigate('/admin/user/');
 
 
@@ -74,7 +74,7 @@ function AddUser() {
                     <input type='file' id='profile' name='profile' {...register("profile")} required />
 
                     <div className='flex justify-between flex-col lg:flex-row gap-2 '>
-                        <Button type='submit'>Thêm tài khoản</Button>
+                        <Button disabled={isLoading} type='submit'>Thêm tài khoản</Button>
                         <Link to={'/admin/user'}><Button className='bg-red-600 w-full'>Hủy bỏ</Button></Link>
                     </div>
 
@@ -84,5 +84,3 @@ function AddUser() {
         </div>
     )
 }
-
-export default AddUser

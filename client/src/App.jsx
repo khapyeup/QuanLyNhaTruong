@@ -17,11 +17,9 @@ function App() {
 
   return (
     <>
-    
       <Router>
         {currentRole === null && (
           <Routes>
-            
             <Route path="/" element={<ChoosePage />} />
 
             <Route path="/Adminlogin" element={<LoginPage role="admin" />} />
@@ -32,7 +30,6 @@ function App() {
             />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-          
         )}
         {currentRole === "admin" && (
           <>
@@ -50,7 +47,6 @@ function App() {
           </>
         )}
       </Router>
-      
     </>
   );
 }
