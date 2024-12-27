@@ -16,18 +16,18 @@ import { useSelector } from "react-redux";
 function AdminHomepage() {
   const {currentUser} = useSelector(state => state.user)
 
-  const { data: teacherList } = useGetTeacherListQuery();
-  const { data: studentList } = useGetStudentListQuery();
-  const { data: sclassList } = useGetSclassListQuery();
-  const { data: noticeList } = useGetNoticeListQuery();
-  const { data: parentList } = useGetParentListQuery();
+  const { data: teacherList = [] } = useGetTeacherListQuery();
+  const { data: studentList = []} = useGetStudentListQuery();
+  const { data: sclassList = []} = useGetSclassListQuery();
+  const { data: noticeList = []} = useGetNoticeListQuery();
+  const { data: parentList = []} = useGetParentListQuery();
 
-  const numberOfTeacher = teacherList ? teacherList.length : 0;
-  const numberOfClass = sclassList ? sclassList.length : 0;
-  const numberOfStudent = studentList ? studentList.length : 0;
-  const numberOfParent = parentList ? parentList.length : 0;
+  const numberOfTeacher =  teacherList.length ;
+  const numberOfClass =  sclassList.length ;
+  const numberOfStudent =  studentList.length ;
+  const numberOfParent = parentList.length ;
 
-  
+  console.log(numberOfClass)
   return (
     <>
       <div className="flex flex-col flex-1 p-14 gap-7 ">

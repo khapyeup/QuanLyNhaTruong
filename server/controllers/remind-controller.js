@@ -11,7 +11,7 @@ const getRemind = async (req, res) => {
 
 const editRemind = async (req, res) => {
     try {
-        let result = await Remind.findOneAndUpdate({},req.body)
+        let result = await Remind.findOneAndUpdate({},req.body, {upsert: true})
         res.status(200).json({message: "Lưu cài đặt thành công!"});
     } catch (error) {
         console.log("Error at edit remind: " + error)

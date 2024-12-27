@@ -7,8 +7,7 @@ const getClassList = async (req, res) => {
     let result = await Class.find().populate(
       "schedule.content.periods.groupActivity"
     );
-    if (result.length > 0) res.json(result);
-    else res.json({ message: "Không có lớp nào" });
+    res.json(result);
   } catch (error) {
     res.status(500).json(error);
   }

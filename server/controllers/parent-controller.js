@@ -59,6 +59,20 @@ const getParentList = async (req, res) => {
   }
 };
 
+const getParentDetail = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let result = await User.findById(id);
+    if (!result) {
+      return res.status(404).json({ message: "Không tìm thấy user" });
+    }
+    res.json(result);
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json("Có lỗi xảy ra");
+  }
+}
+
 const addParent = async (req, res) => {
   const { username, password, profile, parentInfo, teacherInfo } = req.body;
 
@@ -88,7 +102,7 @@ const addParent = async (req, res) => {
 const updateParent = async (req, res) => {
   const { id } = req.params; // Assuming user ID is passed as a URL parameter
   const updateData = req.body;
-
+  
   try {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
@@ -134,6 +148,7 @@ const deleteParent = async (req, res) => {
 export {
   parentLogin,
   getParentList,
+  getParentDetail,
   searchParentUser,
   addParent,
   updateParent,

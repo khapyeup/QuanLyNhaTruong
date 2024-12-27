@@ -6,7 +6,7 @@ const Avatar = ({userId , size, imgUrl }) => {
     const isOnline = onlineUsers.includes(userId);
     return (
         <div className='relative'>
-            <img src={'/' + imgUrl} className={`size-${size} rounded-full`} />
+            <img src={ imgUrl} className={`size-${size} rounded-full`} />
             {isOnline && (
                 <div className='absolute right-0 bottom-[1px] size-3 border-white border-2 bg-green-700 rounded-full'></div>
             ) 

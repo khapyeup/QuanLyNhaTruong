@@ -9,6 +9,7 @@ import {
 import {
   addParent,
   deleteParent,
+  getParentDetail,
   getParentList,
   parentLogin,
   searchParentUser,
@@ -109,6 +110,7 @@ router.get("/users", getUserList);
 router.post("/Parentlogin", parentLogin);
 router.post("/parents/search", searchParentUser);
 router.get("/parents", getParentList);
+router.get("/parents/:id", getParentDetail);
 router.post("/parents", addParent);
 router.put("/parents/:id", updateParent);
 router.delete("/parents/:id", deleteParent);

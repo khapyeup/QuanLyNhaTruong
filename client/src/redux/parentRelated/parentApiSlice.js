@@ -6,7 +6,7 @@ export const parentApiSlice = apiSlice.injectEndpoints({
       query: () => ({ url: "/parents" }),
       providesTags: ["Parent"],
     }),
-    getParentDetail: builder.query({
+    getParentDetails: builder.query({
       query: (id) => ({ url: `/parents/${id}` }),
     }),
     addParent: builder.mutation({
@@ -28,4 +28,4 @@ export const parentApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetParentListQuery, useAddParentMutation, useGetParentDetailQuery, useEditParentMutation, useDeleteParentMutation } = parentApiSlice;
+export const { useGetParentListQuery, useAddParentMutation, useGetParentDetailsQuery, useEditParentMutation, useDeleteParentMutation } = parentApiSlice;

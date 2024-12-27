@@ -4,7 +4,6 @@ import Loading from "../Loading";
 import { useForm } from "react-hook-form";
 import { uploadFile } from "../../../helpers/uploadFile";
 import {
-  useAddProgressRecordMutation,
   useGetProgressRecordDetailQuery,
   useUpdateProgressRecordMutation,
 } from "../../../redux/progressRelated/progressApiSlice";
@@ -15,15 +14,19 @@ import { toast } from "react-toastify";
 const UpdateProgressRecord = () => {
   const { recordId, id } = useParams();
   const navigate = useNavigate();
+  
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm();
+  
   const { data: record, isLoading } = useGetProgressRecordDetailQuery(recordId);
   const [updateRecord] = useUpdateProgressRecordMutation()
+  
   const [evidence, setEvidence] = useState([]);
+  
   const categories = [
     "Nhận thức",
     "Giao tiếp",
@@ -35,7 +38,7 @@ const UpdateProgressRecord = () => {
   const deleteImage = (url) => {
     const temp = evidence.filter((data) => data.url !== url);
     setEvidence(temp);
-    console.log(temp);
+    
   };
   const uploadImage = (e) => {
     uploadFile(e.target.files[0]).then((response) =>

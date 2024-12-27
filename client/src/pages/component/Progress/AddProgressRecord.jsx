@@ -31,8 +31,10 @@ const AddProgressRecord = () => {
     console.log(temp);
   };
   const uploadImage = (e) => {
+    if (e.target.files.length === 0) return;
+    
     uploadFile(e.target.files[0]).then((response) => {
-      if (response.ok) setEvidence([...evidence, { url: response.url }]);
+      setEvidence([...evidence, { url: response.url }]);
     });
   };
 
@@ -63,8 +65,8 @@ const AddProgressRecord = () => {
         className="p-2 border border-gray-500 rounded-md"
       >
         <option value="">Chọn danh mục</option>
-        {categories.map((category) => (
-          <option value={category}>{category}</option>
+        {categories.map((category, index) => (
+          <option key={index} value={category}>{category}</option>
         ))}
       </select>
       {errors?.category && (
@@ -88,7 +90,7 @@ const AddProgressRecord = () => {
             <div className="relative my-2">
               <AiFillCloseCircle
                 onClick={() => deleteImage(data.url)}
-                className=" absolute text-xl cursor-pointer"
+                className="text-red-500 absolute text-2xl cursor-pointer"
               />
               <img src={data.url} className="size-32" />
               <input
