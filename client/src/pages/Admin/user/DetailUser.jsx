@@ -31,7 +31,7 @@ const DetailUser = () => {
 
           {/* Div chứa ảnh với tên tài khoản */}
           <div className='border-2 rounded-xl flex flex-col md:flex-row gap-6 p-5 items-center shadow-lg'>
-            <img className='size-32 rounded-full ' src={'/' + parent.profile} />
+            <img className='size-32 rounded-full ' src={parent.profile} />
             <div>
               <p className='font-bold'>{parent.username}</p>
             </div>

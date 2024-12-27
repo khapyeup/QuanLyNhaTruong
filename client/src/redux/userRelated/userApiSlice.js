@@ -9,37 +9,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: formData,
       }),
     }),
-    addParent: builder.mutation({
-      query: ( patch ) => ({
-        url: "/parents",
-        method: "POST",
-        body: patch,
-      }),
-    }),
-    updateParent: builder.mutation({
-      query: (patch) => ({
-        url: `/parents/${patch._id}`,
-        method: "PUT",
-        body: patch,
-      }),
-    }),
-    deleteParent: builder.mutation({
-      query: (id) => ({
-        url: `/parents/${id}`,
-        method: "DELETE",
-      }),
-    }),
-    getParentDetail: builder.query({
-      query: (id) => `/parents/${id}` 
-    }),
-    
   }),
 });
 
 export const {
   useLoginMutation,
-  useAddParentMutation,
-  useUpdateParentMutation,
-  useDeleteParentMutation,
-  useGetParentDetailQuery
+  
 } = userApiSlice;

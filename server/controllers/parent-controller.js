@@ -62,6 +62,11 @@ const getParentList = async (req, res) => {
 const addParent = async (req, res) => {
   const { username, password, profile, parentInfo, teacherInfo } = req.body;
 
+  const existingUser = await User.findOne({ username });
+  if (existingUser) {
+    return res.status(500).json({ message: "Tài khoản đã tồn tại" });
+  }
+  
   const newUser = new User({
     username,
     password,
@@ -104,6 +109,13 @@ const deleteParent = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const parent = await User.findById(id);
+    if (parent.parentInfo.student_id.length > 0) {
+      return res
+        .status(500)
+        .json({ message: "Không thể xoá tài khoản này vì còn học sinh" });
+    }
+
     const deletedUser = await User.findByIdAndDelete(id);
     if (!deletedUser) {
       return res.status(500).json({ message: "Không tìm thấy tài khoản" });

@@ -145,15 +145,17 @@ const AddStudent = () => {
             <select
               name="class_id"
               id="class_id"
-              {...register("class_id")}
+              {...register("class_id", {required: "Chưa nhập mục này"})}
               className="p-2 rounded-lg border border-gray-400"
             >
+              <option value=""> </option>
               {sclassList?.map((sclass) => (
                 <option key={sclass._id} value={sclass._id}>
                   {sclass.name}
                 </option>
               ))}
             </select>
+            {errors.class_id && <p className="text-sm text-red-700">{errors.class_id.message}</p>}
           </div>
           <div>
             {avartarUrl && (
@@ -179,7 +181,7 @@ const AddStudent = () => {
               </button>
             </Link>
             <button
-              disabled={isLoading}
+              disabled={isLoading || !avartarUrl}
               className="bg-gray-600 p-2 rounded-md hover:bg-gray-700 text-white"
               type="submit"
             >

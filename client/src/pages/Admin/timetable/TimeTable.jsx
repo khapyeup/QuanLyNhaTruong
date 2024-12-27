@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { format, startOfWeek, endOfWeek, addDays } from "date-fns";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import Loading from "../../component/Loading";
 import {
   getClassList,
@@ -9,14 +9,18 @@ import {
   updateSchedule,
 } from "../../../redux/sclassRelated/sclassHandle";
 import { getActivityList } from "../../../redux/activityRelated/activityHandle";
-import { useGetSclassListQuery, useUpdateScheduleMutation } from "../../../redux/sclassRelated/sclassApiSlice";
+import {
+  useGetSclassListQuery,
+  useUpdateScheduleMutation,
+} from "../../../redux/sclassRelated/sclassApiSlice";
 import { useGetGroupActivityQuery } from "../../../redux/activityRelated/activityApiSlice";
 
 const TimeTable = () => {
   const dispatch = useDispatch();
   const { data: classList, isLoading } = useGetSclassListQuery();
   const { data: activityList } = useGetGroupActivityQuery();
-  const [updateSchedule, {isLoading: isSavingSchedule}] = useUpdateScheduleMutation();
+  const [updateSchedule, { isLoading: isSavingSchedule }] =
+    useUpdateScheduleMutation();
 
   const [classId, setClassId] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -50,7 +54,9 @@ const TimeTable = () => {
             ...day,
             periods: day.periods.map((period) => ({
               ...period,
-              activityOptions: activityList.find(groupAct => groupAct._id === period.groupActivity._id).activity
+              activityOptions: activityList.find(
+                (groupAct) => groupAct._id === period.groupActivity._id
+              ).activity,
             })),
           }))
         );
@@ -93,7 +99,7 @@ const TimeTable = () => {
         if (name === "groupActivity") {
           updatedPeriod.activity = ""; // Reset activity
           const group = activityList.find((group) => group._id === value);
-          
+
           updatedPeriod.activityOptions = group ? group.activity : []; // Set options or empty array
         }
 
@@ -144,7 +150,7 @@ const TimeTable = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!classId) {
-      return toast.warning('Chưa chọn lớp');
+      return toast.warning("Chưa chọn lớp");
     }
     const data = {
       class_id: classId,
@@ -152,9 +158,10 @@ const TimeTable = () => {
       weekEnd: format(endOfSelectedWeek, "yyyy/MM/dd"),
       content: timetable,
     };
-    
-    updateSchedule(data).unwrap().then(response => toast.success(response.message));
-    
+
+    updateSchedule(data)
+      .unwrap()
+      .then((response) => toast.success(response.message));
   };
 
   const onChangeClass = (e) => {
@@ -169,7 +176,9 @@ const TimeTable = () => {
           ...day,
           periods: day.periods.map((period) => ({
             ...period,
-            activityOptions: activityList.find(groupAct => groupAct._id === period.groupActivity._id).activity
+            activityOptions: activityList.find(
+              (groupAct) => groupAct._id === period.groupActivity._id
+            ).activity,
           })),
         }))
       );
@@ -183,7 +192,7 @@ const TimeTable = () => {
               endTime: "",
               groupActivity: "",
               activity: "",
-              activityoptions: []
+              activityoptions: [],
             },
           ],
         }))
@@ -191,7 +200,7 @@ const TimeTable = () => {
     }
     setClassId(sclass._id);
   };
-  
+
   return (
     <div className="flex p-6 flex-col gap-4">
       <label>Chọn ngày</label>
@@ -266,6 +275,7 @@ const TimeTable = () => {
                       onChange={(e) =>
                         handlePeriodChange(dayIndex, periodIndex, e)
                       }
+                      required
                     >
                       <option value=""></option>
                       {activityList.map((group) => (
@@ -276,6 +286,7 @@ const TimeTable = () => {
                     </select>
                     <p>Chọn hoạt động:</p>
                     <select
+                      required
                       value={period.activity}
                       name="activity"
                       className="border-2 border-black"
@@ -309,7 +320,13 @@ const TimeTable = () => {
                 </button>
               </div>
             ))}
-            <button disabled={isSavingSchedule} className="p-2 bg-gray-600 text-white rounded-md hover:bg-gray-700" type="submit">Lưu</button>
+            <button
+              disabled={isSavingSchedule}
+              className="p-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+              type="submit"
+            >
+              Lưu
+            </button>
           </form>
         )}
       </div>

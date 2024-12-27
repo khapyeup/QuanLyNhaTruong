@@ -22,7 +22,6 @@ const AddTeacher = () => {
   const { data: groupActivity } = useGetGroupActivityQuery();
   const [addTeacher, { isLoading }] = useAddTeacherMutation();
 
-
   const uploadAvatar = async (e) => {
     await uploadFile(e.target.files[0]).then((response) =>
       setAvatarUrl(response.url)
@@ -35,7 +34,7 @@ const AddTeacher = () => {
       .unwrap()
       .then((response) => {
         toast.success(response.message);
-        navigate("/admin/teachers")
+        navigate("/admin/teachers");
       });
   };
 
@@ -66,7 +65,7 @@ const AddTeacher = () => {
             <label htmlFor="password">Mật khẩu</label>
             <input
               {...register("password", {
-                required: { value: true, message: "Chưa nhập mật khẩu" }
+                required: { value: true, message: "Chưa nhập mật khẩu" },
               })}
               name="password"
               id="password"
@@ -74,9 +73,7 @@ const AddTeacher = () => {
               className="p-2 rounded-lg border border-gray-400"
             />
             {errors.password && (
-              <p className="text-sm text-red-700">
-                {errors.password.message}
-              </p>
+              <p className="text-sm text-red-700">{errors.password.message}</p>
             )}
           </div>
           <div className="flex flex-col gap-2">
@@ -96,15 +93,22 @@ const AddTeacher = () => {
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="gender">Giới tính</label>
+
             <select
               id="gender"
               name="gender"
-              {...register("gender")}
+              {...register("gender", {
+                required: { value: true, message: "Chưa chọn giới tính" },
+              })}
               className="p-2 rounded-lg border border-gray-400"
             >
+              <option value=""></option>
               <option value="Nam">Nam</option>
               <option value="Nữ">Nữ</option>
             </select>
+            {errors.gender && (
+              <p className="text-sm text-red-700">{errors.gender.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="age">Tuổi</label>
@@ -157,30 +161,44 @@ const AddTeacher = () => {
             <select
               name="class_id"
               id="class_id"
-              {...register("class_id")}
+              {...register("class_id", {
+                required: { value: true, message: "Chưa chọn lớp chủ nhiệm" },
+              })}
               className="p-2 rounded-lg border border-gray-400"
             >
+              <option value=""></option>
               {sclassList?.map((sclass) => (
                 <option key={sclass._id} value={sclass._id}>
                   {sclass.name}
                 </option>
               ))}
             </select>
+            {errors.class_id && (
+              <p className="text-sm text-red-700">{errors.class_id.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="activityAssign">Chọn hoạt động</label>
             <select
               id="activityAssign"
               name="activityAssign"
-              {...register("activityAssign")}
+              {...register("activityAssign", {
+                required: { value: true, message: "Chưa chọn hoạt động" }})}
               className="p-2 rounded-lg border border-gray-400"
             >
               <option value=""></option>
-              {groupActivity?.map(groupAct => <option key={groupAct._id} value={groupAct._id}>{groupAct.group_activity}</option>)}
+              {groupActivity?.map((groupAct) => (
+                <option key={groupAct._id} value={groupAct._id}>
+                  {groupAct.group_activity}
+                </option>
+              ))}
             </select>
+            {errors.activityAssign && <p className="text-sm text-red-700">{errors.activityAssign.message}</p>}
           </div>
           <div>
-            <label className="block" htmlFor="profile">Ảnh đại diện</label>
+            <label className="block" htmlFor="profile">
+              Ảnh đại diện
+            </label>
             {avartarUrl && (
               <img
                 id="profile"
@@ -205,7 +223,7 @@ const AddTeacher = () => {
               </button>
             </Link>
             <button
-              disabled={isLoading}
+              disabled={isLoading || !avartarUrl}
               className="bg-gray-600 p-2 rounded-md hover:bg-gray-700 text-white"
               type="submit"
             >
@@ -214,7 +232,6 @@ const AddTeacher = () => {
           </div>
         </form>
       </div>
-
     </>
   );
 };

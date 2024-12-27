@@ -1,21 +1,31 @@
 import { Input, Button } from '@material-tailwind/react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom';
-import React from 'react'
-import { useAddParentMutation } from '../../../redux/userRelated/userApiSlice';
+import React, { useState } from 'react'
+import { useAddParentMutation } from '../../../redux/parentRelated/parentApiSlice';
 import { toast } from 'react-toastify';
+import { uploadFile } from '../../../helpers/uploadFile';
 
 export default function AddUser() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [addParent, {isLoading}] = useAddParentMutation();
     const navigate = useNavigate();
 
+    const [avatarUrl, setAvatarUrl] = useState('');
+
+    const uploadAvatar = async (e) => {
+        await uploadFile(e.target.files[0]).then((response) =>
+            setAvatarUrl(response.url)
+        );
+    };
+
     const onSubmit = (data) => {
-        
+
+
         const user = {
             username: data.username,
             password: data.password,
-            profile: data.profile[0].name,
+            profile: avatarUrl,
             parentInfo: {
                 fatherName: data.fatherName,
                 fatherPhone: data.fatherPhone,
@@ -32,8 +42,8 @@ export default function AddUser() {
             class_id: []
         }
 
-        addParent(user).unwrap().then(res => toast.success(res.message))
-        navigate('/admin/user/');
+        addParent(user).unwrap().then(res => toast.success(res.message)).then(() =>navigate('/admin/user/') )
+        
 
 
     }
@@ -71,10 +81,12 @@ export default function AddUser() {
                         <Input type='text' label='CCCD' {...register('motherPassport', { required: true })} name='motherPassport' />
                     </div>
                     <label htmlFor='profile'>Avatar</label>
-                    <input type='file' id='profile' name='profile' {...register("profile")} required />
+                    {avatarUrl && <img src={avatarUrl} alt='avatar' className='w-20 h-20 rounded-full' />}
+                    
+                    <input onChange={uploadAvatar} type='file' id='profile' name='profile'  required />
 
                     <div className='flex justify-between flex-col lg:flex-row gap-2 '>
-                        <Button disabled={isLoading} type='submit'>Thêm tài khoản</Button>
+                        <Button disabled={isLoading || !avatarUrl} type='submit'>Thêm tài khoản</Button>
                         <Link to={'/admin/user'}><Button className='bg-red-600 w-full'>Hủy bỏ</Button></Link>
                     </div>
 
