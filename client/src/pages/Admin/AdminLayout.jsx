@@ -38,7 +38,7 @@ import { authLogout } from "../../redux/userRelated/userSlice";
 import UpdateTeacher from "./teacher/UpdateTeacher";
 import UpdateNotice from "./notice/UpdateNotice";
 import AddProgressRecord from "../component/Progress/AddProgressRecord";
-import UpdateProgressRecord from "../component/Progress/updateProgressRecord";
+import UpdateProgressRecord from "../component/Progress/UpdateProgressRecord";
 import FeeList from "./fee/FeeList";
 import PaymentList from "./payment/PaymentList";
 import PaymentAssign from "./payment/PaymentAssign";
