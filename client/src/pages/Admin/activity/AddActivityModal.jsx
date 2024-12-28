@@ -3,11 +3,11 @@ import React from 'react'
 import { IoMdClose } from "react-icons/io";
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
-import { addActivity, addGroupActivity } from '../../../redux/activityRelated/activityHandle';
+import { addActivity } from '../../../redux/activityRelated/activityHandle';
 
 const AddActivityModal = ({ onClose, activity }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const dispatch = useDispatch();
+    
     
     const submit = (data) => {
         dispatch(addActivity(activity._id, data))
@@ -15,7 +15,7 @@ const AddActivityModal = ({ onClose, activity }) => {
         
     }
     return (
-        <div className='inset-0 fixed flex justify-center items-center bg-black/20' onClick={onClose}>
+        <div className='inset-0 fixed flex justify-center items-center bg-black/20'>
             <div className='bg-white opacity-100 w-1/4 px-2 py-3 rounded-lg' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-center mb-5'>
                     Thêm hoạt động mới

@@ -1,82 +1,123 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from "react-router-dom";
+import Loading from "../../component/Loading";
 import {
-  Card,
-  CardBody,
-  CardFooter,
-  Input,
-  Button,
-  Typography,
-  Textarea
-} from "@material-tailwind/react";
-import { getActivityList } from '../../../redux/activityRelated/activityHandle';
-import AddGroupActivityModal from './AddGroupActivityModal';
-import UpdateGroupActivityModal from './UpdateGroupActivityModal';
-import DeleteGroupActivityModal from './DeleteGroupActivityModal';
-import DetailGroupActivityModal from './DetailGroupActivityModal';
+  useDeleteGroupActivityMutation,
+  useEditGroupActivityMutation,
+  useGetGroupActivityQuery,
+} from "../../../redux/activityRelated/activityApiSlice";
+import { AiOutlineDelete, AiFillEdit, AiTwotoneAppstore } from "react-icons/ai";
+import { useState } from "react";
+import AddGroupActivityModal from "./AddGroupActivityModal";
+import { toast } from "react-toastify";
 
 function ShowGroupActivity() {
+  const [isEdit, setIsEdit] = useState(null);
+  const [valueEdit, setValueEdit] = useState("");
+  const [openAddGroupActivity, setOpenAddGroupActivity] = useState(false);
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const {
+    data: groupActivityList = [],
+    isLoading,
+    isError,
+  } = useGetGroupActivityQuery();
+  const [updateGroupActivity, { isLoading: isUpdating }] =
+    useEditGroupActivityMutation();
+  const [deleteGroupActivity] = useDeleteGroupActivityMutation();
 
-  const { activityList } = useSelector(state => state.activity);
+  function handleSaveEdit() {
+    updateGroupActivity({ id: isEdit._id, group_activity: valueEdit })
+      .unwrap()
+      .then((res) => toast.success(res.message))
+      .finally(() => setIsEdit(null));
+  }
 
-  const [groupId, setGroupId] = useState(null)
-  const [addGroupActivityModal, setAddGroupActivityModal] = useState(false);
-  const [updateGroupActivityModal, setUpdateGroupActivityModal] = useState(false);
-  const [deleteGroupActivityModal, setDeleteGroupActivityModal] = useState(false);
-  const [detailGroupActivityModal, setDetailGroupActivityModal] = useState(false);
+  function handleDelete(id) {
+    deleteGroupActivity(id)
+      .unwrap()
+      .then((res) => toast.success(res.message));
+  }
 
-  useEffect(() => {
-    dispatch(getActivityList())
-  }, [])
-  return <>
-    <div className='p-9 flex flex-col gap-y-5 '>
-      <Button class="bg-light-blue-600 text-white p-2 rounded-lg" onClick={() => setAddGroupActivityModal(true)}>Thêm nhóm hoạt động</Button>
-
-      <table className='w-full min-w-full table-auto text-left'>
-        <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-          <tr>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">ID</th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-              Nhóm hoạt động
-            </th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4 "></th>
-          </tr>
-        </thead>
-        <tbody>
-          {activityList.map((item, index) =>
-            <tr key={item._id} className="even:bg-blue-gray-50/50">
-              <td className='p-4'>{index + 1}</td>
-              <td className='p-4'>{item.group_activity}</td>
-              <td className="p-4 flex gap-2">
-              
-                  <Button className="bg-green-700" onClick={() => {setDetailGroupActivityModal(true); setGroupId(activityList.find(activity => activity._id === item._id))}}>Chi tiết</Button>
-                  
-                
-                
-                  <Button className="bg-orange-500" onClick={() => {setUpdateGroupActivityModal(true); setGroupId(activityList.find(activity => activity._id === item._id))}}>Cập nhật</Button>
-                  
-                
-                  <Button className="bg-red-700" onClick={() => {setDeleteGroupActivityModal(true); setGroupId(activityList.find(activity => activity._id === item._id))}}>Xóa</Button>
-                
-
-              </td>
+  if (isLoading) {
+    return <Loading size={12} />;
+  } else if (isError) {
+    return <div>Lỗi</div>;
+  }
+  return (
+    <>
+      <div>
+        <h1>Nhóm hoạt động ({groupActivityList.length})</h1>
+        <button onClick={() => setOpenAddGroupActivity(true)}>
+          Thêm nhóm hoạt động
+        </button>
+        <table className="table-auto text-center ">
+          <thead>
+            <tr>
+              <th>Tên nhóm hoạt động</th>
+              <th>Hành động</th>
             </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {groupActivityList.map((groupActivity) => (
+              <tr key={groupActivity._id}>
+                <td>
+                  {isEdit === groupActivity ? (
+                    <input
+                      onChange={(e) => setValueEdit(e.target.value)}
+                      className="border border-gray-400 p-2"
+                      value={valueEdit}
+                    />
+                  ) : (
+                    groupActivity.group_activity
+                  )}
+                </td>
+                <td>
+                  {isEdit === groupActivity ? (
+                    <div>
+                      <button
+                        disabled={isUpdating}
+                        onClick={handleSaveEdit}
+                        className="p-2 rounded-lg bg-green-400 hover:bg-green-500 mr-2"
+                      >
+                        Lưu
+                      </button>
+                      <button
+                        onClick={() => setIsEdit(null)}
+                        className="p-2 rounded-lg bg-green-400 hover:bg-green-500"
+                      >
+                        Hủy
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        onClick={() => {
+                          setIsEdit(groupActivity);
+                          setValueEdit(groupActivity.group_activity);
+                        }}
+                        className="p-2 rounded-lg bg-green-400 hover:bg-green-500 mr-2"
+                      >
+                        <AiFillEdit className="inline" />
+                        Sửa
+                      </button>
+                      <button
+                        onClick={() => handleDelete(groupActivity._id)}
+                        className="p-2 rounded-lg bg-green-400 hover:bg-green-500"
+                      >
+                        <AiOutlineDelete className="inline" /> Xóa
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-        {addGroupActivityModal ? <AddGroupActivityModal onClose={() => setAddGroupActivityModal(false)}/> : ''}
-        {updateGroupActivityModal ? <UpdateGroupActivityModal activity={groupId} onClose={() => setUpdateGroupActivityModal(false)}/> : ''}
-        {deleteGroupActivityModal ? <DeleteGroupActivityModal activity={groupId} onClose={() => setDeleteGroupActivityModal(false)}/> : ''}
-        {detailGroupActivityModal ? <DetailGroupActivityModal activity={groupId} onClose={() => setDetailGroupActivityModal(false)}/> : ''}
-  </>
-
-
+      {openAddGroupActivity && (
+        <AddGroupActivityModal onClose={() => setOpenAddGroupActivity(false)} />
+      )}
+    </>
+  );
 }
 
-export default ShowGroupActivity
+export default ShowGroupActivity;

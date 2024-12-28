@@ -5,9 +5,9 @@ const addGroupActivity = async (req, res) => {
     try {
         const newGroupActivity = new Activity({ group_activity: req.body.group_activity, activity: [] });
         await newGroupActivity.save();
-        res.status(201).json({ message: 'Group activity created successfully', activity: newGroupActivity });
+        res.status(201).json({ message: 'Thêm dữ liệu thành công', activity: newGroupActivity });
     } catch (error) {
-        res.status(500).json({ message: 'Error creating group activity', error: error.message });
+        res.status(500).json({ message: 'Có lỗi khi lấy dữ liệu', error: error.message });
     }
 }
 
@@ -16,25 +16,25 @@ const getAllGroupActivity = async (req, res) => {
         const activities = await Activity.find();
         res.status(200).json(activities);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching group activities', error: error.message });
+        res.status(500).json({ message: 'Có lỗi khi lấy dữ liệu', error: error.message });
     }
 }
 
 const updateGroupActivity = async (req, res) => {
     try {
         const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, { group_activity: req.body.group_activity }, { new: true });
-        res.status(200).json({ message: 'Group activity updated successfully', activity: updatedActivity });
+        res.status(200).json({ message: 'Cập nhật nhóm hoạt động thành công' });
     } catch (error) {
-        res.status(500).json({ message: 'Error updating group activity', error: error.message });
+        res.status(500).json({ message: 'Có lỗi khi cập nhật nhóm', error: error.message });
     }
 }
 
 const deleteGroupActivity = async (req, res) => {
     try {
         await Activity.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: 'Group activity deleted successfully' });
+        res.status(200).json({ message: 'Xóa nhóm hoạt động thành công!' });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting group activity', error: error.message });
+        res.status(500).json({ message: 'Có lỗi khi xóa', error: error.message });
     }
 }
 
@@ -54,9 +54,9 @@ const addActivity = async (req, res) => {
         const activityGroup = await Activity.findById(req.params.id);
         activityGroup.activity.push({ name: req.body.name });
         await activityGroup.save();
-        res.status(201).json({ message: 'Activity added successfully', activityGroup });
+        res.status(201).json({ message: 'Thêm hoạt động thành công', activityGroup });
     } catch (error) {
-        res.status(500).json({ message: 'Error adding activity', error: error.message });
+        res.status(500).json({ message: 'Có lỗi khi thực hiện hành động', error: error.message });
     }
 }
 
@@ -66,9 +66,9 @@ const updateActivity = async (req, res) => {
         const activity = activityGroup.activity.id(req.params.activityId);
         activity.name = req.body.name;
         await activityGroup.save();
-        res.status(200).json({ message: 'Activity updated successfully', activityGroup });
+        res.status(200).json({ message: 'Cập nhật hoạt động thành công', activityGroup });
     } catch (error) {
-        res.status(500).json({ message: 'Error updating activity', error: error.message });
+        res.status(500).json({ message: 'Có lỗi khi cập nhật hành động', error: error.message });
     }
 }
 
@@ -80,12 +80,12 @@ const deleteActivity = async (req, res) => {
             activityGroup.activity = activityGroup.activity.filter(activity => activity._id.toString() !== req.params.activityId);
             
             await activityGroup.save();
-            res.status(200).json({ message: 'Activity deleted successfully', activityGroup });
+            res.status(200).json({ message: 'Xóa hành động thành công', activityGroup });
         } else {
-            res.status(404).json({ message: 'Activity group not found' });
+            res.status(404).json({ message: 'Không tìm thấy hoạt động' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting activity', error: error.message });
+        res.status(500).json({ message: 'Có lỗi khi xóa hoạt động', error: error.message });
     }
 };
 
