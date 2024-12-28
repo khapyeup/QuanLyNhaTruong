@@ -90,7 +90,7 @@ import {
   getFeeList,
   updateFee,
 } from "../controllers/fee-controller.js";
-import { addSubPayment, assignPaymentToClass, getNofiticationPayment, getPaymentDetail } from "../controllers/payment-controller.js";
+import { addSubPayment, assignPaymentToClass, getNofiticationPayment, getPaymentDetail, paymentCreateOrder } from "../controllers/payment-controller.js";
 import {  editRemind, getRemind } from "../controllers/remind-controller.js";
 import { addComplaint, getAllComplaints, getComplaintsByUser, updateComplaints } from "../controllers/complaint-controller.js";
 
@@ -165,10 +165,12 @@ router.post("/fees", addFee);
 router.put("/fees/:id", updateFee)
 router.delete("/fees/:id", deleteFee);
 //Payment
+router.post("/payments/createorder", paymentCreateOrder)
 router.get("/payments/:studentId", getPaymentDetail)
 router.post("/payments/assigntoclass", assignPaymentToClass)
 router.post("/payments/:paymentId", addSubPayment)
 router.get("/payments/nofitication/:userId", getNofiticationPayment)
+
 
 //RemindFeeSetting
 router.get("/remind", getRemind)

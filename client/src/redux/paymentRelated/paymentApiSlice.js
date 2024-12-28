@@ -25,8 +25,15 @@ const paymentApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Payment']
     }),
+    createOrder: builder.mutation({
+      query: (data) => ({
+        url: `/payments/createorder`,
+        method: "POST",
+        body: data,
+      }),
+    })
   }),
 });
 
-export const { useAssignPaymentToClassMutation, useGetPaymentDetailQuery, useAddSubPaymentMutation, useGetPaymentNofiticationQuery } =
+export const { useAssignPaymentToClassMutation, useGetPaymentDetailQuery, useAddSubPaymentMutation, useGetPaymentNofiticationQuery, useCreateOrderMutation } =
   paymentApiSlice;
