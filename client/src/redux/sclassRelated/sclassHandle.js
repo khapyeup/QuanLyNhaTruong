@@ -4,7 +4,7 @@ import { doneSuccess, getError, getFailed, getRequest, getSuccess } from "./scla
 export const getClassList = () => async (dispatch) => {
     dispatch(getRequest())
     try {
-        const result = await axios.get("http://localhost:3000/classes")
+        const result = await axios.get("https://quanlynhatruong.onrender.com/classes")
         if (result.data.message)
             dispatch(getError(result.data))
         else
@@ -17,7 +17,7 @@ export const getClassList = () => async (dispatch) => {
 export const addClass = (data) => async (dispatch) => {
     dispatch(getRequest())
     try {
-        const result = await axios.post(`http://localhost:3000/classes/add`, data)
+        const result = await axios.post(`https://quanlynhatruong.onrender.com/classes/add`, data)
         if (result) {
             console.log("Thêm lớp thành công");
             return Promise.resolve();
@@ -34,7 +34,7 @@ export const addClass = (data) => async (dispatch) => {
 export const updateClass = (id, data) => async (dispatch) => {
     dispatch(getRequest())
     try {
-        const result = await axios.put(`http://localhost:3000/classes/edit/${id}`, data)
+        const result = await axios.put(`https://quanlynhatruong.onrender.com/classes/edit/${id}`, data)
         if (result) {
             alert('Cập nhật thành công')
             dispatch(getSuccess())
@@ -52,7 +52,7 @@ export const updateClass = (id, data) => async (dispatch) => {
 export const updateSchedule = (classId, data) => async (dispatch) => {
     dispatch(getRequest())
     try {
-        const result = await axios.put(`http://localhost:3000/classes/schedule/${classId}`, data)
+        const result = await axios.put(`https://quanlynhatruong.onrender.com/classes/schedule/${classId}`, data)
         if (result) {
             dispatch(getSuccess())
             return Promise.resolve();
@@ -67,7 +67,7 @@ export const updateSchedule = (classId, data) => async (dispatch) => {
 export const getDetailClass = (classId) => async (dispatch) => {
     dispatch(getRequest())
     try {
-        const result = await axios.get(`http://localhost:3000/classes/view/${classId}`);
+        const result = await axios.get(`https://quanlynhatruong.onrender.com/classes/view/${classId}`);
         if (result) {
             
             dispatch(doneSuccess(result))

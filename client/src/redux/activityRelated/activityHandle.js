@@ -3,7 +3,7 @@ import { getSuccess } from "./activitySlice";
 
 export const getActivityList = () => async (dispatch) => {
     try {
-        const result = await axios.get("http://localhost:3000/group_activity");
+        const result = await axios.get("https://quanlynhatruong.onrender.com/group_activity");
         dispatch(getSuccess(result.data));
     } catch (error) {
         console.log(error)
@@ -12,7 +12,7 @@ export const getActivityList = () => async (dispatch) => {
 
 export const addGroupActivity = (data) => async (dispatch) => {
     try {
-        const result = await axios.post("http://localhost:3000/group_activity", data)
+        const result = await axios.post("https://quanlynhatruong.onrender.com/group_activity", data)
         if (result) {
             alert('Thêm group thành công')
         } else {
@@ -28,7 +28,7 @@ export const addGroupActivity = (data) => async (dispatch) => {
 
 export const deleteGroupActivity = (id) => async (dispatch) => {
     try {
-        const result = await axios.delete(`http://localhost:3000/group_activity/${id}`)
+        const result = await axios.delete(`https://quanlynhatruong.onrender.com/group_activity/${id}`)
         if (result)
             alert('Xóa thành công')
         else {
@@ -46,7 +46,7 @@ export const updateGroupActivity = (id, data) => async (dispatch) => {
 
     try {
 
-        const result = await axios.put(`http://localhost:3000/group_activity/${id}`, data);
+        const result = await axios.put(`https://quanlynhatruong.onrender.com/group_activity/${id}`, data);
         if (result)
             alert('Update group thành công')
         else {
@@ -62,7 +62,7 @@ export const updateGroupActivity = (id, data) => async (dispatch) => {
 
 export const addActivity = (id, data) => async (dispatch) => {
     try {
-        const result = await axios.post(`http://localhost:3000/group_activity/${id}/activity`, data)
+        const result = await axios.post(`https://quanlynhatruong.onrender.com/group_activity/${id}/activity`, data)
         if (result) {
             alert('Thêm hoạt động thành công')
         } else {
@@ -81,7 +81,7 @@ export const updateActivity = (id, activityId ,data) => async (dispatch) => {
 
     try {
 
-        const result = await axios.put(`http://localhost:3000/group_activity/${id}/activity/${activityId}`, data);
+        const result = await axios.put(`https://quanlynhatruong.onrender.com/group_activity/${id}/activity/${activityId}`, data);
         if (result)
             alert('Update  thành công')
         else {
@@ -97,7 +97,7 @@ export const updateActivity = (id, activityId ,data) => async (dispatch) => {
 
 export const deleteActivity = (id, activityId) => async (dispatch) => {
     try {
-        const result = await axios.delete(`http://localhost:3000/group_activity/${id}/activity/${activityId}`)
+        const result = await axios.delete(`https://quanlynhatruong.onrender.com/group_activity/${id}/activity/${activityId}`)
         if (result)
             alert('Xóa thành công')
         else {

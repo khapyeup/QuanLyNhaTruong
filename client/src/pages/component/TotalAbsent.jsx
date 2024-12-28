@@ -8,7 +8,7 @@ const TotalAbsent = () => {
     useEffect(() => {
         const fetchAttendance = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/students/total-attendance-today');
+                const response = await axios.get('https://quanlynhatruong.onrender.com/students/total-attendance-today');
                 setData(response.data);
             } catch (error) {
                 alert('Có lỗi')

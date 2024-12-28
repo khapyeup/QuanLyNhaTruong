@@ -3,7 +3,7 @@ import { doneSuccess, getError, getFailed, getSuccess, addSuccess, deleteSuccess
 
 export const getParentList = () => async (dispatch) => {
     try {
-        const result = await axios.get("http://localhost:3000/parents");
+        const result = await axios.get("https://quanlynhatruong.onrender.com/parents");
         if (result.status == 200)
         {
             dispatch(getSuccess(result));
@@ -19,7 +19,7 @@ export const getParentList = () => async (dispatch) => {
 
 export const addParent = (data) => async (dispatch) => {
     try {
-        const result = await axios.post('http://localhost:3000/parents', data);
+        const result = await axios.post('https://quanlynhatruong.onrender.com/parents', data);
         if (!result)
         {
             alert('Có lỗi, kiểm tra console');
@@ -43,7 +43,7 @@ export const updateParent = (fields, id) => async (dispatch) => {
     dispatch(getRequest());
 
     try {
-        const result = await axios.put(`http://localhost:3000/parents/${id}`, fields, { headers: { 'Content-Type': 'application/json' } });
+        const result = await axios.put(`https://quanlynhatruong.onrender.com/parents/${id}`, fields, { headers: { 'Content-Type': 'application/json' } });
         if (result.data) {
             dispatch(doneSuccess(result.data));
             return Promise.resolve();

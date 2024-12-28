@@ -31,7 +31,7 @@ function ParentLayout() {
   }
 
   useEffect(() => {
-    const socket = io('http://localhost:3000', {
+    const socket = io('https://quanlynhatruong.onrender.com', {
       auth: {
         userId: currentUser._id
       }

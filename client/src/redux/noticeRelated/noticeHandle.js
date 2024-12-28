@@ -3,7 +3,7 @@ import { doneSuccess, getError, getFailed, getSuccess, addSuccess, deleteSuccess
 
 export const getNoticeList = () => async (dispatch) => {
     try {
-        const result = await axios.get("http://localhost:3000/notices")
+        const result = await axios.get("https://quanlynhatruong.onrender.com/notices")
         if (result.data.message)
             dispatch(getError(result.data))
         else
@@ -15,7 +15,7 @@ export const getNoticeList = () => async (dispatch) => {
 
 export const addNotice = (data) => async (dispatch) => {
     try {
-        const result = await axios.post("http://localhost:3000/notices/add", data)
+        const result = await axios.post("https://quanlynhatruong.onrender.com/notices/add", data)
         dispatch(addSuccess())
     } catch (error) {
         dispatch(getFailed(error))
@@ -24,7 +24,7 @@ export const addNotice = (data) => async (dispatch) => {
 
 export const deleteNotice = (id) => async (dispatch) => {
     try {
-        const result = await axios.delete(`http://localhost:3000/notices/delete/${id}`)
+        const result = await axios.delete(`https://quanlynhatruong.onrender.com/notices/delete/${id}`)
         if (result)
             dispatch(getFailed(result));
         dispatch(deleteSuccess())
@@ -36,7 +36,7 @@ export const deleteNotice = (id) => async (dispatch) => {
 export const getDetailNotice = (id) => async (dispatch) => {
     
     try {
-        const result = await axios.get(`http://localhost:3000/notices/view/${id}`)
+        const result = await axios.get(`https://quanlynhatruong.onrender.com/notices/view/${id}`)
         if (result)
             dispatch(doneSuccess(result))
         else
@@ -49,7 +49,7 @@ export const getDetailNotice = (id) => async (dispatch) => {
 export const updateNotice = (id, data) => async (dispatch) => {
 
     try {
-        const result = await axios.put(`http://localhost:3000/notices/edit/${id}`, data);
+        const result = await axios.put(`https://quanlynhatruong.onrender.com/notices/edit/${id}`, data);
         console.log(result)
         if (result.message)
             dispatch(getFailed(result))

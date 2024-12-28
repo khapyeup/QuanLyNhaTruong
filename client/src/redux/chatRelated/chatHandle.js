@@ -4,7 +4,7 @@ import { getRequest, getConversationsDone, getMessagesDone, postSuccess } from "
 export const fetchConversations = (sender) => async (dispatch) => {
     try {
         dispatch(getRequest());
-        const response = await axios.get(`http://localhost:3000/conversations/${sender}`);
+        const response = await axios.get(`https://quanlynhatruong.onrender.com/conversations/${sender}`);
         dispatch(getConversationsDone(response.data));
     } catch (error) {
         alert('Có lỗi')
@@ -16,7 +16,7 @@ export const fetchConversations = (sender) => async (dispatch) => {
 export const fetchMessages = (sender, receiver) => async (dispatch) => {
     try {
         dispatch(getRequest());
-        const response = await axios.get(`http://localhost:3000/messages/${sender}&${receiver}`);
+        const response = await axios.get(`https://quanlynhatruong.onrender.com/messages/${sender}&${receiver}`);
         dispatch(fetchMesseage)
     } catch (error) {
         alert('Có lỗi')
@@ -28,7 +28,7 @@ export const fetchMessages = (sender, receiver) => async (dispatch) => {
 export const sendMessage = (message) => async (dispatch) => {
     try {
         dispatch(getRequest());
-        const response = await axios.post('http://localhost:3000/messages', message);
+        const response = await axios.post('https://quanlynhatruong.onrender.com/messages', message);
         dispatch(postSuccess(response.data));
     } catch (error) {
         alert('Có lỗi')

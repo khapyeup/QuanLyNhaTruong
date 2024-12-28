@@ -3,7 +3,7 @@ import { doneSuccess, getError, getFailed, getSuccess, addSuccess, deleteSuccess
 
 export const getTeacherList = () => async (dispatch) => {
     try {
-        const result = await axios.get(`http://localhost:3000/teachers`)
+        const result = await axios.get(`https://quanlynhatruong.onrender.com/teachers`)
 
         if (result.data.message)
             dispatch(getFailed(result.data))
@@ -16,7 +16,7 @@ export const getTeacherList = () => async (dispatch) => {
 
 export const addTeacher = (data) => async (dispatch) => {
     try {
-        const result = await axios.post("http://localhost:3000/teachers/add", data)
+        const result = await axios.post("https://quanlynhatruong.onrender.com/teachers/add", data)
         alert(result.data)
         dispatch(addSuccess())
         return Promise.resolve();
@@ -29,7 +29,7 @@ export const addTeacher = (data) => async (dispatch) => {
 
 export const deleteTeacher = (id) => async (dispatch) => {
     try {
-        const result = await axios.delete(`http://localhost:3000/teachers/delete/${id}`)
+        const result = await axios.delete(`https://quanlynhatruong.onrender.com/teachers/delete/${id}`)
         if (result)
             dispatch(getFailed(result));
         alert('Xoá thành công!')
@@ -46,7 +46,7 @@ export const deleteTeacher = (id) => async (dispatch) => {
 export const getDetailTeacher = (id) => async (dispatch) => {
 
     try {
-        const result = await axios.get(`http://localhost:3000/teachers/view/${id}`)
+        const result = await axios.get(`https://quanlynhatruong.onrender.com/teachers/view/${id}`)
         if (result)
             dispatch(doneSuccess(result))
         else
@@ -59,7 +59,7 @@ export const getDetailTeacher = (id) => async (dispatch) => {
 export const updateTeacher = (id, data) => async (dispatch) => {
     try {
 
-        const result = await axios.put(`http://localhost:3000/teachers/edit/${id}`, data);
+        const result = await axios.put(`https://quanlynhatruong.onrender.com/teachers/edit/${id}`, data);
         if (result.message) {
             dispatch(getFailed(result))
             return Promise.reject();

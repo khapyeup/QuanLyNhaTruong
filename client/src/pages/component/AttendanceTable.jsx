@@ -24,7 +24,7 @@ const AttendanceTable = ({ day, classId }) => {
     const handleSave = async (e) => {
         try {
             e.preventDefault();
-            const response = await axios.post(`http://localhost:3000/students/${classId}/attendance`, { attendance, day })
+            const response = await axios.post(`https://quanlynhatruong.onrender.com/students/${classId}/attendance`, { attendance, day })
             if (response.data.message)
                 toast.success(response.data.message);
             else if (response.data.error)
@@ -39,7 +39,7 @@ const AttendanceTable = ({ day, classId }) => {
     useEffect(() => {
         if (classId) {
             const fetchStudent = async () => {
-                const response = await axios.get(`http://localhost:3000/students/class/${classId}`);
+                const response = await axios.get(`https://quanlynhatruong.onrender.com/students/class/${classId}`);
                 setStudents(response.data);
             }
 

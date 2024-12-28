@@ -13,7 +13,7 @@ const SearchUser = ({onClose, role}) => {
     const handleSearch = async () => {
         try {
             setLoading(true);
-            const response = await axios.post(`http://localhost:3000/${role}s/search`,
+            const response = await axios.post(`https://quanlynhatruong.onrender.com/${role}s/search`,
                 { search: searchKey }
             )
 

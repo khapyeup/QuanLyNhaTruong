@@ -22,7 +22,7 @@ function TeacherLayout() {
     const { currentUser } = useSelector(state => state.user);
 
     useEffect(() => {
-        const socket = io('http://localhost:3000', {
+        const socket = io('https://quanlynhatruong.onrender.com', {
             auth: {
                 userId: currentUser._id
             }
@@ -49,7 +49,7 @@ function TeacherLayout() {
             </div>
 
             {/* Phai */}
-            <div className='md:w-[92%] lg:w-[86%] bg-[#F7F8FA] overflow-y-scroll'>
+            <div className='md:w-[92%] w-full lg:w-[86%] bg-[#F7F8FA] overflow-y-scroll'>
                 <NavTeacher />
                 <Routes>
                     <Route path='/' element={<TeacherDashboard />} />
