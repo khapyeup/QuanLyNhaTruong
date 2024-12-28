@@ -69,7 +69,7 @@ const UpdateProgressRecord = () => {
     setValue("teacherNotes", record?.teacherNotes);
     setEvidence(record?.evidence);
   }, [record, isLoading]);
-  console.log(evidence);
+  
   return (
     <>
       {isLoading ? (
@@ -86,8 +86,8 @@ const UpdateProgressRecord = () => {
             className="p-2 border border-gray-500 rounded-md"
           >
             <option value="">Chọn danh mục</option>
-            {categories.map((category) => (
-              <option value={category}>{category}</option>
+            {categories.map((category, idx) => (
+              <option key={idx} value={category}>{category}</option>
             ))}
           </select>
           {errors?.category && (
@@ -113,7 +113,7 @@ const UpdateProgressRecord = () => {
           <div className="flex flex-col gap-2">
             {evidence?.length !== 0 &&
               evidence?.map((data, index) => (
-                <div className="relative my-2">
+                <div key={index} className="relative my-2">
                   <AiFillCloseCircle
                     onClick={() => deleteImage(data.url)}
                     className=" absolute text-xl cursor-pointer"

@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import AdminSidebar from "./AdminSidebar";
@@ -12,7 +10,7 @@ import ShowNotice from "./notice/ShowNotice";
 import AddStudent from "./student/AddStudent";
 import StudentDetails from "./student/StudentDetails";
 import UpdateStudent from "./student/UpdateStudent";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import ShowTeacher from "./teacher/ShowTeacher";
 import AddTeacher from "./teacher/AddTeacher";
