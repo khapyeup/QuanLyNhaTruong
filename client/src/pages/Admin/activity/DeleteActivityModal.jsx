@@ -2,6 +2,7 @@ import { Button } from "@material-tailwind/react";
 import React from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import { useDeleteActivityMutation } from "../../../redux/activityRelated/activityApiSlice";
 
 const DeleteActivityModal = ({ onClose, activity, group }) => {
   const [deleteActivity, { isLoading: isDeleting }] =
