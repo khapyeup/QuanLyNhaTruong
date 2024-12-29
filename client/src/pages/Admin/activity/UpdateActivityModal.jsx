@@ -11,7 +11,7 @@ const UpdateActivityModal = ({ onClose, activity, group }) => {
     
     const [updateActivity, {isLoading: isUpdating}] = useEditActivityMutation();
     const submit = (data) => {
-        updateActivity({...data, id:group._id, activityId: activity._id}).unwrap(res => {toast.success(res.message); onClose()})
+        updateActivity({...data, id:group._id, activityId: activity._id}).unwrap().then(res => {toast.success(res.message); onClose()})
     }
     
     return (

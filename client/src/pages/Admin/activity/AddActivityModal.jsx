@@ -12,7 +12,7 @@ const AddActivityModal = ({ onClose, activity }) => {
     
     const [addActivity, {isLoading: isAdding}] = useAddActivityMutation();
     const submit = (data) => {
-        addActivity({...data, id: activity._id}).unwrap(res => {toast.success(res.message); onClose()})
+        addActivity({...data, id: activity._id}).unwrap().then(res => {toast.success(res.message); onClose()})
 
         
         

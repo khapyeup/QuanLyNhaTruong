@@ -8,7 +8,7 @@ const DeleteActivityModal = ({ onClose, activity, group }) => {
     useDeleteActivityMutation();
 
   const handleDelete = () => {
-    deleteActivity({ id: group._id, activityId: activity._id }).unwrap((res) => {toast.success(res.message); onClose()});
+    deleteActivity({ id: group._id, activityId: activity._id }).unwrap().then((res) => {toast.success(res.message); onClose()});
     
   };
   if (isDeleting) return <p className="inset-0 bg-gray-500 opacity-25">Đang xóa...</p>;
