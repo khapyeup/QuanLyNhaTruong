@@ -11,13 +11,14 @@ import { useGetActivityQuery } from '../../../redux/activityRelated/activityApiS
 
 const DetailGroupActivityModal = ({ onClose, activity }) => {
 
-   const {data: subActivity, isLoading: isSubActivityLoading, error: subActivityError} = useGetActivityQuery(activity._id);
+   const {data: subActivity, isLoading: isSubActivityLoading, isError} = useGetActivityQuery(activity._id);
     const [activityId, setActivityId] = useState(null)
     const [addActivityModal, setAddActivityModal] = useState(false);
     const [updateActivityModal, setUpdateActivityModal] = useState(false);
     const [deleteActivityModal, setDeleteActivityModal] = useState(false);
 
     if (isSubActivityLoading) return <p>Đang tải...</p>
+    else if (isError) return <p>Lỗi</p>
     return (
         <>
             <div className='inset-0 fixed flex justify-center items-center bg-black/20' onClick={onClose}>

@@ -156,6 +156,7 @@ router.get("/group_activity", getAllGroupActivity);
 router.put("/group_activity/:id", updateGroupActivity);
 router.delete("/group_activity/:id", deleteGroupActivity);
 // Activity
+router.get("/group_activity/:id/activity", getActivityList);
 router.post("/group_activity/:id/activity", addActivity);
 router.put("/group_activity/:id/activity/:activityId", updateActivity);
 router.delete("/group_activity/:id/activity/:activityId", deleteActivity);

@@ -42,10 +42,10 @@ const deleteGroupActivity = async (req, res) => {
 const getActivityList = async (req, res) => {
     try {
         const activityList = await Activity.find();
-        res.status(200).send(activityList);
+        res.status(200).json(activityList);
     } catch (error) {
         console.log("Error fetching activity ", error);
-        res.status(500).send({ message: "Failed to fetch activity" });
+        res.status(500).json({ message: "Failed to fetch activity" });
     }
 }
 

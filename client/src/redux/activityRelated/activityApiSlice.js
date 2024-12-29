@@ -31,7 +31,7 @@ export const activityApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["GroupActivity"],
     }),
     getActivity: builder.query({
-      query: (id) => `/group_activity/${id}`,
+      query: (id) => `/group_activity/${id}/activity`,
       providesTags: ["SubActivity"],
     }),
     addActivity: builder.mutation({
