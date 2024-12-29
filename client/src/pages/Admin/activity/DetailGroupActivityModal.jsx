@@ -12,6 +12,7 @@ import { useGetActivityQuery } from '../../../redux/activityRelated/activityApiS
 const DetailGroupActivityModal = ({ onClose, activity }) => {
 
    const {data: subActivity, isLoading: isSubActivityLoading, isError} = useGetActivityQuery(activity._id);
+   console.log(subActivity)
     const [activityId, setActivityId] = useState(null)
     const [addActivityModal, setAddActivityModal] = useState(false);
     const [updateActivityModal, setUpdateActivityModal] = useState(false);
