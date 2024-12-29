@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
 import { updateActivity, updateGroupActivity } from '../../../redux/activityRelated/activityHandle';
 import { useEditActivityMutation } from '../../../redux/activityRelated/activityApiSlice';
+import { toast } from 'react-toastify';
 
 const UpdateActivityModal = ({ onClose, activity, group }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -15,8 +16,8 @@ const UpdateActivityModal = ({ onClose, activity, group }) => {
     }
     
     return (
-        <div className='inset-0 fixed flex justify-center items-center bg-black/20' onClick={onClose}>
-            <div className='opacity-100 bg-white w-1/4 px-2 py-3 rounded-lg' onClick={(e) => e.stopPropagation()}>
+        <div className='inset-0 fixed flex justify-center items-center bg-black/20'>
+            <div className='opacity-100 bg-white w-1/4 px-2 py-3 rounded-lg' >
                 <div className='flex justify-between items-center mb-5'>
                     Cập nhật nhóm hoạt động
                     <IoMdClose onClick={onClose} className='cursor-pointer text-2xl text-red-500 hover:text-black' />
