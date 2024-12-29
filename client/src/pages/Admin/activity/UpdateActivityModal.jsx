@@ -4,15 +4,16 @@ import { IoMdClose } from "react-icons/io";
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
 import { updateActivity, updateGroupActivity } from '../../../redux/activityRelated/activityHandle';
+import { useEditActivityMutation } from '../../../redux/activityRelated/activityApiSlice';
 
 const UpdateActivityModal = ({ onClose, activity, group }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const dispatch = useDispatch();
     
+    const [updateActivity, {isLoading: isUpdating}] = useEditActivityMutation();
     const submit = (data) => {
-        dispatch(updateActivity(group._id, activity._id, data));
-        onClose();
+        updateActivity({...data, id:group._id, activityId: activity._id}).unwrap(res => {toast.success(res.message); onClose()})
     }
+    
     return (
         <div className='inset-0 fixed flex justify-center items-center bg-black/20' onClick={onClose}>
             <div className='opacity-100 bg-white w-1/4 px-2 py-3 rounded-lg' onClick={(e) => e.stopPropagation()}>
@@ -26,7 +27,7 @@ const UpdateActivityModal = ({ onClose, activity, group }) => {
                     {errors.group_activity?.type === 'required' && <p>Chưa nhập tên hoạt động</p>}
                     {errors.group_activity?.type === 'minLength' && <p>Tối thiểu 5 kí tự</p>}
 
-                    <Button type='submit' className='bg-red-700 mt-5'>Ok</Button>
+                    <Button disabled={isUpdating} type='submit' className='bg-red-700 mt-5'>Ok</Button>
 
                 </form>
             </div>

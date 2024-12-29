@@ -82,7 +82,7 @@ const deleteActivity = async (req, res) => {
             await activityGroup.save();
             res.status(200).json({ message: 'Xóa hành động thành công', activityGroup });
         } else {
-            res.status(404).json({ message: 'Không tìm thấy hoạt động' });
+            res.status(500).json({ message: 'Không tìm thấy hoạt động' });
         }
     } catch (error) {
         res.status(500).json({ message: 'Có lỗi khi xóa hoạt động', error: error.message });

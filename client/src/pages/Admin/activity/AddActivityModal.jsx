@@ -4,14 +4,17 @@ import { IoMdClose } from "react-icons/io";
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
 import { addActivity } from '../../../redux/activityRelated/activityHandle';
+import { useAddActivityMutation } from '../../../redux/activityRelated/activityApiSlice';
+import {toast} from 'react-toastify'
 
 const AddActivityModal = ({ onClose, activity }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     
-    
+    const [addActivity, {isLoading: isAdding}] = useAddActivityMutation();
     const submit = (data) => {
-        dispatch(addActivity(activity._id, data))
-        onClose();
+        addActivity({...data, id: activity._id}).unwrap(res => {toast.success(res.message); onClose()})
+
+        
         
     }
     return (
@@ -27,7 +30,7 @@ const AddActivityModal = ({ onClose, activity }) => {
                     {errors.name?.type === 'required' && <p>Chưa nhập tên hoạt động</p>}
                     {errors.name?.type === 'minLength' && <p>Tối thiểu 5 kí tự</p>}
 
-                    <Button type='submit' className='bg-red-700 mt-5'>Ok</Button>
+                    <Button disabled={isAdding} type='submit' className='bg-red-700 mt-5'>Ok</Button>
 
                 </form>
             </div>

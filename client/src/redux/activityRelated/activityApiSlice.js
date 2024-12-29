@@ -1,5 +1,5 @@
 import { apiSlice } from "../apiSlice";
-import { deleteGroupActivity } from "./activityHandle";
+import { addActivity, deleteGroupActivity } from "./activityHandle";
 
 export const activityApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,7 +13,7 @@ export const activityApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: patch,
       }),
-      invalidatesTags: ["GroupActivity"]
+      invalidatesTags: ["GroupActivity"],
     }),
     editGroupActivity: builder.mutation({
       query: (patch) => ({
@@ -21,16 +21,52 @@ export const activityApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: patch,
       }),
-      invalidatesTags: ["GroupActivity"]
+      invalidatesTags: ["GroupActivity"],
     }),
-    deleteGroupActivity : builder.mutation({
+    deleteGroupActivity: builder.mutation({
       query: (id) => ({
         url: `/group_activity/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["GroupActivity"]
+      invalidatesTags: ["GroupActivity"],
+    }),
+    getActivity: builder.query({
+      query: (id) => `/group_activity/${id}`,
+      providesTags: ["SubActivity"],
+    }),
+    addActivity: builder.mutation({
+      query: (patch) => ({
+        url: `/group_activity/${patch.id}/activity`,
+        method: "POST",
+        body: patch,
+      }),
+      invalidatesTags: ["SubActivity"],
+    }),
+    editActivity: builder.mutation({
+      query: (patch) => ({
+        url: `/group_activity/${patch.id}/activity/${patch.activityId}`,
+        method: "PUT",
+        body: patch,
+      }),
+      invalidatesTags: ["SubActivity"],
+    }),
+    deleteActivity: builder.mutation({
+      query: (patch) => ({
+        url: `/group_activity/${patch.id}/activity/${patch.activityId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SubActivity"],
     }),
   }),
 });
 
-export const { useGetGroupActivityQuery, useAddGroupActivityMutation, useEditGroupActivityMutation, useDeleteGroupActivityMutation } = activityApiSlice;
+export const {
+  useGetGroupActivityQuery,
+  useAddGroupActivityMutation,
+  useEditGroupActivityMutation,
+  useDeleteGroupActivityMutation,
+  useGetActivityQuery,
+  useAddActivityMutation,
+  useEditActivityMutation,
+  useDeleteActivityMutation
+} = activityApiSlice;

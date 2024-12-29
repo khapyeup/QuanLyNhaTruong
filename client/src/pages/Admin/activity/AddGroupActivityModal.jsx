@@ -27,7 +27,7 @@ const AddGroupActivityModal = ({ onClose }) => {
   return (
     <div className="inset-0 fixed flex justify-center items-center bg-black/20">
       <div
-        className="bg-white opacity-100  p-4 rounded-lg"
+        className="bg-white opacity-100  p-4 rounded-lg w-full md:w-1/2"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-5 font-bold">

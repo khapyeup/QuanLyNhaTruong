@@ -8,11 +8,14 @@ import { AiOutlineDelete, AiFillEdit, AiTwotoneAppstore } from "react-icons/ai";
 import { useState } from "react";
 import AddGroupActivityModal from "./AddGroupActivityModal";
 import { toast } from "react-toastify";
+import DetailGroupActivityModal from "./DetailGroupActivityModal";
 
 function ShowGroupActivity() {
   const [isEdit, setIsEdit] = useState(null);
   const [valueEdit, setValueEdit] = useState("");
   const [openAddGroupActivity, setOpenAddGroupActivity] = useState(false);
+  const [openDetailGroupActivity, setOpenDetailGroupActivity] = useState(false);
+  const [selectedGroupActivity, setSelectedGroupActivity] = useState(null);
 
   const {
     data: groupActivityList = [],
@@ -43,12 +46,17 @@ function ShowGroupActivity() {
   }
   return (
     <>
-      <div>
-        <h1>Nhóm hoạt động ({groupActivityList.length})</h1>
-        <button onClick={() => setOpenAddGroupActivity(true)}>
+      <div className="p-10 flex flex-col flex-wrap gap-6">
+        <h1 className="font-bold">
+          Nhóm hoạt động ({groupActivityList.length})
+        </h1>
+        <button
+          className="p-2 bg-gray-500 rounded-lg hover:bg-gray-600"
+          onClick={() => setOpenAddGroupActivity(true)}
+        >
           Thêm nhóm hoạt động
         </button>
-        <table className="table-auto text-center ">
+        <table className="w-full table-auto text-center ">
           <thead>
             <tr>
               <th>Tên nhóm hoạt động</th>
@@ -58,18 +66,24 @@ function ShowGroupActivity() {
           <tbody>
             {groupActivityList.map((groupActivity) => (
               <tr key={groupActivity._id}>
-                <td>
+                <td
+                  onClick={() => {
+                    setSelectedGroupActivity(groupActivity);
+                    setOpenDetailGroupActivity(true);
+                  }}
+                  className="p-2 border-b border-gray-400 hover:bg-gray-300 cursor-pointer"
+                >
                   {isEdit === groupActivity ? (
                     <input
                       onChange={(e) => setValueEdit(e.target.value)}
-                      className="border border-gray-400 p-2"
+                      className="w-full border border-gray-400 p-2"
                       value={valueEdit}
                     />
                   ) : (
                     groupActivity.group_activity
                   )}
                 </td>
-                <td>
+                <td className="p-2 border-b border-gray-400">
                   {isEdit === groupActivity ? (
                     <div>
                       <button
@@ -100,7 +114,7 @@ function ShowGroupActivity() {
                       </button>
                       <button
                         onClick={() => handleDelete(groupActivity._id)}
-                        className="p-2 rounded-lg bg-green-400 hover:bg-green-500"
+                        className="p-2 rounded-lg bg-red-400 hover:bg-red-500"
                       >
                         <AiOutlineDelete className="inline" /> Xóa
                       </button>
@@ -115,6 +129,12 @@ function ShowGroupActivity() {
 
       {openAddGroupActivity && (
         <AddGroupActivityModal onClose={() => setOpenAddGroupActivity(false)} />
+      )}
+      {openDetailGroupActivity && (
+        <DetailGroupActivityModal
+          activity={selectedGroupActivity}
+          onClose={() => setOpenDetailGroupActivity(false)}
+        />
       )}
     </>
   );
