@@ -32,7 +32,7 @@ export const activityApiSlice = apiSlice.injectEndpoints({
     }),
     getActivity: builder.query({
       query: (id) => `/group_activity/${id}`,
-      providesTags: ["SubActivity"],
+      
     }),
     addActivity: builder.mutation({
       query: (patch) => ({
@@ -40,7 +40,7 @@ export const activityApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: patch,
       }),
-      invalidatesTags: ["SubActivity"],
+      invalidatesTags: ["GroupActivity"],
     }),
     editActivity: builder.mutation({
       query: (patch) => ({
@@ -48,14 +48,14 @@ export const activityApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: patch,
       }),
-      invalidatesTags: ["SubActivity"],
+      invalidatesTags: ["GroupActivity"],
     }),
     deleteActivity: builder.mutation({
       query: (patch) => ({
         url: `/group_activity/${patch.id}/activity/${patch.activityId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["SubActivity"],
+      invalidatesTags: ["GroupActivity"],
     }),
   }),
 });
