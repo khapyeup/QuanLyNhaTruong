@@ -99,9 +99,10 @@ const AddStudent = () => {
             <select
               id="gender"
               name="gender"
-              {...register("gender")}
+              {...register("gender", {required: true})}
               className="p-2 rounded-lg border border-gray-400"
             >
+              <option value=""></option>
               <option value="Nam">Nam</option>
               <option value="Nữ">Nữ</option>
             </select>
