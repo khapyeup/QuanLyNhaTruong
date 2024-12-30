@@ -30,14 +30,14 @@ function BigCalendar({ timetable }) {
                         <div className="flex items-center gap-1 justify-center">
                           <CiClock2 className="text-lg"/>
                           <p>
-                            {" "}
+                            
                             {period.startTime} - {period.endTime}
                           </p>
                         </div>
                         <div className="flex items-center gap-1 justify-center">
                           <IoBookOutline className="text-lg"/>
                           <p>
-                            {period.groupActivity.group_activity} -{" "}
+                            {period.groupActivity?.group_activity} -{" "}
                             {period.activity}
                           </p>
                         </div>

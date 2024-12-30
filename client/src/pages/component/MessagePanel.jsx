@@ -42,8 +42,7 @@ function MessagePanel() {
       return { ...prev, imageUrl: uploadPhoto.url }
     })
 
-    if (uploadPhoto.url)
-      alert('Upload thanh cong!')
+    
   }
 
   const inputMessage = (e) => {
@@ -78,7 +77,7 @@ function MessagePanel() {
 
       socket.on('messages', (messages) => {
         setMessages(messages);
-        console.log(messages);
+        
       })
     }
   }, [socket, userId, user])
@@ -103,7 +102,7 @@ function MessagePanel() {
       </header>
 
       {/* Show all message */}
-      <div className='overflow-y-scroll flex flex-col gap-1 overflow-x-hidden h-[calc(100vh-64px-40px-16px-40px)] px-5 py-4'>
+      <div className='relative overflow-y-scroll flex flex-col gap-1 overflow-x-hidden h-[calc(100vh-64px-40px-16px-40px)] px-5 py-4'>
         {messages?.map((message) => (
           <div className={`px-3 py-2 rounded-2xl w-fit ${message.sender === user.currentUser._id ? `bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white ml-auto text-right` : `bg-gray-200`}`} key={message._id}>
             {message.imageUrl && <img className='size-96 ' src={message.imageUrl} />}
@@ -118,6 +117,11 @@ function MessagePanel() {
 
           </div>
         ))}
+        {/* Show image */}
+        {message.imageUrl && <div className='bg-gray-500 w-full p-2 rounded-lg h-[70px] bottom-0 absolute flex overflow-x-auto'>
+          <img src={message.imageUrl} className=''/>
+        </div>}
+        
         <div ref={bottomRef}></div>
       </div>
 
