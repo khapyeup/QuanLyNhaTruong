@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getClassList } from "../../redux/sclassRelated/sclassHandle";
 import Loading from "../component/Loading.jsx";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { format, formatDate, startOfWeek } from "date-fns";
 import { Axios } from "axios";
@@ -38,7 +38,7 @@ function TeacherTimetable() {
   }, [response]);
   return (
     <div className="flex flex-col sm:flex-row gap-5 h-[calc(100vh-48px)]">
-      <ToastContainer />
+      
       {/* Ben trai */}
       {loading ? (
         <Loading size={12} />
