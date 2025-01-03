@@ -50,7 +50,7 @@ const AddProgressRecord = () => {
     addProgressRecord(data)
       .unwrap()
       .then((response) => toast.success(response.message))
-      .finally(() => navigate(`/admin/student/view/${id}`));
+      .finally(() => navigate(`/admin/students/view/${id}`));
   };
 
   return (
