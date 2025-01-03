@@ -75,6 +75,7 @@ function ShowGroupActivity() {
                 >
                   {isEdit === groupActivity ? (
                     <input
+                      onClick={(e) => e.stopPropagation()}
                       onChange={(e) => setValueEdit(e.target.value)}
                       className="w-full border border-gray-400 p-2"
                       value={valueEdit}
