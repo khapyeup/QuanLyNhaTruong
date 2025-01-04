@@ -12,7 +12,6 @@ import { useGetNoticeListQuery } from "../../redux/noticeRelated/noticeApiSlice"
 import { useGetParentListQuery } from "../../redux/parentRelated/parentApiSlice";
 import { useGetSclassListQuery } from "../../redux/sclassRelated/sclassApiSlice";
 import { useSelector } from "react-redux";
-import Loading from '../component/Loading'
 
 function AdminHomepage() {
   const {currentUser} = useSelector(state => state.user)
