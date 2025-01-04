@@ -3,7 +3,7 @@ import { useGetStudentByParentQuery } from "../../redux/studentRelated/studentAp
 import { useGetTeacherListQuery } from "../../redux/teacherRelated/teacherApiSlice"
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { PiStudent } from "react-icons/pi";
-
+import Loading from '../component/Loading';
 
 
 
@@ -12,10 +12,10 @@ const ParentHomepage = () => {
 
   const { currentUser } = useSelector(state => state.user)
 
-  const { data: studentList } = useGetStudentByParentQuery(currentUser._id);
+  const { data: studentList, isLoading } = useGetStudentByParentQuery(currentUser._id);
   const { data: teacherList } = useGetTeacherListQuery();
 
-
+if (isLoading) return <Loading size={12} />
 
   return (
 

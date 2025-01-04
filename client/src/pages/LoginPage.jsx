@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "@material-tailwind/react";
 import { useLoginMutation } from "../redux/userRelated/userApiSlice";
 import { authSuccess } from "../redux/userRelated/userSlice";
-
+import Loading from '../pages/component/Loading'
 
 function LoginPage({ role }) {
   const [login, {isLoading}] = useLoginMutation();
@@ -28,6 +28,9 @@ function LoginPage({ role }) {
     .unwrap()
     .then((payload) => dispatch(authSuccess(payload)))
   };
+
+  if (isLoading)
+    return <Loading size={12}/>
 
   useEffect(() => {
     if (currentUser !== null) {

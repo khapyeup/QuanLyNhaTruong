@@ -12,12 +12,13 @@ import { useGetNoticeListQuery } from "../../redux/noticeRelated/noticeApiSlice"
 import { useGetParentListQuery } from "../../redux/parentRelated/parentApiSlice";
 import { useGetSclassListQuery } from "../../redux/sclassRelated/sclassApiSlice";
 import { useSelector } from "react-redux";
+import Loading from '../component/Loading'
 
 function AdminHomepage() {
   const {currentUser} = useSelector(state => state.user)
 
   const { data: teacherList = [] } = useGetTeacherListQuery();
-  const { data: studentList = []} = useGetStudentListQuery();
+  const { data: studentList = [], isLoading: isStudentLoading} = useGetStudentListQuery();
   const { data: sclassList = []} = useGetSclassListQuery();
   const { data: noticeList = []} = useGetNoticeListQuery();
   const { data: parentList = []} = useGetParentListQuery();
@@ -27,7 +28,7 @@ function AdminHomepage() {
   const numberOfStudent =  studentList.length ;
   const numberOfParent = parentList.length ;
 
-  console.log(numberOfClass)
+  if (isStudentLoading) return <Loading size={12}/>
   return (
     <>
       <div className="flex flex-col flex-1 p-14 gap-7 ">
